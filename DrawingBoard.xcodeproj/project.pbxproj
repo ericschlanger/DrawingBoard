@@ -23,6 +23,9 @@
 		07DCCB9518E46A66004A786C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07DCCB9318E46A66004A786C /* InfoPlist.strings */; };
 		07DCCB9718E46A66004A786C /* DrawingBoardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCB9618E46A66004A786C /* DrawingBoardTests.m */; };
 		07DCCBA118E46A88004A786C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */; };
+		07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA318E472E8004A786C /* SplashViewController.m */; };
+		07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA918E47585004A786C /* FBShimmeringLayer.m */; };
+		07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBAB18E47585004A786C /* FBShimmeringView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,15 @@
 		07DCCB9418E46A66004A786C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		07DCCB9618E46A66004A786C /* DrawingBoardTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawingBoardTests.m; sourceTree = "<group>"; };
 		07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MainStoryboard.storyboard; path = ../MainStoryboard.storyboard; sourceTree = "<group>"; };
+		07DCCBA218E472E8004A786C /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
+		07DCCBA318E472E8004A786C /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
+		07DCCBA618E47585004A786C /* FBShimmering-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBShimmering-Prefix.pch"; sourceTree = "<group>"; };
+		07DCCBA718E47585004A786C /* FBShimmering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmering.h; sourceTree = "<group>"; };
+		07DCCBA818E47585004A786C /* FBShimmeringLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringLayer.h; sourceTree = "<group>"; };
+		07DCCBA918E47585004A786C /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
+		07DCCBAA18E47585004A786C /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
+		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
+		D78395435848482FBEA3EA66 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +102,7 @@
 				07DCCB9018E46A66004A786C /* DrawingBoardTests */,
 				07DCCB6A18E46A66004A786C /* Frameworks */,
 				07DCCB6918E46A66004A786C /* Products */,
+				D78395435848482FBEA3EA66 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +118,7 @@
 		07DCCB6A18E46A66004A786C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07DCCBA518E47585004A786C /* FBShimmering */,
 				07DCCB6B18E46A66004A786C /* Foundation.framework */,
 				07DCCB6D18E46A66004A786C /* CoreGraphics.framework */,
 				07DCCB6F18E46A66004A786C /* UIKit.framework */,
@@ -120,6 +134,8 @@
 				07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */,
 				07DCCB7C18E46A66004A786C /* AppDelegate.h */,
 				07DCCB7D18E46A66004A786C /* AppDelegate.m */,
+				07DCCBA218E472E8004A786C /* SplashViewController.h */,
+				07DCCBA318E472E8004A786C /* SplashViewController.m */,
 				07DCCB8218E46A66004A786C /* Images.xcassets */,
 				07DCCB7F18E46A66004A786C /* DrawingBoard.xcdatamodeld */,
 				07DCCB7418E46A66004A786C /* Supporting Files */,
@@ -156,6 +172,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		07DCCBA518E47585004A786C /* FBShimmering */ = {
+			isa = PBXGroup;
+			children = (
+				07DCCBA618E47585004A786C /* FBShimmering-Prefix.pch */,
+				07DCCBA718E47585004A786C /* FBShimmering.h */,
+				07DCCBA818E47585004A786C /* FBShimmeringLayer.h */,
+				07DCCBA918E47585004A786C /* FBShimmeringLayer.m */,
+				07DCCBAA18E47585004A786C /* FBShimmeringView.h */,
+				07DCCBAB18E47585004A786C /* FBShimmeringView.m */,
+			);
+			path = FBShimmering;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -163,9 +192,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07DCCB9A18E46A66004A786C /* Build configuration list for PBXNativeTarget "DrawingBoard" */;
 			buildPhases = (
+				D0F0C30A78A047B095789C9C /* Check Pods Manifest.lock */,
 				07DCCB6418E46A66004A786C /* Sources */,
 				07DCCB6518E46A66004A786C /* Frameworks */,
 				07DCCB6618E46A66004A786C /* Resources */,
+				B9E1B7877A8842AF91CFE79F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -247,14 +278,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B9E1B7877A8842AF91CFE79F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0F0C30A78A047B095789C9C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		07DCCB6418E46A66004A786C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
+				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
 				07DCCB8118E46A66004A786C /* DrawingBoard.xcdatamodeld in Sources */,
+				07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */,
 				07DCCB7A18E46A66004A786C /* main.m in Sources */,
+				07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +435,7 @@
 		};
 		07DCCB9B18E46A66004A786C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D78395435848482FBEA3EA66 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -381,6 +449,7 @@
 		};
 		07DCCB9C18E46A66004A786C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D78395435848482FBEA3EA66 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -451,6 +520,7 @@
 				07DCCB9C18E46A66004A786C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		07DCCB9D18E46A66004A786C /* Build configuration list for PBXNativeTarget "DrawingBoardTests" */ = {
 			isa = XCConfigurationList;
@@ -459,6 +529,7 @@
 				07DCCB9F18E46A66004A786C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
