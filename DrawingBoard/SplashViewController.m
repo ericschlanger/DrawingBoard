@@ -34,11 +34,11 @@
     // Create path from text
     CGMutablePathRef letters = CGPathCreateMutable();
     
-    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 72.0f, NULL);
+    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 54.0f, NULL);
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
                            (__bridge id)font, kCTFontAttributeName,
                            nil];
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Hello World!"
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"ChalkBoard"
                                                                      attributes:attrs];
     CTLineRef line = CTLineCreateWithAttributedString((CFAttributedStringRef)attrString);
 	CFArrayRef runArray = CTLineGetGlyphRuns(line);
@@ -79,12 +79,11 @@
     CAShapeLayer *textPathLayer = [CAShapeLayer layer];
     textPathLayer.frame = self.textAnimationLayer.bounds;
 	textPathLayer.bounds = CGPathGetBoundingBox(path.CGPath);
-    //textPathLayer.backgroundColor = [[UIColor yellowColor] CGColor];
     textPathLayer.geometryFlipped = YES;
     textPathLayer.path = path.CGPath;
     textPathLayer.strokeColor = [[UIColor blackColor] CGColor];
     textPathLayer.fillColor = nil;
-    textPathLayer.lineWidth = 3.0f;
+    textPathLayer.lineWidth = 4.0f;
     textPathLayer.lineJoin = kCALineJoinBevel;
     
     [self.textAnimationLayer addSublayer:textPathLayer];
@@ -93,32 +92,36 @@
     
 }
 
-- (void) setupDrawingLayer
+- (void) setupEraserPathLayer
 {
     if (self.eraserPathLayer != nil) {
         [self.eraserPathLayer removeFromSuperlayer];
         self.eraserPathLayer = nil;
     }
     
-    CGPoint startPoint 	= CGPointMake(20,30);
-    CGPoint pointTwo	= CGPointMake(50,70);
-    CGPoint pointThree  = CGPointMake(20,200);
-    CGPoint pointFour	= CGPointMake(150,150);
-    CGPoint endPoint	= CGPointMake(40,60);
+    CGPoint startPoint 	= CGPointMake(30,160);
+    CGPoint pointTwo	= CGPointMake(70,220);
+    CGPoint pointThree  = CGPointMake(130,160);
+    CGPoint pointFour	= CGPointMake(180,220);
+    CGPoint pointFive	= CGPointMake(220,160);
+    CGPoint pointSix	= CGPointMake(240,220);
+    CGPoint endPoint	= CGPointMake(280,160);
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:startPoint];
     [path addLineToPoint:pointTwo];
     [path addLineToPoint:pointThree];
     [path addLineToPoint:pointFour];
+    [path addLineToPoint:pointFive];
+    [path addLineToPoint:pointSix];
     [path addLineToPoint:endPoint];
     
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
     pathLayer.frame = self.eraserAnimationLayer.bounds;
-    pathLayer.bounds = CGRectMake(20, 150, 130, 120);
-    pathLayer.geometryFlipped = YES;
+    pathLayer.bounds = CGRectMake(0, 0, 320, 480);
+    //pathLayer.geometryFlipped = YES;
     pathLayer.path = path.CGPath;
-    pathLayer.strokeColor = [[UIColor blackColor] CGColor];
+    pathLayer.strokeColor = [[UIColor whiteColor] CGColor];
     pathLayer.fillColor = nil;
     pathLayer.lineWidth = 20.0f;
     pathLayer.lineJoin = kCALineJoinBevel;
@@ -129,11 +132,14 @@
     
 }
 
-- (void) startAnimation{
+- (void) startEraserAnimation{
+    
+    [self setupEraserPathLayer];
+    
     [self.eraserPathLayer removeAllAnimations];
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 5.0;
+    pathAnimation.duration = 2.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     [self.eraserPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
@@ -141,10 +147,13 @@
 }
 
 - (void) startTextAnimation{
+    
+    [self setupTextLayer];
+    
     [self.textPathLayer removeAllAnimations];
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 5.0;
+    pathAnimation.duration = 4.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     [self.textPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
@@ -155,23 +164,21 @@
 {
     [super viewDidLoad];
     
-    self.eraserAnimationLayer = [CALayer layer];
-    self.eraserAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
-                                           CGRectGetWidth(self.view.layer.bounds) - 40.0f,
-                                           CGRectGetHeight(self.view.layer.bounds) - 84.0f);
-    [self.view.layer addSublayer:self.eraserAnimationLayer];
-    
     self.textAnimationLayer = [CALayer layer];
-    self.textAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
+    self.textAnimationLayer.frame = CGRectMake(20.0f, 20.0f,
                                            CGRectGetWidth(self.view.layer.bounds) - 40.0f,
                                            CGRectGetHeight(self.view.layer.bounds) - 84.0f);
     [self.view.layer addSublayer:self.textAnimationLayer];
     
-    [self setupTextLayer];
-    [self setupDrawingLayer];
-    [self startTextAnimation];
-    [self startAnimation];
+    self.eraserAnimationLayer = [CALayer layer];
+    self.eraserAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
+                                                 CGRectGetWidth(self.view.layer.bounds) - 40.0f,
+                                                 CGRectGetHeight(self.view.layer.bounds) - 84.0f);
+    [self.view.layer addSublayer:self.eraserAnimationLayer];
     
+    
+    [self startTextAnimation];
+    [self performSelector:@selector(startEraserAnimation) withObject:nil afterDelay:6];
 }
 
 - (void)didReceiveMemoryWarning
