@@ -10,4 +10,7 @@
 
 @interface SplashViewController : UIViewController
 
+@property (nonatomic, strong) CALayer *animationLayer;
+@property (nonatomic, strong) CAShapeLayer *pathLayer;
+
 @end
