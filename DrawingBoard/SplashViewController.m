@@ -7,7 +7,7 @@
 //
 
 #import "SplashViewController.h"
-#import "FBShimmeringView.h"
+#import <CoreText/CoreText.h>
 
 @interface SplashViewController ()
 
@@ -24,11 +24,80 @@
     return self;
 }
 
+- (void) setupTextLayer{
+    
+    if (self.textPathLayer != nil) {
+        [self.textPathLayer removeFromSuperlayer];
+        self.textPathLayer = nil;
+    }
+    
+    // Create path from text
+    CGMutablePathRef letters = CGPathCreateMutable();
+    
+    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 72.0f, NULL);
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                           (__bridge id)font, kCTFontAttributeName,
+                           nil];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Hello World!"
+                                                                     attributes:attrs];
+    CTLineRef line = CTLineCreateWithAttributedString((CFAttributedStringRef)attrString);
+	CFArrayRef runArray = CTLineGetGlyphRuns(line);
+    
+    // for each RUN
+    for (CFIndex runIndex = 0; runIndex < CFArrayGetCount(runArray); runIndex++){
+        // Get FONT for this run
+        CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
+        CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(run), kCTFontAttributeName);
+        
+        // for each GLYPH in run
+        for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(run); runGlyphIndex++){
+            // get Glyph & Glyph-data
+            CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
+            CGGlyph glyph;
+            CGPoint position;
+            CTRunGetGlyphs(run, thisGlyphRange, &glyph);
+            CTRunGetPositions(run, thisGlyphRange, &position);
+            
+            // Get PATH of outline
+            {
+                CGPathRef letter = CTFontCreatePathForGlyph(runFont, glyph, NULL);
+                CGAffineTransform t = CGAffineTransformMakeTranslation(position.x, position.y);
+                CGPathAddPath(letters, &t, letter);
+                CGPathRelease(letter);
+            }
+        }
+    }
+    CFRelease(line);
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointZero];
+    [path appendPath:[UIBezierPath bezierPathWithCGPath:letters]];
+    
+    CGPathRelease(letters);
+    CFRelease(font);
+    
+    CAShapeLayer *textPathLayer = [CAShapeLayer layer];
+    textPathLayer.frame = self.textAnimationLayer.bounds;
+	textPathLayer.bounds = CGPathGetBoundingBox(path.CGPath);
+    //textPathLayer.backgroundColor = [[UIColor yellowColor] CGColor];
+    textPathLayer.geometryFlipped = YES;
+    textPathLayer.path = path.CGPath;
+    textPathLayer.strokeColor = [[UIColor blackColor] CGColor];
+    textPathLayer.fillColor = nil;
+    textPathLayer.lineWidth = 3.0f;
+    textPathLayer.lineJoin = kCALineJoinBevel;
+    
+    [self.textAnimationLayer addSublayer:textPathLayer];
+    
+    self.textPathLayer = textPathLayer;
+    
+}
+
 - (void) setupDrawingLayer
 {
-    if (self.pathLayer != nil) {
-        [self.pathLayer removeFromSuperlayer];
-        self.pathLayer = nil;
+    if (self.eraserPathLayer != nil) {
+        [self.eraserPathLayer removeFromSuperlayer];
+        self.eraserPathLayer = nil;
     }
     
     CGPoint startPoint 	= CGPointMake(20,30);
@@ -45,7 +114,7 @@
     [path addLineToPoint:endPoint];
     
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
-    pathLayer.frame = self.animationLayer.bounds;
+    pathLayer.frame = self.eraserAnimationLayer.bounds;
     pathLayer.bounds = CGRectMake(20, 150, 130, 120);
     pathLayer.geometryFlipped = YES;
     pathLayer.path = path.CGPath;
@@ -54,35 +123,53 @@
     pathLayer.lineWidth = 20.0f;
     pathLayer.lineJoin = kCALineJoinBevel;
     
-    [self.animationLayer addSublayer:pathLayer];
+    [self.eraserAnimationLayer addSublayer:pathLayer];
     
-    self.pathLayer = pathLayer;
+    self.eraserPathLayer = pathLayer;
     
 }
 
-- (void) startAnimation
-{
-    [self.pathLayer removeAllAnimations];
+- (void) startAnimation{
+    [self.eraserPathLayer removeAllAnimations];
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     pathAnimation.duration = 5.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
-    [self.pathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
+    [self.eraserPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
     
 }
+
+- (void) startTextAnimation{
+    [self.textPathLayer removeAllAnimations];
+    
+    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    pathAnimation.duration = 5.0;
+    pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+    pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+    [self.textPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.animationLayer = [CALayer layer];
-    self.animationLayer.frame = CGRectMake(20.0f, 64.0f,
+    self.eraserAnimationLayer = [CALayer layer];
+    self.eraserAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
                                            CGRectGetWidth(self.view.layer.bounds) - 40.0f,
                                            CGRectGetHeight(self.view.layer.bounds) - 84.0f);
-    [self.view.layer addSublayer:self.animationLayer];
+    [self.view.layer addSublayer:self.eraserAnimationLayer];
     
+    self.textAnimationLayer = [CALayer layer];
+    self.textAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
+                                           CGRectGetWidth(self.view.layer.bounds) - 40.0f,
+                                           CGRectGetHeight(self.view.layer.bounds) - 84.0f);
+    [self.view.layer addSublayer:self.textAnimationLayer];
+    
+    [self setupTextLayer];
     [self setupDrawingLayer];
+    [self startTextAnimation];
     [self startAnimation];
     
 }
@@ -93,15 +180,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

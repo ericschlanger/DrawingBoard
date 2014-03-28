@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0706117618E5F09A00CEE8AD /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0706117518E5F09A00CEE8AD /* CoreText.framework */; };
 		07DCCB6C18E46A66004A786C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DCCB6B18E46A66004A786C /* Foundation.framework */; };
 		07DCCB6E18E46A66004A786C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DCCB6D18E46A66004A786C /* CoreGraphics.framework */; };
 		07DCCB7018E46A66004A786C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DCCB6F18E46A66004A786C /* UIKit.framework */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0706117518E5F09A00CEE8AD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		07DCCB6818E46A66004A786C /* DrawingBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawingBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DCCB6B18E46A66004A786C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		07DCCB6D18E46A66004A786C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -74,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0706117618E5F09A00CEE8AD /* CoreText.framework in Frameworks */,
 				07DCCB6E18E46A66004A786C /* CoreGraphics.framework in Frameworks */,
 				07DCCB7218E46A66004A786C /* CoreData.framework in Frameworks */,
 				07DCCB7018E46A66004A786C /* UIKit.framework in Frameworks */,
@@ -118,6 +121,7 @@
 		07DCCB6A18E46A66004A786C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0706117518E5F09A00CEE8AD /* CoreText.framework */,
 				07DCCBA518E47585004A786C /* FBShimmering */,
 				07DCCB6B18E46A66004A786C /* Foundation.framework */,
 				07DCCB6D18E46A66004A786C /* CoreGraphics.framework */,
