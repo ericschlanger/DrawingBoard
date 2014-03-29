@@ -68,7 +68,6 @@
 		07DCCBA918E47585004A786C /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		07DCCBAA18E47585004A786C /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
-		D78395435848482FBEA3EA66 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +104,6 @@
 				07DCCB9018E46A66004A786C /* DrawingBoardTests */,
 				07DCCB6A18E46A66004A786C /* Frameworks */,
 				07DCCB6918E46A66004A786C /* Products */,
-				D78395435848482FBEA3EA66 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -196,11 +194,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07DCCB9A18E46A66004A786C /* Build configuration list for PBXNativeTarget "DrawingBoard" */;
 			buildPhases = (
-				D0F0C30A78A047B095789C9C /* Check Pods Manifest.lock */,
 				07DCCB6418E46A66004A786C /* Sources */,
 				07DCCB6518E46A66004A786C /* Frameworks */,
 				07DCCB6618E46A66004A786C /* Resources */,
-				B9E1B7877A8842AF91CFE79F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -281,39 +277,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B9E1B7877A8842AF91CFE79F /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D0F0C30A78A047B095789C9C /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		07DCCB6418E46A66004A786C /* Sources */ = {
@@ -439,7 +402,6 @@
 		};
 		07DCCB9B18E46A66004A786C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D78395435848482FBEA3EA66 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -453,7 +415,6 @@
 		};
 		07DCCB9C18E46A66004A786C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D78395435848482FBEA3EA66 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
