@@ -11,6 +11,11 @@
 
 @interface SplashViewController ()
 
+@property (nonatomic, strong) CALayer *eraserAnimationLayer;
+@property (nonatomic, strong) CAShapeLayer *eraserPathLayer;
+@property (nonatomic, strong) CALayer *textAnimationLayer;
+@property (nonatomic, strong) CAShapeLayer *textPathLayer;
+
 @end
 
 @implementation SplashViewController
