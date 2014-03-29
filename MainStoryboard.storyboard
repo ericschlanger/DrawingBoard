@@ -25,10 +25,10 @@
             </objects>
             <point key="canvasLocation" x="53" y="85"/>
         </scene>
-        <!--View Controller-->
+        <!--Canvas View Controller-->
         <scene sceneID="KUj-s2-IFi">
             <objects>
-                <viewController id="MRG-up-c6Y" sceneMemberID="viewController">
+                <viewController id="MRG-up-c6Y" customClass="CanvasViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="B4C-Pp-Ozk"/>
                         <viewControllerLayoutGuide type="bottom" id="vHD-iq-T9v"/>

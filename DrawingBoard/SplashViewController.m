@@ -182,7 +182,6 @@
                                                  CGRectGetHeight(self.view.layer.bounds) - 84.0f);
     [self.view.layer addSublayer:self.eraserAnimationLayer];
     
-    
     [self startTextAnimation];
     [self performSelector:@selector(startEraserAnimation) withObject:nil afterDelay:5];
 }
