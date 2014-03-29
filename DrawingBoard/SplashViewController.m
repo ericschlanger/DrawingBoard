@@ -101,12 +101,12 @@
     }
     
     CGPoint startPoint 	= CGPointMake(30,160);
-    CGPoint pointTwo	= CGPointMake(70,220);
-    CGPoint pointThree  = CGPointMake(130,160);
-    CGPoint pointFour	= CGPointMake(180,220);
+    CGPoint pointTwo	= CGPointMake(60,220);
+    CGPoint pointThree  = CGPointMake(145,160);
+    CGPoint pointFour	= CGPointMake(165,220);
     CGPoint pointFive	= CGPointMake(220,160);
     CGPoint pointSix	= CGPointMake(240,220);
-    CGPoint endPoint	= CGPointMake(280,160);
+    CGPoint endPoint	= CGPointMake(320,160);
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:startPoint];
@@ -124,7 +124,7 @@
     pathLayer.path = path.CGPath;
     pathLayer.strokeColor = [[UIColor whiteColor] CGColor];
     pathLayer.fillColor = nil;
-    pathLayer.lineWidth = 20.0f;
+    pathLayer.lineWidth = 70.0f;
     pathLayer.lineJoin = kCALineJoinBevel;
     
     [self.eraserAnimationLayer addSublayer:pathLayer];
@@ -179,7 +179,16 @@
     
     
     [self startTextAnimation];
-    [self performSelector:@selector(startEraserAnimation) withObject:nil afterDelay:6];
+    [self performSelector:@selector(startEraserAnimation) withObject:nil afterDelay:5];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    double delayInSeconds = 7.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self performSegueWithIdentifier:@"splashDone" sender:self];
+    });
 }
 
 - (void)didReceiveMemoryWarning
