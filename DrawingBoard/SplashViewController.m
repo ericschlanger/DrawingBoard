@@ -68,6 +68,7 @@
         }
     }
     CFRelease(line);
+    // Test
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointZero];
