@@ -1,11 +1,3 @@
-//
-//  SplashViewController.m
-//  DrawingBoard
-//
-//  Created by Eric Schlanger on 3/27/14.
-//  Copyright (c) 2014 Eric Schlanger. All rights reserved.
-//
-
 #import "SplashViewController.h"
 #import <CoreText/CoreText.h>
 
@@ -28,6 +20,28 @@
     }
     return self;
 }
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.textAnimationLayer = [CALayer layer];
+    self.textAnimationLayer.frame = CGRectMake(20.0f, 20.0f,
+                                               CGRectGetWidth(self.view.layer.bounds) - 40.0f,
+                                               CGRectGetHeight(self.view.layer.bounds) - 84.0f);
+    [self.view.layer addSublayer:self.textAnimationLayer];
+    
+    self.eraserAnimationLayer = [CALayer layer];
+    self.eraserAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
+                                                 CGRectGetWidth(self.view.layer.bounds) - 40.0f,
+                                                 CGRectGetHeight(self.view.layer.bounds) - 84.0f);
+    [self.view.layer addSublayer:self.eraserAnimationLayer];
+    
+    [self startTextAnimation];
+}
+
+#pragma mark - Animation Setup Methods
 
 - (void) setupTextLayer{
     
@@ -98,8 +112,7 @@
     
 }
 
-- (void) setupEraserPathLayer
-{
+- (void) setupEraserPathLayer{
     if (self.eraserPathLayer != nil) {
         [self.eraserPathLayer removeFromSuperlayer];
         self.eraserPathLayer = nil;
@@ -138,6 +151,8 @@
     
 }
 
+#pragma mark - Animation Start Methods
+
 - (void) startEraserAnimation{
     
     [self setupEraserPathLayer];
@@ -148,6 +163,8 @@
     pathAnimation.duration = 2.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+    pathAnimation.delegate = self;
+    [pathAnimation setValue:@"eraser" forKey:@"id"];
     [self.eraserPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
     
 }
@@ -162,43 +179,26 @@
     pathAnimation.duration = 4.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+    pathAnimation.delegate = self;
+    [pathAnimation setValue:@"text" forKey:@"id"];
     [self.textPathLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
+#pragma mark - CAAnimation Delegate Methods
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+//Called when the text animation finishes
+- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
     
-    self.textAnimationLayer = [CALayer layer];
-    self.textAnimationLayer.frame = CGRectMake(20.0f, 20.0f,
-                                           CGRectGetWidth(self.view.layer.bounds) - 40.0f,
-                                           CGRectGetHeight(self.view.layer.bounds) - 84.0f);
-    [self.view.layer addSublayer:self.textAnimationLayer];
-    
-    self.eraserAnimationLayer = [CALayer layer];
-    self.eraserAnimationLayer.frame = CGRectMake(20.0f, 64.0f,
-                                                 CGRectGetWidth(self.view.layer.bounds) - 40.0f,
-                                                 CGRectGetHeight(self.view.layer.bounds) - 84.0f);
-    [self.view.layer addSublayer:self.eraserAnimationLayer];
-    
-    [self startTextAnimation];
-    [self performSelector:@selector(startEraserAnimation) withObject:nil afterDelay:5];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    double delayInSeconds = 7.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    if([[anim valueForKey:@"id"] isEqualToString:@"text"]){
+        double delayInSeconds = 1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self startEraserAnimation];
+        });
+    }
+    else if ([[anim valueForKey:@"id"] isEqualToString:@"eraser"]){
         [self performSegueWithIdentifier:@"splashDone" sender:self];
-    });
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    }
 }
 
 
