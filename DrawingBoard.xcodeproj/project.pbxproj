@@ -32,6 +32,7 @@
 		2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524918EDF84C009C1B21 /* MPCHandler.m */; };
 		27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27984C4318E7256100A19A43 /* CanvasViewController.m */; };
 		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
+		442C153618EE04A3009D043C /* optionsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 442C153518EE04A3009D043C /* optionsIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		27984C4318E7256100A19A43 /* CanvasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasViewController.m; sourceTree = "<group>"; };
 		442C153218EDE990009D043C /* OptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionViewController.h; sourceTree = "<group>"; };
 		442C153318EDE990009D043C /* OptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionViewController.m; sourceTree = "<group>"; };
+		442C153518EE04A3009D043C /* optionsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = optionsIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 				07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */,
 				07DCCB7F18E46A66004A786C /* DrawingBoard.xcdatamodeld */,
 				07DCCB8218E46A66004A786C /* Images.xcassets */,
+				442C153518EE04A3009D043C /* optionsIcon.png */,
 				07DCCB7418E46A66004A786C /* Supporting Files */,
 			);
 			path = DrawingBoard;
@@ -305,6 +308,7 @@
 				07DCCBA118E46A88004A786C /* MainStoryboard.storyboard in Resources */,
 				07DCCB7818E46A66004A786C /* InfoPlist.strings in Resources */,
 				07DCCB8318E46A66004A786C /* Images.xcassets in Resources */,
+				442C153618EE04A3009D043C /* optionsIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

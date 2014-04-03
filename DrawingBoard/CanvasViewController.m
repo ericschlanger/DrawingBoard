@@ -31,7 +31,7 @@
     
     // Temporary Settings
     self.currentColor = [UIColor blackColor];
-    self.currentLineWidth = 5.0f;
+    self.currentLineWidth = 10.0f;
     self.currentOpacity = 0.5;
     self.lastPoint = CGPointMake(0, 0);
     
@@ -198,9 +198,11 @@
 }
 
 - (void) changeLineWidth:(float)newLineWidth {
-    //NSString *output = [NSString stringWithFormat:@"line width: %f", newLineWidth];
-    NSLog(@"line width %f", newLineWidth);
     self.currentLineWidth = newLineWidth;
+}
+
+- (void) changeOpacity:(float)newOpacity {
+    self.currentOpacity = newOpacity;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -209,8 +211,8 @@
     {
         OptionViewController *optionVC = [segue destinationViewController];
         optionVC.delegate = self;
-        NSLog(@"default value: %f", optionVC.slider.value);
-        [optionVC.slider setValue:5.0];
+        optionVC.defaultLineValue = self.currentLineWidth;      // pass in initial values for sliders
+        optionVC.defaultOpacityValue = self.currentOpacity;
     }
 }
 

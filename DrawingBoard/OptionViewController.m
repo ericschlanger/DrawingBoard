@@ -28,6 +28,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    // Initialize the sliders with the values passed in from the segue
+    self.slider.value = self.defaultLineValue;
+    self.opacSlider.value = self.defaultOpacityValue;
+    [self updateLabels];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,18 +52,25 @@
 }
 */
 
+// change the opacity of the canvas
+-(IBAction)setOpacity {
+    self.opacLabel.text = [NSString stringWithFormat:@"%.2f", self.opacSlider.value];
+    [self.delegate changeOpacity:self.opacSlider.value];
+}
 
+// change the line width of the canvas
 -(IBAction)setLineWidth {
-    NSLog(@"here!");
-    /*if([self.delegate respondsToSelector:@selector(changeLineWidth:)]) {
-        NSLog(@"Inside!");
-        [_delegate changeLineWidth:slider.value];
-    }*/
+    self.lineLabel.text = [NSString stringWithFormat:@"%i", (int)self.slider.value];
     [self.delegate changeLineWidth:self.slider.value];
 }
 
 -(IBAction)closeWindow {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)updateLabels {
+    self.lineLabel.text = [NSString stringWithFormat:@"%i", (int)self.slider.value];
+    self.opacLabel.text = [NSString stringWithFormat:@"%.2f", self.opacSlider.value];
 }
 
 @end

@@ -10,15 +10,23 @@
 
 @protocol ChangeOptionsDelegate <NSObject>
 - (void)changeLineWidth:(float) newLineWidth;
+- (void)changeOpacity:(float) newOpacity;
 @end
 
 
 @interface OptionViewController : UIViewController
 
 - (IBAction)setLineWidth;
+- (IBAction)setOpacity;
 - (IBAction)closeWindow;
+- (void)updateLabels;
 
 @property(nonatomic, weak) id delegate;
-@property(nonatomic,strong) IBOutlet UISlider *slider;
+@property(nonatomic, weak) IBOutlet UISlider *slider;
+@property(nonatomic, weak) IBOutlet UISlider *opacSlider;
+@property(nonatomic, weak) IBOutlet UILabel *lineLabel;
+@property(nonatomic, weak) IBOutlet UILabel *opacLabel;
+@property(nonatomic) float defaultLineValue;
+@property(nonatomic) float defaultOpacityValue;
 
 @end
