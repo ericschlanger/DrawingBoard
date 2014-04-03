@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MPCHandler.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate,MCBrowserViewControllerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -19,5 +20,7 @@
 
 
 @property (nonatomic, strong) IBOutlet UIScrollView *panScrollView;
+
+- (IBAction)connect:(id)sender;
 
 @end
