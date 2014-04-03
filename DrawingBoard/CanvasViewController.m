@@ -61,16 +61,41 @@
     UITouch *currentTouch = [touches anyObject];
     CGPoint currentPoint = [currentTouch locationInView:self.view];
     
-    NSLog(@"Last Point: %f %f",self.lastPoint.x,self.lastPoint.y);
-    NSLog(@"Current Point: %f %f",currentPoint.x,currentPoint.y);
+    [self drawLineFromPoint:self.lastPoint toPoint:currentPoint];
     
+    // Store last point
+    self.lastPoint = currentPoint;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(!self.swipe)
+    {
+        [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint];
+    }
+    
+    #warning Merging code not working right (slight movement)
+    
+    // Merge stroke view with main image view
+    /*
+    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+    [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:self.currentOpacity];
+    self.mainImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    self.currentStrokeView.image = nil;
+    UIGraphicsEndImageContext();
+     */
+}
+
+- (void)drawLineFromPoint:(CGPoint)point1 toPoint:(CGPoint)point2
+{
     // Start graphics context with size of frame ***MAY HAVE TO CHANGE TO CANVAS/CURRENTIMAGE SIZE
     UIGraphicsBeginImageContext(self.view.frame.size);
     
     // Draw from and to points
     [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height)];
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), self.lastPoint.x, self.lastPoint.y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), point1.x, point1.y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), point2.x, point2.y);
     
     // Set line parameters
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
@@ -83,51 +108,12 @@
     CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
     
     // Draw image to stroke view
-    CGContextStrokePath(UIGraphicsGetCurrentContext());    
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
     [self.currentStrokeView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
     [self.currentStrokeView setAlpha:self.currentOpacity];
     
     // End graphics context
     UIGraphicsEndImageContext();
-    
-    // Store last point
-    self.lastPoint = currentPoint;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if(!self.swipe)
-    {
-        UIGraphicsBeginImageContext(self.view.frame.size);
-        [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), self.currentLineWidth);
-        
-        // Get & set color components from UIColor
-        CGFloat red = 0, green = 0, blue = 0;
-        [self.currentColor getRed:&red green:&green blue:&blue alpha:nil];
-        CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, self.currentOpacity);
-        
-        // Draw single point
-        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), self.lastPoint.x, self.lastPoint.y);
-        CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), self.lastPoint.x, self.lastPoint.y);
-        CGContextStrokePath(UIGraphicsGetCurrentContext());
-        CGContextFlush(UIGraphicsGetCurrentContext());
-        
-        [self.currentStrokeView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
-        UIGraphicsEndImageContext();
-    }
-    
-#warning Merging code not working right (slight movement)
-    // Merge stroke view with main image view
-    /*
-    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
-    [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) blendMode:kCGBlendModeNormal alpha:self.currentOpacity];
-    self.mainImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    self.currentStrokeView.image = nil;
-    UIGraphicsEndImageContext();
-     */
 }
 
 - (void)didReceiveMemoryWarning
