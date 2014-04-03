@@ -1,12 +1,6 @@
-//
-//  CanvasViewController.m
-//  DrawingBoard
-//
-//  Created by Michael MacDougall on 3/29/14.
-//  Copyright (c) 2014 Eric Schlanger. All rights reserved.
-//
 
 #import "CanvasViewController.h"
+
 
 @interface CanvasViewController ()
 
@@ -40,6 +34,7 @@
     self.lastPoint = CGPointMake(0, 0);
     
     self.panScrollView.delegate = self;
+    
     
     // Ensure that scrollview only allows two-finger scrolling
     for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
