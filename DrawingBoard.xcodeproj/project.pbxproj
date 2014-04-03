@@ -29,7 +29,7 @@
 		07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA318E472E8004A786C /* SplashViewController.m */; };
 		07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA918E47585004A786C /* FBShimmeringLayer.m */; };
 		07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBAB18E47585004A786C /* FBShimmeringView.m */; };
-		2780524718EDE22C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524618EDE22C009C1B21 /* MPCHandler.m */; };
+		2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524918EDF84C009C1B21 /* MPCHandler.m */; };
 		27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27984C4318E7256100A19A43 /* CanvasViewController.m */; };
 		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
 /* End PBXBuildFile section */
@@ -76,8 +76,8 @@
 		07DCCBA918E47585004A786C /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		07DCCBAA18E47585004A786C /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
-		2780524518EDE22C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
-		2780524618EDE22C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
+		2780524818EDF84C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
+		2780524918EDF84C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
 		27984C4218E7256100A19A43 /* CanvasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasViewController.h; sourceTree = "<group>"; };
 		27984C4318E7256100A19A43 /* CanvasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasViewController.m; sourceTree = "<group>"; };
 		442C153218EDE990009D043C /* OptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionViewController.h; sourceTree = "<group>"; };
@@ -219,6 +219,8 @@
 				07DCCBA318E472E8004A786C /* SplashViewController.m */,
 				27984C4218E7256100A19A43 /* CanvasViewController.h */,
 				27984C4318E7256100A19A43 /* CanvasViewController.m */,
+				2780524818EDF84C009C1B21 /* MPCHandler.h */,
+				2780524918EDF84C009C1B21 /* MPCHandler.m */,
 				442C153218EDE990009D043C /* OptionViewController.h */,
 				442C153318EDE990009D043C /* OptionViewController.m */,
 			);
@@ -323,12 +325,12 @@
 			files = (
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
 				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
+				2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */,
 				079918A118EDE7B700A4CC3C /* PRYColorPicker.m in Sources */,
 				07DCCB8118E46A66004A786C /* DrawingBoard.xcdatamodeld in Sources */,
 				442C153418EDE990009D043C /* OptionViewController.m in Sources */,
 				27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */,
 				07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */,
-				2780524718EDE22C009C1B21 /* MPCHandler.m in Sources */,
 				07DCCB7A18E46A66004A786C /* main.m in Sources */,
 				07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */,
 			);

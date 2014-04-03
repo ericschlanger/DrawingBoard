@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "OptionViewController.h"
+#import "MPCHandler.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate>
 
