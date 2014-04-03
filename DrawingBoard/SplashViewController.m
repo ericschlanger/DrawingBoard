@@ -25,7 +25,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.textAnimationLayer = [CALayer layer];
     self.textAnimationLayer.frame = CGRectMake(20.0f, 20.0f,
                                                CGRectGetWidth(self.view.layer.bounds) - 40.0f,
@@ -39,6 +38,7 @@
     [self.view.layer addSublayer:self.eraserAnimationLayer];
     
     [self startTextAnimation];
+    
 }
 
 #pragma mark - Animation Setup Methods

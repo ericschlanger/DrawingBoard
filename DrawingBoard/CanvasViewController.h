@@ -10,4 +10,11 @@
 
 @interface CanvasViewController : UIViewController
 
+
+// UIImageView for entire image with all strokes merged
+@property (nonatomic, strong) IBOutlet UIImageView *mainImageView;
+
+// UIImageView for current stroke
+@property (nonatomic, strong) IBOutlet UIImageView *currentStrokeView;
+
 @end
