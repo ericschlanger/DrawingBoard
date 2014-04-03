@@ -1,12 +1,6 @@
-//
-//  CanvasViewController.m
-//  DrawingBoard
-//
-//  Created by Michael MacDougall on 3/29/14.
-//  Copyright (c) 2014 Eric Schlanger. All rights reserved.
-//
 
 #import "CanvasViewController.h"
+
 
 @interface CanvasViewController ()
 
@@ -16,6 +10,8 @@
 
 @property (nonatomic) CGPoint lastPoint;
 @property (nonatomic) BOOL swipe;
+
+@property (nonatomic, strong) MPCHandler *mpcHandler;
 
 @end
 
@@ -41,6 +37,7 @@
     
     self.panScrollView.delegate = self;
     
+    
     // Ensure that scrollview only allows two-finger scrolling
     for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
     {
@@ -50,7 +47,54 @@
             panRec.minimumNumberOfTouches = 2;
         }
     }
+    
+    // Initialize MCPHandler
+    self.mpcHandler = [[MPCHandler alloc]init];
+    NSString *randUser = [NSString stringWithFormat:@"User%d",arc4random()];
+    [self.mpcHandler setupPeerWithDisplayName:randUser];
+    [self.mpcHandler setupSession];
+    [self.mpcHandler advertiseSelf:true];
+    
+    
+    
+    // Handle Notifcations
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveData:)
+                                                 name:@"DrawingBoard_ReceivedData"
+                                               object:nil];
+    
+    /*NSString *message = @"Hello, World!";
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;*/
+    
 }
+
+
+- (IBAction)connect:(id)sender
+{
+    [self.mpcHandler setupBrowser];
+    [self.mpcHandler.browser setDelegate:self];
+    [self presentViewController:self.mpcHandler.browser
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
+{
+    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
+{
+    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)didReceiveData:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    //DEAL WITH DATA LATER
+}
+
 
 // Hides status bar (if possible)
 - (BOOL)prefersStatusBarHidden
@@ -145,6 +189,7 @@
     
     // End context
     UIGraphicsEndImageContext();
+    
 }
 
 - (void)didReceiveMemoryWarning

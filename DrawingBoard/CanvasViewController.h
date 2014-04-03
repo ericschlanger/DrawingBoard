@@ -21,4 +21,6 @@
 
 @property (nonatomic, strong) IBOutlet UIScrollView *panScrollView;
 
+- (IBAction)connect:(id)sender;
+
 @end
