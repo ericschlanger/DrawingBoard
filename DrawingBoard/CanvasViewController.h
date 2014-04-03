@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CanvasViewController : UIViewController
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -16,5 +16,8 @@
 
 // UIImageView for current stroke
 @property (nonatomic, strong) IBOutlet UIImageView *currentStrokeView;
+
+
+@property (nonatomic, strong) IBOutlet UIScrollView *panScrollView;
 
 @end

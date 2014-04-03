@@ -37,31 +37,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wKm-Nk-n3I">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5V8-bI-puF" userLabel="mainImageView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I6G-ar-bf3">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mDf-RV-96j" userLabel="currentStrokeView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="I6G-ar-bf3" firstAttribute="top" secondItem="wKm-Nk-n3I" secondAttribute="top" id="2PQ-9S-Jm8"/>
-                            <constraint firstItem="wKm-Nk-n3I" firstAttribute="leading" secondItem="OeE-Hk-h8o" secondAttribute="leading" id="BUd-eu-aW3"/>
-                            <constraint firstItem="wKm-Nk-n3I" firstAttribute="leading" secondItem="I6G-ar-bf3" secondAttribute="leading" id="Sxc-cH-eUG"/>
-                            <constraint firstItem="I6G-ar-bf3" firstAttribute="trailing" secondItem="wKm-Nk-n3I" secondAttribute="trailing" id="TBt-ra-IUs"/>
-                            <constraint firstAttribute="bottom" secondItem="I6G-ar-bf3" secondAttribute="bottom" id="TaT-d0-Lxg"/>
-                            <constraint firstItem="I6G-ar-bf3" firstAttribute="top" secondItem="OeE-Hk-h8o" secondAttribute="top" id="Vxa-mq-y2O"/>
-                            <constraint firstItem="wKm-Nk-n3I" firstAttribute="bottom" secondItem="I6G-ar-bf3" secondAttribute="bottom" id="YUv-Kt-G59"/>
-                            <constraint firstAttribute="trailing" secondItem="wKm-Nk-n3I" secondAttribute="trailing" id="tPM-am-YPH"/>
-                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="currentStrokeView" destination="I6G-ar-bf3" id="7jd-4n-CHB"/>
-                        <outlet property="mainImageView" destination="wKm-Nk-n3I" id="2Q6-nB-0eA"/>
+                        <outlet property="currentStrokeView" destination="mDf-RV-96j" id="fyL-qk-RXH"/>
+                        <outlet property="mainImageView" destination="5V8-bI-puF" id="8fZ-pg-BNI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KPF-Ul-f3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
