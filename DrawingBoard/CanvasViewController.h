@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OptionViewController.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate>
 
 
 // UIImageView for entire image with all strokes merged
