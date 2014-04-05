@@ -91,7 +91,7 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
-    NSDictionary *userInfo = [notification userInfo];
+    //NSDictionary *userInfo = [notification userInfo];
     //DEAL WITH DATA LATER
 }
 
