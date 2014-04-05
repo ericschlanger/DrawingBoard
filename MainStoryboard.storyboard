@@ -45,7 +45,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IAk-RM-tKp">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IAk-RM-tKp">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
@@ -78,6 +78,11 @@
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IAk-RM-tKp" secondAttribute="trailing" id="GFa-KL-TD2"/>
+                            <constraint firstItem="IAk-RM-tKp" firstAttribute="leading" secondItem="OeE-Hk-h8o" secondAttribute="leading" id="Oqo-YE-8p2"/>
+                            <constraint firstItem="vHD-iq-T9v" firstAttribute="top" secondItem="IAk-RM-tKp" secondAttribute="bottom" id="jZE-fk-Qpu"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
