@@ -154,7 +154,9 @@
     
     // Draw image to stroke view
     CGContextStrokePath(UIGraphicsGetCurrentContext());
-    [self.currentStrokeView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
+    
+    [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
+    
     [self.currentStrokeView setAlpha:self.currentOpacity];
     
     // End graphics context
@@ -168,8 +170,8 @@
     [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
     [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:self.currentOpacity];
     
-    // Set image from context in background
-    [self.mainImageView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
+    // Set image from context
+    [self.mainImageView setImage:UIGraphicsGetImageFromCurrentImageContext()];
     
     // Clear currentStrokeView
     self.currentStrokeView.image = nil;
