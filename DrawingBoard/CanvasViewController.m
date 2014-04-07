@@ -69,7 +69,7 @@
     
 }
 
-
+#pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
     [self.mpcHandler setupBrowser];
@@ -93,19 +93,6 @@
 {
     //NSDictionary *userInfo = [notification userInfo];
     //DEAL WITH DATA LATER
-}
-
-
-// Hides status bar (if possible)
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
-// Lock Orientation
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 
@@ -192,11 +179,7 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
+#pragma mark - Line Options
 - (void) changeLineWidth:(float)newLineWidth {
     self.currentLineWidth = newLineWidth;
 }
@@ -215,5 +198,26 @@
         optionVC.defaultOpacityValue = self.currentOpacity;
     }
 }
+
+#pragma mark - Hide Status Bar & Lock Orientation
+// Hides status bar (if possible)
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+// Lock Orientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+
 
 @end
