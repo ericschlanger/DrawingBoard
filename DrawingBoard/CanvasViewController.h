@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "OptionViewController.h"
 #import "MPCHandler.h"
+#import "PRYColorPicker.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate>
 

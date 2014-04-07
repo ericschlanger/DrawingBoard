@@ -14,7 +14,7 @@
 @implementation PRYColorPicker
 
 
--(id)initWithCoder:(NSCoder *)aDecoder{
+/*-(id)initWithCoder:(NSCoder *)aDecoder{
 
     self = [super initWithCoder:aDecoder];
     if(self){
@@ -31,6 +31,21 @@
     
     return self;
 
+}*/
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self){
+        
+        self.backgroundColor = [UIColor clearColor];
+        self.circleIsBig = NO;
+        self.red = 0;
+        self.green = 0;
+        self.blue = 0;
+    }
+    
+    return self;
 }
 
 -(void)layoutSubviews{
@@ -105,13 +120,31 @@
 
 
 -(void)tapped{
-//    [UIView animateWithDuration:.5 animations:^{
-//        self.circleView.frame = CGRectMake(0, 0, 75, 75);
-//        self.circleView.backgroundColor =[UIColor redColor];
-//        
-//    } completion:^(BOOL finished) {
-//        
-//    }];
+    
+    if(!self.circleIsBig)
+    {
+        [UIView animateWithDuration:.5 animations:^{
+            self.circleView.backgroundColor =[UIColor redColor];
+            self.transform = CGAffineTransformMakeScale(2.0, 2.0);
+            
+        } completion:^(BOOL finished) {
+            NSLog(@"HERE: %d",[[self subviews]count]);
+            
+        }];
+        self.circleIsBig = true;
+    }
+    else
+    {
+        [UIView animateWithDuration:.5 animations:^{
+            self.circleView.backgroundColor =[UIColor blackColor];
+            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            
+        } completion:^(BOOL finished) {
+            NSLog(@"HERE: %d",[[self subviews]count]);
+            
+        }];
+        self.circleIsBig = false;
+    }
 
     [self detectMotion];
     
