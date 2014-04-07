@@ -53,11 +53,11 @@
     // Create path from text
     CGMutablePathRef letters = CGPathCreateMutable();
     
-    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 54.0f, NULL);
+    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 45.0f, NULL);
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
                            (__bridge id)font, kCTFontAttributeName,
                            nil];
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"ChalkBoard"
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"DrawingBoard"
                                                                      attributes:attrs];
     CTLineRef line = CTLineCreateWithAttributedString((CFAttributedStringRef)attrString);
 	CFArrayRef runArray = CTLineGetGlyphRuns(line);

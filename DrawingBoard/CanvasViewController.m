@@ -69,7 +69,7 @@
     
 }
 
-
+#pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
     [self.mpcHandler setupBrowser];
@@ -91,21 +91,8 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
-    NSDictionary *userInfo = [notification userInfo];
+    //NSDictionary *userInfo = [notification userInfo];
     //DEAL WITH DATA LATER
-}
-
-
-// Hides status bar (if possible)
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
-// Lock Orientation
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 
@@ -167,7 +154,9 @@
     
     // Draw image to stroke view
     CGContextStrokePath(UIGraphicsGetCurrentContext());
-    [self.currentStrokeView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
+    
+    [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
+    
     [self.currentStrokeView setAlpha:self.currentOpacity];
     
     // End graphics context
@@ -181,8 +170,8 @@
     [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
     [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:self.currentOpacity];
     
-    // Set image from context in background
-    [self.mainImageView performSelectorInBackground:@selector(setImage:) withObject:UIGraphicsGetImageFromCurrentImageContext()];
+    // Set image from context
+    [self.mainImageView setImage:UIGraphicsGetImageFromCurrentImageContext()];
     
     // Clear currentStrokeView
     self.currentStrokeView.image = nil;
@@ -192,10 +181,45 @@
     
 }
 
+#pragma mark - Line Options
+- (void) changeLineWidth:(float)newLineWidth {
+    self.currentLineWidth = newLineWidth;
+}
+
+- (void) changeOpacity:(float)newOpacity {
+    self.currentOpacity = newOpacity;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([[segue identifier] isEqualToString:@"openOptions"])
+    {
+        OptionViewController *optionVC = [segue destinationViewController];
+        optionVC.delegate = self;
+        optionVC.defaultLineValue = self.currentLineWidth;      // pass in initial values for sliders
+        optionVC.defaultOpacityValue = self.currentOpacity;
+    }
+}
+
+#pragma mark - Hide Status Bar & Lock Orientation
+// Hides status bar (if possible)
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+// Lock Orientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
 
 
 @end

@@ -29,8 +29,10 @@
 		07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA318E472E8004A786C /* SplashViewController.m */; };
 		07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA918E47585004A786C /* FBShimmeringLayer.m */; };
 		07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBAB18E47585004A786C /* FBShimmeringView.m */; };
-		2780524718EDE22C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524618EDE22C009C1B21 /* MPCHandler.m */; };
+		2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524918EDF84C009C1B21 /* MPCHandler.m */; };
 		27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27984C4318E7256100A19A43 /* CanvasViewController.m */; };
+		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
+		442C153618EE04A3009D043C /* optionsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 442C153518EE04A3009D043C /* optionsIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,10 +77,13 @@
 		07DCCBA918E47585004A786C /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		07DCCBAA18E47585004A786C /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
-		2780524518EDE22C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
-		2780524618EDE22C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
+		2780524818EDF84C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
+		2780524918EDF84C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
 		27984C4218E7256100A19A43 /* CanvasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasViewController.h; sourceTree = "<group>"; };
 		27984C4318E7256100A19A43 /* CanvasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasViewController.m; sourceTree = "<group>"; };
+		442C153218EDE990009D043C /* OptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionViewController.h; sourceTree = "<group>"; };
+		442C153318EDE990009D043C /* OptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionViewController.m; sourceTree = "<group>"; };
+		442C153518EE04A3009D043C /* optionsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = optionsIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,11 +162,13 @@
 			children = (
 				07DCCB7C18E46A66004A786C /* AppDelegate.h */,
 				07DCCB7D18E46A66004A786C /* AppDelegate.m */,
+				27B0267318F08716007E374E /* Helper Classes */,
 				079918A318EDECF100A4CC3C /* Views */,
 				27984C4518E7256700A19A43 /* ViewControllers */,
 				07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */,
 				07DCCB7F18E46A66004A786C /* DrawingBoard.xcdatamodeld */,
 				07DCCB8218E46A66004A786C /* Images.xcassets */,
+				442C153518EE04A3009D043C /* optionsIcon.png */,
 				07DCCB7418E46A66004A786C /* Supporting Files */,
 			);
 			path = DrawingBoard;
@@ -216,10 +223,19 @@
 				07DCCBA318E472E8004A786C /* SplashViewController.m */,
 				27984C4218E7256100A19A43 /* CanvasViewController.h */,
 				27984C4318E7256100A19A43 /* CanvasViewController.m */,
-				2780524518EDE22C009C1B21 /* MPCHandler.h */,
-				2780524618EDE22C009C1B21 /* MPCHandler.m */,
+				442C153218EDE990009D043C /* OptionViewController.h */,
+				442C153318EDE990009D043C /* OptionViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		27B0267318F08716007E374E /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2780524818EDF84C009C1B21 /* MPCHandler.h */,
+				2780524918EDF84C009C1B21 /* MPCHandler.m */,
+			);
+			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +316,7 @@
 				07DCCBA118E46A88004A786C /* MainStoryboard.storyboard in Resources */,
 				07DCCB7818E46A66004A786C /* InfoPlist.strings in Resources */,
 				07DCCB8318E46A66004A786C /* Images.xcassets in Resources */,
+				442C153618EE04A3009D043C /* optionsIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,11 +337,12 @@
 			files = (
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
 				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
+				2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */,
 				079918A118EDE7B700A4CC3C /* PRYColorPicker.m in Sources */,
 				07DCCB8118E46A66004A786C /* DrawingBoard.xcdatamodeld in Sources */,
+				442C153418EDE990009D043C /* OptionViewController.m in Sources */,
 				27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */,
 				07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */,
-				2780524718EDE22C009C1B21 /* MPCHandler.m in Sources */,
 				07DCCB7A18E46A66004A786C /* main.m in Sources */,
 				07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */,
 			);

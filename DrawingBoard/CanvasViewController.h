@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OptionViewController.h"
 #import "MPCHandler.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate,MCBrowserViewControllerDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
