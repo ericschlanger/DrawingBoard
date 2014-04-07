@@ -13,26 +13,6 @@
 
 @implementation PRYColorPicker
 
-
-/*-(id)initWithCoder:(NSCoder *)aDecoder{
-
-    self = [super initWithCoder:aDecoder];
-    if(self){
-        
-        self.backgroundColor = [UIColor clearColor];
-        
-        self.circleIsBig = NO;
-        
-        self.red = 0;
-        self.green = 0;
-        self.blue = 0;
-    
-    }
-    
-    return self;
-
-}*/
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -43,6 +23,7 @@
         self.red = 0;
         self.green = 0;
         self.blue = 0;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
     return self;
@@ -51,9 +32,9 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     
-    self.circleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,50,50)];
+    self.circleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width,self.frame.size.height)];
     self.circleView.alpha = 1.0;
-    self.circleView.layer.cornerRadius = 25;
+    self.circleView.layer.cornerRadius = self.frame.size.width/2;
     self.circleView.backgroundColor = [UIColor blackColor];
 
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapped)];
@@ -123,25 +104,22 @@
     
     if(!self.circleIsBig)
     {
-        [UIView animateWithDuration:.5 animations:^{
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.circleView.backgroundColor =[UIColor redColor];
-            self.transform = CGAffineTransformMakeScale(2.0, 2.0);
-            
-        } completion:^(BOOL finished) {
-            NSLog(@"HERE: %d",[[self subviews]count]);
-            
+            self.transform = CGAffineTransformMakeScale(1.5, 1.5);
+        }
+        completion:^(BOOL finished){
         }];
         self.circleIsBig = true;
     }
     else
     {
-        [UIView animateWithDuration:.5 animations:^{
+        
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.circleView.backgroundColor =[UIColor blackColor];
             self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-            
-        } completion:^(BOOL finished) {
-            NSLog(@"HERE: %d",[[self subviews]count]);
-            
+        }
+        completion:^(BOOL finished){
         }];
         self.circleIsBig = false;
     }

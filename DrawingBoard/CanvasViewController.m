@@ -55,7 +55,7 @@
     [self.mpcHandler setupSession];
     [self.mpcHandler advertiseSelf:true];
     
-    PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100, 100, 100, 100)];
+    PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(100, 100, 50, 50)];
     [self.view addSubview:colorPicker];
     
     // Handle Notifcations
