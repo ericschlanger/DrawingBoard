@@ -37,10 +37,11 @@
     self.circleView.layer.cornerRadius = self.frame.size.width/2;
     self.circleView.backgroundColor = [UIColor blackColor];
 
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapped)];
-    tapRecognizer.delegate = self;
+    UILongPressGestureRecognizer *holdRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(holdAction:)];
+    holdRecognizer.delegate = self;
+    holdRecognizer.minimumPressDuration = .05;
     
-    [self.circleView addGestureRecognizer:tapRecognizer];
+    [self.circleView addGestureRecognizer:holdRecognizer];
     [self.circleView setUserInteractionEnabled:YES];
     
     [self addSubview:self.circleView];
@@ -100,30 +101,29 @@
 #pragma mark - Gesture recognizer delegate methods
 
 
--(void)tapped{
+- (void)holdAction:(UILongPressGestureRecognizer *)holdRecognizer
+{
     
-    if(!self.circleIsBig)
+    if (holdRecognizer.state == UIGestureRecognizerStateBegan)
     {
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.circleView.backgroundColor =[UIColor redColor];
             self.transform = CGAffineTransformMakeScale(1.5, 1.5);
         }
-        completion:^(BOOL finished){
-        }];
+                         completion:^(BOOL finished){
+                         }];
         self.circleIsBig = true;
     }
-    else
+    else if (holdRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        
         [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.circleView.backgroundColor =[UIColor blackColor];
             self.transform = CGAffineTransformMakeScale(1.0, 1.0);
         }
-        completion:^(BOOL finished){
-        }];
+                         completion:^(BOOL finished){
+                         }];
         self.circleIsBig = false;
     }
-
     [self detectMotion];
     
 }
