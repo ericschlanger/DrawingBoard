@@ -6,6 +6,7 @@
 @interface PRYColorPicker ()
 
 @property (nonatomic, strong) UIView *circleView;
+@property (nonatomic) BOOL circleIsBig;
 @property (nonatomic, strong) CMMotionManager *motionManager;
 
 @end
@@ -19,6 +20,8 @@
     if(self){
         
         self.backgroundColor = [UIColor clearColor];
+        
+        self.circleIsBig = NO;
         
         self.red = 0;
         self.green = 0;
@@ -38,11 +41,10 @@
     self.circleView.layer.cornerRadius = 25;
     self.circleView.backgroundColor = [UIColor blackColor];
 
-    UILongPressGestureRecognizer *holdRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(holdAction:)];
-    holdRecognizer.delegate = self;
-    holdRecognizer.minimumPressDuration = .05;
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapped)];
+    tapRecognizer.delegate = self;
     
-    [self.circleView addGestureRecognizer:holdRecognizer];
+    [self.circleView addGestureRecognizer:tapRecognizer];
     [self.circleView setUserInteractionEnabled:YES];
     
     [self addSubview:self.circleView];
@@ -51,7 +53,7 @@
 
 #pragma mark - Core Motion Methods
 
--(void)motion{
+-(void)detectMotion{
     self.motionManager = [[CMMotionManager alloc] init];
     self.motionManager.deviceMotionUpdateInterval = 1.0/60.0; //60 Hz
     [self.motionManager startDeviceMotionUpdates];
@@ -79,21 +81,40 @@
     
     attitude = motion.attitude;
     
-    NSLog(@"roll = %f... pitch = %f ... yaw = %f", degrees(attitude.roll), degrees(attitude.pitch), degrees(attitude.yaw));
+    float roll = degrees(attitude.roll);
+    float pitch = degrees(attitude.pitch);
+    float yaw = degrees(attitude.yaw);
+    
+    roll += 180;
+    pitch += 180;
+    yaw += 180;
+    
+    roll *= .6;
+    pitch *= .6;
+    yaw *= .6;
+    
+    self.circleView.backgroundColor = [UIColor colorWithRed:roll/255.0f green:pitch/255.0f blue:yaw/255.0f alpha:1];
+    
+    
+    NSLog(@"roll = %f... pitch = %f ... yaw = %f", roll, pitch, yaw);
     
     
 }
 
 #pragma mark - Gesture recognizer delegate methods
 
-- (void)holdAction:(UILongPressGestureRecognizer *)holdRecognizer
-{
-    if (holdRecognizer.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"holding");
-    } else if (holdRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"You let go!");
-    }
+
+-(void)tapped{
+//    [UIView animateWithDuration:.5 animations:^{
+//        self.circleView.frame = CGRectMake(0, 0, 75, 75);
+//        self.circleView.backgroundColor =[UIColor redColor];
+//        
+//    } completion:^(BOOL finished) {
+//        
+//    }];
+
+    [self detectMotion];
+    
 }
 
 
