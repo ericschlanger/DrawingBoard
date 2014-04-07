@@ -13,26 +13,6 @@
 
 @implementation PRYColorPicker
 
-
-/*-(id)initWithCoder:(NSCoder *)aDecoder{
-
-    self = [super initWithCoder:aDecoder];
-    if(self){
-        
-        self.backgroundColor = [UIColor clearColor];
-        
-        self.circleIsBig = NO;
-        
-        self.red = 0;
-        self.green = 0;
-        self.blue = 0;
-    
-    }
-    
-    return self;
-
-}*/
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -124,7 +104,7 @@
     if(!self.circleIsBig)
     {
         [UIView animateWithDuration:.5 animations:^{
-            self.circleView.backgroundColor =[UIColor redColor];
+            //self.circleView.backgroundColor =[UIColor redColor];
             self.transform = CGAffineTransformMakeScale(2.0, 2.0);
             
         } completion:^(BOOL finished) {
@@ -136,7 +116,7 @@
     else
     {
         [UIView animateWithDuration:.5 animations:^{
-            self.circleView.backgroundColor =[UIColor blackColor];
+            //self.circleView.backgroundColor =[UIColor blackColor];
             self.transform = CGAffineTransformMakeScale(1.0, 1.0);
             
         } completion:^(BOOL finished) {
@@ -146,7 +126,7 @@
         self.circleIsBig = false;
     }
 
-    [self detectMotion];
+    //[self detectMotion];
     
 }
 
