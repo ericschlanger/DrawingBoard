@@ -32,7 +32,7 @@
     // Temporary Settings
     self.currentColor = [UIColor blackColor];
     self.currentLineWidth = 10.0f;
-    self.currentOpacity = 0.5;
+    self.currentOpacity = 1.0;
     self.lastPoint = CGPointMake(0, 0);
     
     self.panScrollView.delegate = self;

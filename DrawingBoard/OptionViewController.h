@@ -22,10 +22,10 @@
 - (void)updateLabels;
 
 @property(nonatomic, weak) id delegate;
-@property(nonatomic, weak) IBOutlet UISlider *slider;
-@property(nonatomic, weak) IBOutlet UISlider *opacSlider;
-@property(nonatomic, weak) IBOutlet UILabel *lineLabel;
-@property(nonatomic, weak) IBOutlet UILabel *opacLabel;
+@property(nonatomic, strong) IBOutlet UISlider *slider;
+@property(nonatomic, strong) IBOutlet UISlider *opacSlider;
+@property(nonatomic, strong) IBOutlet UILabel *lineLabel;
+@property(nonatomic, strong) IBOutlet UILabel *opacLabel;
 @property(nonatomic) float defaultLineValue;
 @property(nonatomic) float defaultOpacityValue;
 

@@ -32,6 +32,7 @@
     // Initialize the sliders with the values passed in from the segue
     self.slider.value = self.defaultLineValue;
     self.opacSlider.value = self.defaultOpacityValue;
+    
     [self updateLabels];
 }
 

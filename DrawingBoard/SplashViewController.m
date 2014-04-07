@@ -79,7 +79,7 @@
             
             // Get PATH of outline
             {
-                CGPathRef letter = CTFontCreatePathForGlyph(runFont, glyph, NULL);
+                CGPathRef letter = CTFontCreatePathForGlyph(runFont, glyph, nil);
                 CGAffineTransform t = CGAffineTransformMakeTranslation(position.x, position.y);
                 CGPathAddPath(letters, &t, letter);
                 CGPathRelease(letter);
@@ -104,7 +104,7 @@
     textPathLayer.strokeColor = [[UIColor blackColor] CGColor];
     textPathLayer.fillColor = nil;
     textPathLayer.lineWidth = 4.0f;
-    textPathLayer.lineJoin = kCALineJoinBevel;
+    textPathLayer.lineJoin = kCALineJoinRound;
     
     [self.textAnimationLayer addSublayer:textPathLayer];
     
@@ -176,7 +176,7 @@
     [self.textPathLayer removeAllAnimations];
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 4.0;
+    pathAnimation.duration = 15.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     pathAnimation.delegate = self;
