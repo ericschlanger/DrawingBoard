@@ -104,30 +104,21 @@
     if(!self.circleIsBig)
     {
         [UIView animateWithDuration:.5 animations:^{
-            //self.circleView.backgroundColor =[UIColor redColor];
             self.transform = CGAffineTransformMakeScale(2.0, 2.0);
-            
         } completion:^(BOOL finished) {
-            NSLog(@"HERE: %d",[[self subviews]count]);
-            
         }];
         self.circleIsBig = true;
     }
     else
     {
         [UIView animateWithDuration:.5 animations:^{
-            //self.circleView.backgroundColor =[UIColor blackColor];
             self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-            
         } completion:^(BOOL finished) {
             NSLog(@"HERE: %d",[[self subviews]count]);
             
         }];
         self.circleIsBig = false;
     }
-
-    //[self detectMotion];
-    
 }
 
 
