@@ -21,6 +21,7 @@
         self.red = 0;
         self.green = 0;
         self.blue = 0;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
     return self;
@@ -38,7 +39,7 @@
     tapRecognizer.minimumPressDuration = 0;
     tapRecognizer.delegate = self;
     
-    [self.circleView addGestureRecognizer:tapRecognizer];
+    [self.circleView addGestureRecognizer:holdRecognizer];
     [self.circleView setUserInteractionEnabled:YES];
     
     [self addSubview:self.circleView];
