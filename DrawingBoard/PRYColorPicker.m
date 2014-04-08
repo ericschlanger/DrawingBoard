@@ -114,7 +114,6 @@
         [UIView animateWithDuration:.5 animations:^{
             self.transform = CGAffineTransformMakeScale(1.0, 1.0);
         } completion:^(BOOL finished) {
-            NSLog(@"HERE: %d",[[self subviews]count]);
             
         }];
         self.circleIsBig = false;
