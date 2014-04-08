@@ -6,7 +6,6 @@
 @interface PRYColorPicker ()
 
 @property (nonatomic, strong) UIView *circleView;
-@property (nonatomic) BOOL circleIsBig;
 @property (nonatomic, strong) CMMotionManager *motionManager;
 
 @end
@@ -19,7 +18,6 @@
     if(self){
         
         self.backgroundColor = [UIColor clearColor];
-        self.circleIsBig = NO;
         self.red = 0;
         self.green = 0;
         self.blue = 0;
@@ -31,12 +29,13 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     
-    self.circleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,50,50)];
+    self.circleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width,self.frame.size.height)];
     self.circleView.alpha = 1.0;
-    self.circleView.layer.cornerRadius = 25;
+    self.circleView.layer.cornerRadius = self.frame.size.height/2;
     self.circleView.backgroundColor = [UIColor blackColor];
 
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapped)];
+    UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(holdAction:)];
+    tapRecognizer.minimumPressDuration = 0;
     tapRecognizer.delegate = self;
     
     [self.circleView addGestureRecognizer:tapRecognizer];
@@ -98,26 +97,31 @@
 
 #pragma mark - Gesture recognizer delegate methods
 
-
--(void)tapped{
+- (void)holdAction:(UILongPressGestureRecognizer *)holdRecognizer
+{
     
-    if(!self.circleIsBig)
+    if (holdRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        [UIView animateWithDuration:.5 animations:^{
-            self.transform = CGAffineTransformMakeScale(2.0, 2.0);
-        } completion:^(BOOL finished) {
-        }];
-        self.circleIsBig = true;
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|
+                                                        UIViewAnimationOptionAllowUserInteraction
+            animations:^{
+                self.transform = CGAffineTransformMakeScale(1.5, 1.5);
+            }
+            completion:^(BOOL finished){
+            }];
     }
-    else
+    else if (holdRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        [UIView animateWithDuration:.5 animations:^{
-            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-        } completion:^(BOOL finished) {
-            
-        }];
-        self.circleIsBig = false;
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|
+                                                        UIViewAnimationOptionAllowUserInteraction
+            animations:^{
+                self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            }
+            completion:^(BOOL finished){
+            }];
     }
+    //[self detectMotion];
+    
 }
 
 
