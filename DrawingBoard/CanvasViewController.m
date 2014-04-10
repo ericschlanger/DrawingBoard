@@ -71,11 +71,6 @@
     
 }
 
-- (void)colorChangedToColor:(UIColor *)color
-{
-    self.currentColor = color;
-}
-
 #pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
@@ -142,7 +137,6 @@
         {
             FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
             UIColor *color = [UIColor colorWithRed:point.rColor green:point.gColor blue:point.bColor alpha:1];
-            NSLog(@"R:%f G:%f B:%f",point.rColor,point.gColor,point.bColor);
             if(self.lastPointReceived == NULL)
             {
                 [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
@@ -254,9 +248,25 @@
     UIGraphicsEndImageContext();
     
 }
+
+- (void)colorChangedToColor:(UIColor *)color
+{
+    self.currentColor = color;
+}
+
 - (IBAction)clearCanvas:(id)sender
 {
     self.mainImageView.image = NULL;
+}
+
+- (IBAction)saveImage:(id)sender
+{
+    RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+        UIImageWriteToSavedPhotosAlbum(self.mainImageView.image, nil, nil, nil);
+    }];
+    RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+    UIAlertView *saveAlert = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"Save to camera roll?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+    [saveAlert show];
 }
 
 #pragma mark - Line Options

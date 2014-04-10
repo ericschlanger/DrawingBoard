@@ -32,6 +32,9 @@
 		27802A1C18F72EDE00B84189 /* FancyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A1B18F72EDE00B84189 /* FancyPoint.m */; };
 		27802A2718F749BC00B84189 /* NSData+Godzippa.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A2618F749BC00B84189 /* NSData+Godzippa.m */; };
 		27802A2918F74A1300B84189 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27802A2818F74A1300B84189 /* libz.dylib */; };
+		27802A3118F7566300B84189 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A2C18F7566300B84189 /* RIButtonItem.m */; };
+		27802A3218F7566300B84189 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A2E18F7566300B84189 /* UIActionSheet+Blocks.m */; };
+		27802A3318F7566300B84189 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A3018F7566300B84189 /* UIAlertView+Blocks.m */; };
 		2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524918EDF84C009C1B21 /* MPCHandler.m */; };
 		27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27984C4318E7256100A19A43 /* CanvasViewController.m */; };
 		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
@@ -86,6 +89,12 @@
 		27802A2518F749BC00B84189 /* NSData+Godzippa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Godzippa.h"; sourceTree = "<group>"; };
 		27802A2618F749BC00B84189 /* NSData+Godzippa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Godzippa.m"; sourceTree = "<group>"; };
 		27802A2818F74A1300B84189 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		27802A2B18F7566300B84189 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
+		27802A2C18F7566300B84189 /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
+		27802A2D18F7566300B84189 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
+		27802A2E18F7566300B84189 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
+		27802A2F18F7566300B84189 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		27802A3018F7566300B84189 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		2780524818EDF84C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
 		2780524918EDF84C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
 		27984C4218E7256100A19A43 /* CanvasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasViewController.h; sourceTree = "<group>"; };
@@ -238,6 +247,19 @@
 			name = Object;
 			sourceTree = "<group>";
 		};
+		27802A2A18F7564F00B84189 /* UIAlertView+Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				27802A2B18F7566300B84189 /* RIButtonItem.h */,
+				27802A2C18F7566300B84189 /* RIButtonItem.m */,
+				27802A2D18F7566300B84189 /* UIActionSheet+Blocks.h */,
+				27802A2E18F7566300B84189 /* UIActionSheet+Blocks.m */,
+				27802A2F18F7566300B84189 /* UIAlertView+Blocks.h */,
+				27802A3018F7566300B84189 /* UIAlertView+Blocks.m */,
+			);
+			name = "UIAlertView+Blocks";
+			sourceTree = "<group>";
+		};
 		27984C4518E7256700A19A43 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +276,7 @@
 		27B0267318F08716007E374E /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				27802A2A18F7564F00B84189 /* UIAlertView+Blocks */,
 				2780524818EDF84C009C1B21 /* MPCHandler.h */,
 				2780524918EDF84C009C1B21 /* MPCHandler.m */,
 				27802A2518F749BC00B84189 /* NSData+Godzippa.h */,
@@ -362,6 +385,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27802A3118F7566300B84189 /* RIButtonItem.m in Sources */,
+				27802A3218F7566300B84189 /* UIActionSheet+Blocks.m in Sources */,
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
 				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
 				2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */,
@@ -372,6 +397,7 @@
 				27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */,
 				07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */,
 				27802A1C18F72EDE00B84189 /* FancyPoint.m in Sources */,
+				27802A3318F7566300B84189 /* UIAlertView+Blocks.m in Sources */,
 				07DCCB7A18E46A66004A786C /* main.m in Sources */,
 				07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */,
 			);

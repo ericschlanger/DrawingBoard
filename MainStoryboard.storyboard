@@ -64,13 +64,26 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Vwa-WW-l3L"/>
                                     <barButtonItem title="Clear" style="plain" id="zQx-0Y-9XU">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EGs-n0-yJt">
-                                            <rect key="frame" x="123" y="6" width="73" height="33"/>
+                                            <rect key="frame" x="72" y="6" width="73" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Clear">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
                                                 <action selector="clearCanvas:" destination="MRG-up-c6Y" eventType="touchUpInside" id="86n-tn-WYe"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EtG-z4-Ffd"/>
+                                    <barButtonItem title="Save" style="plain" id="ARi-lF-1NM">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lyO-lk-qQt">
+                                            <rect key="frame" x="159" y="6" width="73" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Save">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="saveImage:" destination="MRG-up-c6Y" eventType="touchUpInside" id="mda-Up-H3o"/>
                                             </connections>
                                         </button>
                                     </barButtonItem>

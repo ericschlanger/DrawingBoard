@@ -106,7 +106,7 @@
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|
                                                         UIViewAnimationOptionAllowUserInteraction
             animations:^{
-                self.transform = CGAffineTransformMakeScale(1.5, 1.5);
+                self.transform = CGAffineTransformMakeScale(2.0, 2.0);
             }
             completion:^(BOOL finished){
             }];

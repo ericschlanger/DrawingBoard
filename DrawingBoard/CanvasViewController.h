@@ -12,6 +12,8 @@
 #import "PRYColorPicker.h"
 #import "FancyPoint.h"
 #import "NSData+Godzippa.h"
+#import <zlib.h>
+#import "UIAlertView+Blocks.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate>
 
@@ -27,6 +29,7 @@
 
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
+- (IBAction)saveImage:(id)sender;
 
 
 
