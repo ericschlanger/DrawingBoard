@@ -16,9 +16,9 @@
 @property (nonatomic)int gColor;
 @property (nonatomic)int bColor;
 @property (nonatomic)int lineWidth;
-@property (nonatomic)float opacity;
+@property (nonatomic)CGFloat opacity;
 
-- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(float)opacity;
+- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(CGFloat)opacity;
 - (id)initFromString:(NSString *)string;
 - (NSString *)toString;
 
