@@ -52,8 +52,7 @@
     
     // Initialize MCPHandler
     self.mpcHandler = [[MPCHandler alloc]init];
-    NSString *randUser = [NSString stringWithFormat:@"User%d",arc4random()];
-    [self.mpcHandler setupPeerWithDisplayName:randUser];
+    [self.mpcHandler setupPeerWithDisplayName:[[UIDevice currentDevice]name]];
     [self.mpcHandler setupSession];
     [self.mpcHandler advertiseSelf:true];
     
