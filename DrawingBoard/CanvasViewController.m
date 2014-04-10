@@ -80,12 +80,11 @@
                      completion:nil];
 }
 
--(void)sendCGPoint:(CGPoint)point{
+- (void)sendCGPoint:(CGPoint)point{
     
     NSData *data = [NSStringFromCGPoint(point) dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error = nil;
     
-    //NSLog(@"Connected Peers array: %@", self.mpcHandler.session.connectedPeers);
     
     [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
@@ -94,7 +93,16 @@
     }
 }
 
-- (IBAction)sendData:(id)sender {
+- (void)sendEndLine
+{
+    NSString *end = @"End";
+    NSData *data = [end dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    if(error != NULL)
+    {
+        NSLog(@"Error: %@",[error localizedDescription]);
+    }
 }
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
@@ -112,17 +120,25 @@
     NSDictionary *userInfo = [notification userInfo];
     NSData *recData = userInfo[@"data"];
     NSString *dataString = [NSString stringWithUTF8String:[recData bytes]];
-    CGPoint receivedPoint = CGPointFromString(dataString);
     
-    if(CGPointEqualToPoint(self.lastPointReceived, CGPointZero))
+    if([dataString isEqualToString:@"End"])
     {
-        [self drawLineFromPoint:receivedPoint toPoint:receivedPoint];
+        self.lastPointReceived = CGPointZero;
     }
     else
     {
-        [self drawLineFromPoint:self.lastPointReceived toPoint:receivedPoint];
+        CGPoint receivedPoint = CGPointFromString(dataString);
+        
+        if(CGPointEqualToPoint(self.lastPointReceived, CGPointZero))
+        {
+            [self drawLineFromPoint:receivedPoint toPoint:receivedPoint];
+        }
+        else
+        {
+            [self drawLineFromPoint:self.lastPointReceived toPoint:receivedPoint];
+        }
+        self.lastPointReceived = receivedPoint;
     }
-    self.lastPointReceived = receivedPoint;
 }
 
 
@@ -160,6 +176,7 @@
     {
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint];
     }
+    [self sendEndLine];
     [self mergeStrokesToMainImage];
 }
 
