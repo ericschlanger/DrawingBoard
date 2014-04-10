@@ -256,14 +256,21 @@
 
 - (IBAction)clearCanvas:(id)sender
 {
-    if(self.mpcHandler.session.connectedPeers > 0)
-    {
-        [self sendString:@"ClearRequest"];
-    }
-    else
-    {
-        self.mainImageView.image = NULL;
-    }
+    RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+    RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+    
+            if([self.mpcHandler.session.connectedPeers count] > 0)
+            {
+                [self sendString:@"ClearRequest"];
+            }
+            else
+            {
+                self.mainImageView.image = NULL;
+            }
+    }];
+    
+    UIAlertView *clearConfirm = [[UIAlertView alloc]initWithTitle:@"Clear Canvas" message:@"Are you sure?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+    [clearConfirm show];
 }
 
 - (IBAction)saveImage:(id)sender
