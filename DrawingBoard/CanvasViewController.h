@@ -10,6 +10,7 @@
 #import "OptionViewController.h"
 #import "MPCHandler.h"
 #import "PRYColorPicker.h"
+#import "FancyPoint.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate>
 

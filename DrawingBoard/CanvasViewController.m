@@ -80,28 +80,30 @@
                      completion:nil];
 }
 
-- (void)sendCGPoint:(CGPoint)point{
-    
-    NSData *data = [NSStringFromCGPoint(point) dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error = nil;
-    
-    
-    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
-    if(error != NULL)
-    {
-        NSLog(@"Error: %@",[error localizedDescription]);
-    }
-}
-
-- (void)sendEndLine
+- (void)sendCGPoint:(CGPoint)point andIsLastPoint:(BOOL)isLast
 {
-    NSString *end = @"End";
-    NSData *data = [end dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error;
-    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
-    if(error != NULL)
+    if(!isLast)
     {
-        NSLog(@"Error: %@",[error localizedDescription]);
+        NSData *data = [NSStringFromCGPoint(point) dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error = nil;
+        
+        
+        [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+        if(error != NULL)
+        {
+            NSLog(@"Error: %@",[error localizedDescription]);
+        }
+    }
+    else
+    {
+        NSString *end = @"End";
+        NSData *data = [end dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+        if(error != NULL)
+        {
+            NSLog(@"Error: %@",[error localizedDescription]);
+        }
     }
 }
 
@@ -158,7 +160,11 @@
     // Set to true for movement
     self.swipe = YES;
     
-    [self sendCGPoint:self.lastPoint];
+    if([self.mpcHandler.session.connectedPeers count] > 0)
+    {
+        FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+        [self sendCGPoint:self.lastPoint andIsLastPoint:NO];
+    }
     
     // Get current touch position
     UITouch *currentTouch = [touches anyObject];
@@ -176,7 +182,13 @@
     {
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint];
     }
-    [self sendEndLine];
+    
+    if([self.mpcHandler.session.connectedPeers count] > 0)
+    {
+
+        [self sendCGPoint:CGPointZero andIsLastPoint:YES];
+    }
+    
     [self mergeStrokesToMainImage];
 }
 
