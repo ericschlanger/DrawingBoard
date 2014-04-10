@@ -64,15 +64,6 @@
                                                  name:@"DrawingBoard_ReceivedData"
                                                object:nil];
     
-    NSString *message = @"Hello, World!";
-    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error = nil;
-    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
-    if(error != NULL)
-    {
-        NSLog(@"Error: %@",[error localizedDescription]);
-    }
-    
 }
 
 #pragma mark - Multipeer Connectivity
@@ -83,6 +74,20 @@
     [self presentViewController:self.mpcHandler.browser
                        animated:YES
                      completion:nil];
+}
+
+- (IBAction)sendData:(id)sender {
+    NSString *message = @"Hello, World!";
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    
+    NSLog(@"Connected Peers array: %@", self.mpcHandler.session.connectedPeers);
+    
+    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    if(error != NULL)
+    {
+        NSLog(@"Error: %@",[error localizedDescription]);
+    }
 }
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
@@ -97,6 +102,7 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
+    NSLog(@"notification received");
     NSDictionary *userInfo = [notification userInfo];
     NSData *recData = userInfo[@"data"];
     NSLog(@"Data: %@",[NSString stringWithUTF8String:[recData bytes]]);
