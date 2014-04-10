@@ -105,17 +105,6 @@
         NSLog(@"Error: %@",[error localizedDescription]);
     }
 }
-- (void)sendCGPoint:(FancyPoint *)point andIsLastPoint:(BOOL)isLast
-{
-    if(!isLast)
-    {
-        [self sendString:[point toString]];
-    }
-    else
-    {
-        [self sendString:@"End"];
-    }
-}
 
 - (void)didReceiveData:(NSNotification *)notification
 {
@@ -182,7 +171,7 @@
     if([self.mpcHandler.session.connectedPeers count] > 0)
     {
         FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
-        [self sendCGPoint:fancyPoint andIsLastPoint:NO];
+        [self sendString:[fancyPoint toString]];
     }
     
     // Get current touch position
@@ -205,7 +194,7 @@
     // Only sends point if peers are connected
     if([self.mpcHandler.session.connectedPeers count] > 0)
     {
-        [self sendCGPoint:NULL andIsLastPoint:YES];
+        [self sendString:@"End"];
     }
     
     [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
@@ -268,7 +257,14 @@
 
 - (IBAction)clearCanvas:(id)sender
 {
-    [self sendString:@"ClearRequest"];
+    if(self.mpcHandler.session.connectedPeers > 0)
+    {
+        [self sendString:@"ClearRequest"];
+    }
+    else
+    {
+        self.mainImageView.image = NULL;
+    }
 }
 
 - (IBAction)saveImage:(id)sender
