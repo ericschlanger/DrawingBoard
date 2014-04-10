@@ -133,8 +133,8 @@
         else
         {
             FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
-            //UIColor *color = [UIColor colorWithRed:point.rColor/255.0f green:point.gColor/255.0f blue:point.bColor/255.0f alpha:1];
-            UIColor *color = [UIColor blackColor];
+            UIColor *color = [UIColor colorWithRed:point.rColor/255.0f green:point.gColor/255.0f blue:point.bColor/255.0f alpha:1];
+            //UIColor *color = [UIColor blackColor];
             
             if(self.lastPointReceived == NULL)
             {

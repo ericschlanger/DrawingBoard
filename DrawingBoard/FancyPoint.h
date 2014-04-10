@@ -12,9 +12,9 @@
 
 @property (nonatomic)int x;
 @property (nonatomic)int y;
-@property (nonatomic)int rColor;
-@property (nonatomic)int gColor;
-@property (nonatomic)int bColor;
+@property (nonatomic)CGFloat rColor;
+@property (nonatomic)CGFloat gColor;
+@property (nonatomic)CGFloat bColor;
 @property (nonatomic)int lineWidth;
 @property (nonatomic)CGFloat opacity;
 

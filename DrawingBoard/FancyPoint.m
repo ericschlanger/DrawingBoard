@@ -47,7 +47,7 @@
 
 - (NSString *)toString
 {
-    NSString *returnString = [NSString stringWithFormat:@"%d|%d|%d|%d|%d|%f|%d",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth];
+    NSString *returnString = [NSString stringWithFormat:@"%d|%d|%f|%f|%f|%f|%d",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth];
     return returnString;
 }
 
