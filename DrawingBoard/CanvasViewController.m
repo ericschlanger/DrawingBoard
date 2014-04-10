@@ -9,6 +9,8 @@
 @property (nonatomic) CGFloat currentOpacity;
 
 @property (nonatomic) CGPoint lastPoint;
+@property (nonatomic) CGPoint lastPointReceived;
+
 @property (nonatomic) BOOL swipe;
 
 @property (nonatomic, strong) MPCHandler *mpcHandler;
@@ -64,6 +66,8 @@
                                                  name:@"DrawingBoard_ReceivedData"
                                                object:nil];
     
+    self.lastPointReceived = CGPointZero;
+    
 }
 
 #pragma mark - Multipeer Connectivity
@@ -76,18 +80,21 @@
                      completion:nil];
 }
 
-- (IBAction)sendData:(id)sender {
-    NSString *message = @"Hello, World!";
-    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+-(void)sendCGPoint:(CGPoint)point{
+    
+    NSData *data = [NSStringFromCGPoint(point) dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error = nil;
     
-    NSLog(@"Connected Peers array: %@", self.mpcHandler.session.connectedPeers);
+    //NSLog(@"Connected Peers array: %@", self.mpcHandler.session.connectedPeers);
     
     [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
     {
         NSLog(@"Error: %@",[error localizedDescription]);
     }
+}
+
+- (IBAction)sendData:(id)sender {
 }
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
@@ -102,10 +109,20 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
-    NSLog(@"notification received");
     NSDictionary *userInfo = [notification userInfo];
     NSData *recData = userInfo[@"data"];
-    NSLog(@"Data: %@",[NSString stringWithUTF8String:[recData bytes]]);
+    NSString *dataString = [NSString stringWithUTF8String:[recData bytes]];
+    CGPoint receivedPoint = CGPointFromString(dataString);
+    
+    if(CGPointEqualToPoint(self.lastPointReceived, CGPointZero))
+    {
+        [self drawLineFromPoint:receivedPoint toPoint:receivedPoint];
+    }
+    else
+    {
+        [self drawLineFromPoint:self.lastPointReceived toPoint:receivedPoint];
+    }
+    self.lastPointReceived = receivedPoint;
 }
 
 
@@ -124,6 +141,8 @@
 {
     // Set to true for movement
     self.swipe = YES;
+    
+    [self sendCGPoint:self.lastPoint];
     
     // Get current touch position
     UITouch *currentTouch = [touches anyObject];
