@@ -25,4 +25,7 @@
 
 - (IBAction)connect:(id)sender;
 
+
+- (IBAction)sendData:(id)sender;
+
 @end
