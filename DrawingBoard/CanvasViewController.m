@@ -55,7 +55,7 @@
     [self.mpcHandler setupSession];
     [self.mpcHandler advertiseSelf:true];
     
-    PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(20, 20, 50, 50)];
+    PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height-125, 50, 50)];
     [self.view addSubview:colorPicker];
     
     // Handle Notifcations
@@ -64,9 +64,14 @@
                                                  name:@"DrawingBoard_ReceivedData"
                                                object:nil];
     
-    /*NSString *message = @"Hello, World!";
+    NSString *message = @"Hello, World!";
     NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error = nil;*/
+    NSError *error = nil;
+    [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    if(error != NULL)
+    {
+        NSLog(@"Error: %@",[error localizedDescription]);
+    }
     
 }
 
@@ -92,8 +97,9 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
-    //NSDictionary *userInfo = [notification userInfo];
-    //DEAL WITH DATA LATER
+    NSDictionary *userInfo = [notification userInfo];
+    NSData *recData = userInfo[@"data"];
+    NSLog(@"Data: %@",[NSString stringWithUTF8String:[recData bytes]]);
 }
 
 
