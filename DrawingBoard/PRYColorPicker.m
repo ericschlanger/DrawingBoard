@@ -6,8 +6,8 @@
 @interface PRYColorPicker ()
 
 @property (nonatomic, strong) UIView *circleView;
-@property (nonatomic) BOOL circleIsBig;
 @property (nonatomic, strong) CMMotionManager *motionManager;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -19,7 +19,6 @@
     if(self){
         
         self.backgroundColor = [UIColor clearColor];
-        self.circleIsBig = NO;
         self.red = 0;
         self.green = 0;
         self.blue = 0;
@@ -34,14 +33,14 @@
     
     self.circleView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width,self.frame.size.height)];
     self.circleView.alpha = 1.0;
-    self.circleView.layer.cornerRadius = self.frame.size.width/2;
+    self.circleView.layer.cornerRadius = self.frame.size.height/2;
     self.circleView.backgroundColor = [UIColor blackColor];
 
-    UILongPressGestureRecognizer *holdRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(holdAction:)];
-    holdRecognizer.delegate = self;
-    holdRecognizer.minimumPressDuration = .05;
+    UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(holdAction:)];
+    tapRecognizer.minimumPressDuration = 0;
+    tapRecognizer.delegate = self;
     
-    [self.circleView addGestureRecognizer:holdRecognizer];
+    [self.circleView addGestureRecognizer:tapRecognizer];
     [self.circleView setUserInteractionEnabled:YES];
     
     [self addSubview:self.circleView];
@@ -50,25 +49,23 @@
 
 #pragma mark - Core Motion Methods
 
--(void)detectMotion{
+-(void)beginDetectingMotion{
     self.motionManager = [[CMMotionManager alloc] init];
     self.motionManager.deviceMotionUpdateInterval = 1.0/60.0; //60 Hz
     [self.motionManager startDeviceMotionUpdates];
     
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:(1.0/60.0)
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1.0/60.0)
                                                       target:self
                                                     selector:@selector( readIt )
                                                     userInfo:nil
                                                      repeats:YES];
     
-    [timer fire];
+    [self.timer fire];
 }
 
 
 - (void) readIt {
     
-    //  CMAttitude *referenceAttitude;
     CMAttitude *attitude;
     
     CMDeviceMotion *motion = self.motionManager.deviceMotion;
@@ -78,55 +75,76 @@
     
     attitude = motion.attitude;
     
-    float roll = degrees(attitude.roll);
     float pitch = degrees(attitude.pitch);
+    float roll = degrees(attitude.roll);
     float yaw = degrees(attitude.yaw);
     
-    roll += 180;
     pitch += 180;
+    roll += 180;
     yaw += 180;
     
-    roll *= .6;
-    pitch *= .6;
-    yaw *= .6;
-    
-    self.circleView.backgroundColor = [UIColor colorWithRed:roll/255.0f green:pitch/255.0f blue:yaw/255.0f alpha:1];
-    
-    
-    NSLog(@"roll = %f... pitch = %f ... yaw = %f", roll, pitch, yaw);
-    
-    
+    self.circleView.backgroundColor = [UIColor colorWithRed:[self rgbValueFromAttitude:pitch]/255.0f
+                                                      green:[self rgbValueFromAttitude:roll]/255.0f
+                                                       blue:[self rgbValueFromAttitude:yaw]/255.0f alpha:1];
 }
 
-#pragma mark - Gesture recognizer delegate methods
+-(void)stopDetectingMotion{
+    [self.timer invalidate];
+}
 
+
+#pragma mark - Gesture recognizer delegate methods
 
 - (void)holdAction:(UILongPressGestureRecognizer *)holdRecognizer
 {
     
     if (holdRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.circleView.backgroundColor =[UIColor redColor];
-            self.transform = CGAffineTransformMakeScale(1.5, 1.5);
-        }
-                         completion:^(BOOL finished){
-                         }];
-        self.circleIsBig = true;
+        [self beginDetectingMotion];
+        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|
+                                                        UIViewAnimationOptionAllowUserInteraction
+            animations:^{
+                self.transform = CGAffineTransformMakeScale(1.5, 1.5);
+            }
+            completion:^(BOOL finished){
+            }];
     }
     else if (holdRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.circleView.backgroundColor =[UIColor blackColor];
-            self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-        }
-                         completion:^(BOOL finished){
-                         }];
-        self.circleIsBig = false;
-    }
-    [self detectMotion];
+        [self stopDetectingMotion];
+        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|
+                                                        UIViewAnimationOptionAllowUserInteraction
+            animations:^{
+                self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            }
+            completion:^(BOOL finished){
+            }];
     
+    
+    }
 }
 
+#pragma mark - Helper Methods
+
+-(float)rgbValueFromAttitude:(float)attitude{
+    
+    float result = 0;
+    
+    if(attitude < 90){
+        result = 0;
+    }
+    else if (attitude > 90 && attitude < 270){
+        attitude -= 90;
+        result = attitude * (255 / 180);
+    }
+    else{
+        result = 255;
+    }
+    
+    return result;
+    
+}
 
 @end
