@@ -59,6 +59,7 @@
     
     PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height-125, 50, 50)];
     [self.view addSubview:colorPicker];
+    colorPicker.delegate = self;
     
     // Handle Notifcations
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -68,6 +69,11 @@
     
     self.lastPointReceived = NULL;
     
+}
+
+- (void)colorChangedToColor:(UIColor *)color
+{
+    self.currentColor = color;
 }
 
 #pragma mark - Multipeer Connectivity
@@ -135,8 +141,8 @@
         else
         {
             FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
-            UIColor *color = [UIColor colorWithRed:point.rColor/255.0f green:point.gColor/255.0f blue:point.bColor/255.0f alpha:1];
-            
+            UIColor *color = [UIColor colorWithRed:point.rColor green:point.gColor blue:point.bColor alpha:1];
+            NSLog(@"R:%f G:%f B:%f",point.rColor,point.gColor,point.bColor);
             if(self.lastPointReceived == NULL)
             {
                 [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
@@ -247,6 +253,10 @@
     // End context
     UIGraphicsEndImageContext();
     
+}
+- (IBAction)clearCanvas:(id)sender
+{
+    self.mainImageView.image = NULL;
 }
 
 #pragma mark - Line Options

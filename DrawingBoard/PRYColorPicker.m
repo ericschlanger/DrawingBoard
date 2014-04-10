@@ -90,6 +90,7 @@
 
 -(void)stopDetectingMotion{
     [self.timer invalidate];
+    [self.delegate colorChangedToColor:self.circleView.backgroundColor];
 }
 
 

@@ -36,9 +36,9 @@
         NSArray *comp = [string componentsSeparatedByString:@"|"];
         self.x = [comp[0] intValue];
         self.y = [comp[1] intValue];
-        self.rColor = [comp[2] intValue];
-        self.gColor = [comp[3] intValue];
-        self.bColor = [comp[4] intValue];
+        self.rColor = [comp[2] floatValue];
+        self.gColor = [comp[3] floatValue];
+        self.bColor = [comp[4] floatValue];
         self.opacity = [comp[5] floatValue];
         self.lineWidth = [comp[6] intValue];
     }

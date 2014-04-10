@@ -13,7 +13,7 @@
 #import "FancyPoint.h"
 #import "NSData+Godzippa.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -26,6 +26,7 @@
 @property (nonatomic, strong) IBOutlet UIScrollView *panScrollView;
 
 - (IBAction)connect:(id)sender;
+- (IBAction)clearCanvas:(id)sender;
 
 
 
