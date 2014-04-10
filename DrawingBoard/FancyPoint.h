@@ -12,13 +12,13 @@
 
 @property (nonatomic)int x;
 @property (nonatomic)int y;
-@property (nonatomic)CGFloat rColor;
-@property (nonatomic)CGFloat gColor;
-@property (nonatomic)CGFloat bColor;
+@property (nonatomic)float rColor;
+@property (nonatomic)float gColor;
+@property (nonatomic)float bColor;
 @property (nonatomic)int lineWidth;
-@property (nonatomic)CGFloat opacity;
+@property (nonatomic)float opacity;
 
-- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(CGFloat)opacity;
+- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(float)opacity;
 - (id)initFromString:(NSString *)string;
 - (NSString *)toString;
 

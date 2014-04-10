@@ -10,7 +10,7 @@
 
 @implementation FancyPoint
 
-- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(CGFloat)opacity
+- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(float)opacity
 {
     self = [super init];
     if(self)

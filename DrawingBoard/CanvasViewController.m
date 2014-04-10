@@ -96,10 +96,10 @@
     if(!isLast)
     {
         NSData *data = [[point toString] dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *cData = [data dataByGZipCompressingWithError:nil];
         NSError *error = nil;
         
-        
-        [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+        [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
         if(error != NULL)
         {
             NSLog(@"Error: %@",[error localizedDescription]);
@@ -109,8 +109,9 @@
     {
         NSString *end = @"End";
         NSData *data = [end dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *cData = [data dataByGZipCompressingWithError:nil];
         NSError *error;
-        [self.mpcHandler.session sendData:data toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+        [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
         if(error != NULL)
         {
             NSLog(@"Error: %@",[error localizedDescription]);
@@ -122,7 +123,8 @@
 {
     NSDictionary *userInfo = [notification userInfo];
     NSData *recData = userInfo[@"data"];
-    NSString *dataString = [NSString stringWithUTF8String:[recData bytes]];
+    NSData *unCData = [recData dataByGZipDecompressingDataWithError:nil];
+    NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
     if(dataString != NULL)
     {
         if([dataString isEqualToString:@"End"])
@@ -134,7 +136,6 @@
         {
             FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
             UIColor *color = [UIColor colorWithRed:point.rColor/255.0f green:point.gColor/255.0f blue:point.bColor/255.0f alpha:1];
-            //UIColor *color = [UIColor blackColor];
             
             if(self.lastPointReceived == NULL)
             {

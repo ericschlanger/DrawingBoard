@@ -11,6 +11,7 @@
 #import "MPCHandler.h"
 #import "PRYColorPicker.h"
 #import "FancyPoint.h"
+#import "NSData+Godzippa.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate>
 

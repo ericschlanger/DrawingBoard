@@ -30,6 +30,8 @@
 		07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA918E47585004A786C /* FBShimmeringLayer.m */; };
 		07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBAB18E47585004A786C /* FBShimmeringView.m */; };
 		27802A1C18F72EDE00B84189 /* FancyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A1B18F72EDE00B84189 /* FancyPoint.m */; };
+		27802A2718F749BC00B84189 /* NSData+Godzippa.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A2618F749BC00B84189 /* NSData+Godzippa.m */; };
+		27802A2918F74A1300B84189 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27802A2818F74A1300B84189 /* libz.dylib */; };
 		2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780524918EDF84C009C1B21 /* MPCHandler.m */; };
 		27984C4418E7256100A19A43 /* CanvasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27984C4318E7256100A19A43 /* CanvasViewController.m */; };
 		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
@@ -80,6 +82,10 @@
 		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
 		27802A1A18F72EDE00B84189 /* FancyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FancyPoint.h; sourceTree = "<group>"; };
 		27802A1B18F72EDE00B84189 /* FancyPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FancyPoint.m; sourceTree = "<group>"; };
+		27802A2018F744BB00B84189 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
+		27802A2518F749BC00B84189 /* NSData+Godzippa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Godzippa.h"; sourceTree = "<group>"; };
+		27802A2618F749BC00B84189 /* NSData+Godzippa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Godzippa.m"; sourceTree = "<group>"; };
+		27802A2818F74A1300B84189 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2780524818EDF84C009C1B21 /* MPCHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCHandler.h; sourceTree = "<group>"; };
 		2780524918EDF84C009C1B21 /* MPCHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCHandler.m; sourceTree = "<group>"; };
 		27984C4218E7256100A19A43 /* CanvasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasViewController.h; sourceTree = "<group>"; };
@@ -94,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27802A2918F74A1300B84189 /* libz.dylib in Frameworks */,
 				0799189B18EDE38F00A4CC3C /* CoreMotion.framework in Frameworks */,
 				0706117618E5F09A00CEE8AD /* CoreText.framework in Frameworks */,
 				07DCCB6E18E46A66004A786C /* CoreGraphics.framework in Frameworks */,
@@ -148,6 +155,8 @@
 		07DCCB6A18E46A66004A786C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27802A2818F74A1300B84189 /* libz.dylib */,
+				27802A2018F744BB00B84189 /* libbz2.dylib */,
 				0799189A18EDE38F00A4CC3C /* CoreMotion.framework */,
 				0706117518E5F09A00CEE8AD /* CoreText.framework */,
 				07DCCBA518E47585004A786C /* FBShimmering */,
@@ -247,6 +256,8 @@
 			children = (
 				2780524818EDF84C009C1B21 /* MPCHandler.h */,
 				2780524918EDF84C009C1B21 /* MPCHandler.m */,
+				27802A2518F749BC00B84189 /* NSData+Godzippa.h */,
+				27802A2618F749BC00B84189 /* NSData+Godzippa.m */,
 			);
 			name = "Helper Classes";
 			sourceTree = "<group>";
@@ -354,6 +365,7 @@
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
 				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
 				2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */,
+				27802A2718F749BC00B84189 /* NSData+Godzippa.m in Sources */,
 				079918A118EDE7B700A4CC3C /* PRYColorPicker.m in Sources */,
 				07DCCB8118E46A66004A786C /* DrawingBoard.xcdatamodeld in Sources */,
 				442C153418EDE990009D043C /* OptionViewController.m in Sources */,
