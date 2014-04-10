@@ -176,7 +176,7 @@
     [self.textPathLayer removeAllAnimations];
     
     CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = 15.0;
+    pathAnimation.duration = 5.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     pathAnimation.delegate = self;
