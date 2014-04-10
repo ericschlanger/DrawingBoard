@@ -92,31 +92,28 @@
     [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Send/Receive FancyPoints
+
+- (void)sendString:(NSString *)string
+{
+    NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    NSError *error = nil;
+    
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    if(error != NULL)
+    {
+        NSLog(@"Error: %@",[error localizedDescription]);
+    }
+}
 - (void)sendCGPoint:(FancyPoint *)point andIsLastPoint:(BOOL)isLast
 {
     if(!isLast)
     {
-        NSData *data = [[point toString] dataUsingEncoding:NSUTF8StringEncoding];
-        NSData *cData = [data dataByGZipCompressingWithError:nil];
-        NSError *error = nil;
-        
-        [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
-        if(error != NULL)
-        {
-            NSLog(@"Error: %@",[error localizedDescription]);
-        }
+        [self sendString:[point toString]];
     }
     else
     {
-        NSString *end = @"End";
-        NSData *data = [end dataUsingEncoding:NSUTF8StringEncoding];
-        NSData *cData = [data dataByGZipCompressingWithError:nil];
-        NSError *error;
-        [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
-        if(error != NULL)
-        {
-            NSLog(@"Error: %@",[error localizedDescription]);
-        }
+        [self sendString:@"End"];
     }
 }
 
@@ -132,6 +129,21 @@
         {
             [self mergeStrokesToMainImageWithOpacity:self.lastPointReceived.opacity];
             self.lastPointReceived = NULL;
+        }
+        else if([dataString isEqualToString:@"ClearRequest"])
+        {
+            RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+                self.mainImageView.image = NULL;
+                [self sendString:@"ClearRequestAccepted"];
+            }];
+            RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+            
+            UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+            [clearRequest show];
+        }
+        else if([dataString isEqualToString:@"ClearRequestAccepted"])
+        {
+            self.mainImageView.image = NULL;
         }
         else
         {
@@ -190,9 +202,9 @@
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint withColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
     }
     
+    // Only sends point if peers are connected
     if([self.mpcHandler.session.connectedPeers count] > 0)
     {
-
         [self sendCGPoint:NULL andIsLastPoint:YES];
     }
     
@@ -256,7 +268,7 @@
 
 - (IBAction)clearCanvas:(id)sender
 {
-    self.mainImageView.image = NULL;
+    [self sendString:@"ClearRequest"];
 }
 
 - (IBAction)saveImage:(id)sender
