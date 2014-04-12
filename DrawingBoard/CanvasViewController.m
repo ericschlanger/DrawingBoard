@@ -188,6 +188,11 @@
     if(!self.swipe)
     {
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint withColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+        if([self.mpcHandler.session.connectedPeers count] > 0)
+        {
+            FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+            [self sendString:[fancyPoint toString]];
+        }
     }
     
     // Only sends point if peers are connected
