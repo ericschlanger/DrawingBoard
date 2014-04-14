@@ -30,6 +30,7 @@
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
 - (IBAction)saveImage:(id)sender;
+- (IBAction)undo:(id)sender;
 
 
 
