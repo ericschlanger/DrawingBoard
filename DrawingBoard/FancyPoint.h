@@ -16,7 +16,7 @@
 @property (nonatomic)char gColor;
 @property (nonatomic)char bColor;
 @property (nonatomic)char lineWidth;
-@property (nonatomic)short opacity;
+@property (nonatomic)char opacity;
 @property (nonatomic)short strokeID;
 
 - (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(char)width andOpacity:(float)opacity andID:(short)strokeID;

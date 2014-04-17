@@ -22,7 +22,7 @@
         self.rColor = (char)((red * 255.0f) - 128);
         self.gColor = (char)((green * 255.0f) - 128);
         self.bColor = (char)((blue * 255.0f) - 128);
-        self.opacity = opacity * 1000;
+        self.opacity = opacity * 100;
         self.lineWidth = width;
         self.strokeID = strokeID;
     }
@@ -60,7 +60,7 @@
 
 - (CGFloat)fetchOpacity
 {
-    return self.opacity / 1000.0f;
+    return self.opacity / 100.0f;
 }
 
 @end

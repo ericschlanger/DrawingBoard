@@ -131,9 +131,7 @@
 {
     NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
     NSError *error = nil;
-    //**********
-    //NSLog(@"Count: %ul",self.mpcHandler.session.connectedPeers.count);
-    //**********
+
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
     {
