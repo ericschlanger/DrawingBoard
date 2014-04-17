@@ -15,6 +15,11 @@
 
 @property (nonatomic, strong) MPCHandler *mpcHandler;
 
+@property (nonatomic, strong) NSMutableArray *undoArray;
+
+@property (nonatomic) short currentStrokeID;
+@property (nonatomic) short lastStrokeID;
+
 @end
 
 @implementation CanvasViewController
@@ -74,6 +79,22 @@
     self.lastPointReceived = NULL;
     [self.view addSubview:loadButton];
     
+    // Initialize Undo Array
+    self.undoArray = [[NSMutableArray alloc]init];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    // Set canvas size
+    [self.mainImageView setFrame:CGRectMake(0, 0, 768, 1024)];
+    [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 1024)];
+    [self.panScrollView setContentSize:CGSizeMake(768, 1024)];
+    
+    // Disable scrolling if ipad
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        self.panScrollView.scrollEnabled = NO;
+    }
 }
 
 #pragma mark - Multipeer Connectivity
@@ -101,9 +122,30 @@
 
 - (void)sendString:(NSString *)string
 {
-    NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    //NSDate *date = [NSDate date];
+    NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
+    //NSLog(@"No Compression: %f",[[NSDate date]timeIntervalSinceDate:date]);
+    
+    /*NSDate *dateTwo = [NSDate date];
+    NSData *ccData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    NSLog(@"Compression: %f",[[NSDate date]timeIntervalSinceDate:dateTwo]);*/
+    
+    
     NSError *error = nil;
     
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
+    if(error != NULL)
+    {
+        NSLog(@"Error: %@",[error localizedDescription]);
+    }
+}
+
+- (void)sendImage:(UIImage *)image
+{
+    //NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
+    NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
+    NSError *error = nil;
+
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
     {
@@ -114,48 +156,83 @@
 - (void)didReceiveData:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
-    NSData *recData = userInfo[@"data"];
-    NSData *unCData = [recData dataByGZipDecompressingDataWithError:nil];
-    NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
-    if(dataString != NULL)
+    NSData *unCData = userInfo[@"data"];
+    if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
     {
-        if([dataString isEqualToString:@"End"])
+        self.mainImageView.image = [UIImage imageWithData:unCData];
+    }
+    else
+    {
+        NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
+        if(dataString != NULL)
         {
-            [self mergeStrokesToMainImageWithOpacity:self.lastPointReceived.opacity];
-            self.lastPointReceived = NULL;
-        }
-        else if([dataString isEqualToString:@"ClearRequest"])
-        {
-            RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-                self.mainImageView.image = NULL;
-                [self sendString:@"ClearRequestAccepted"];
-            }];
-            RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
-            
-            UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
-            [clearRequest show];
-        }
-        else if([dataString isEqualToString:@"ClearRequestAccepted"])
-        {
-            self.mainImageView.image = NULL;
-        }
-        else
-        {
-            FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
-            UIColor *color = [UIColor colorWithRed:point.rColor green:point.gColor blue:point.bColor alpha:1];
-            if(self.lastPointReceived == NULL)
+            if([dataString isEqualToString:@"ClearRequest"])
             {
-                [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
+                RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+                    self.mainImageView.image = NULL;
+                    self.currentStrokeView.image = NULL;
+                    [self sendString:@"ClearRequestAccepted"];
+                }];
+                RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+                
+                UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+                [clearRequest show];
+            }
+            else if([dataString isEqualToString:@"ClearRequestAccepted"])
+            {
+                self.mainImageView.image = NULL;
+                self.currentStrokeView.image = NULL;
             }
             else
             {
-                [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
+                FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
+                
+                // Different stroke IDs, merge images (end line)
+                if(point.strokeID != self.lastStrokeID)
+                {
+                    
+                    [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
+                    self.lastPointReceived = NULL;
+                }
+                
+                if(self.lastPointReceived == NULL)
+                {
+                    [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
+                }
+                else
+                {
+                    [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
+                }
+                
+                self.lastPointReceived = point;
+                self.lastStrokeID = point.strokeID;
             }
-            self.lastPointReceived = point;
         }
     }
 }
 
+- (BOOL)peersConnected
+{
+    return [self.mpcHandler.session.connectedPeers count];
+}
+
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    
+    switch (c) {
+        case 0xFF:
+            return @"image/jpeg";
+        case 0x89:
+            return @"image/png";
+        case 0x47:
+            return @"image/gif";
+        case 0x49:
+        case 0x4D:
+            return @"image/tiff";
+    }
+    return nil;
+}
 
 #pragma mark - Touch Handling
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -166,6 +243,9 @@
     // Get touch position
     UITouch *lastTouch = [touches anyObject];
     self.lastPoint = [lastTouch locationInView:self.currentStrokeView];
+    
+    // Set new stroke ID
+    self.currentStrokeID = arc4random();
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -173,15 +253,17 @@
     // Set to true for movement
     self.swipe = YES;
     
-    if([self.mpcHandler.session.connectedPeers count] > 0)
-    {
-        FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
-        [self sendString:[fancyPoint toString]];
-    }
-    
     // Get current touch position
     UITouch *currentTouch = [touches anyObject];
     CGPoint currentPoint = [currentTouch locationInView:self.currentStrokeView];
+    
+    // Only sends point if connected peers exist
+    if([self.mpcHandler.session.connectedPeers count] > 0)
+    {
+        // Creates fancypoint from currentPoint
+        FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity andID:self.currentStrokeID];
+        [self sendString:[fancyPoint toString]];
+    }
     
     [self drawLineFromPoint:self.lastPoint toPoint:currentPoint withColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
     
@@ -191,22 +273,24 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // Case for single dot
     if(!self.swipe)
     {
+        self.lastPointReceived = NULL;
+        // Draw single dot
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint withColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
-        if([self.mpcHandler.session.connectedPeers count] > 0)
+        
+        // Only send single dot if connected peers exist
+        if([self peersConnected])
         {
-            FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+            // Create fancypoint object with lastPoint
+            FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity andID:self.currentStrokeID];
+            
+            // Send fancyPoint
             [self sendString:[fancyPoint toString]];
         }
     }
-    
-    // Only sends point if peers are connected
-    if([self.mpcHandler.session.connectedPeers count] > 0)
-    {
-        [self sendString:@"End"];
-    }
-    
+
     [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
 }
 
@@ -258,6 +342,13 @@
     // End context
     UIGraphicsEndImageContext();
     
+    // Remove object if undoArray count is greater/equal to 10
+    if(self.undoArray.count >= 10)
+    {
+        [self.undoArray removeObjectAtIndex:0];
+    }
+    // Save old image state to undoArray
+    [self.undoArray addObject:self.mainImageView.image];
 }
 
 - (void)colorChangedToColor:(UIColor *)color
@@ -270,13 +361,14 @@
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
     RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
     
-            if([self.mpcHandler.session.connectedPeers count] > 0)
+            if([self peersConnected])
             {
                 [self sendString:@"ClearRequest"];
             }
             else
             {
                 self.mainImageView.image = NULL;
+                self.currentStrokeView.image = NULL;
             }
     }];
     

@@ -29,6 +29,8 @@
 		07DCCBA418E472E8004A786C /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA318E472E8004A786C /* SplashViewController.m */; };
 		07DCCBAC18E47585004A786C /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBA918E47585004A786C /* FBShimmeringLayer.m */; };
 		07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DCCBAB18E47585004A786C /* FBShimmeringView.m */; };
+		277D70A718FF588900B428F6 /* CanvasScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 277D70A618FF588900B428F6 /* CanvasScrollView.m */; };
+		277D70AC18FF629700B428F6 /* MainiPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 277D70AB18FF629700B428F6 /* MainiPadStoryboard.storyboard */; };
 		27802A1C18F72EDE00B84189 /* FancyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A1B18F72EDE00B84189 /* FancyPoint.m */; };
 		27802A2718F749BC00B84189 /* NSData+Godzippa.m in Sources */ = {isa = PBXBuildFile; fileRef = 27802A2618F749BC00B84189 /* NSData+Godzippa.m */; };
 		27802A2918F74A1300B84189 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27802A2818F74A1300B84189 /* libz.dylib */; };
@@ -83,6 +85,9 @@
 		07DCCBA918E47585004A786C /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		07DCCBAA18E47585004A786C /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		07DCCBAB18E47585004A786C /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
+		277D70A518FF588900B428F6 /* CanvasScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasScrollView.h; sourceTree = "<group>"; };
+		277D70A618FF588900B428F6 /* CanvasScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasScrollView.m; sourceTree = "<group>"; };
+		277D70AB18FF629700B428F6 /* MainiPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MainiPadStoryboard.storyboard; path = ../MainiPadStoryboard.storyboard; sourceTree = "<group>"; };
 		27802A1A18F72EDE00B84189 /* FancyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FancyPoint.h; sourceTree = "<group>"; };
 		27802A1B18F72EDE00B84189 /* FancyPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FancyPoint.m; sourceTree = "<group>"; };
 		27802A2018F744BB00B84189 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
@@ -138,6 +143,8 @@
 			children = (
 				0799189F18EDE7B700A4CC3C /* PRYColorPicker.h */,
 				079918A018EDE7B700A4CC3C /* PRYColorPicker.m */,
+				277D70A518FF588900B428F6 /* CanvasScrollView.h */,
+				277D70A618FF588900B428F6 /* CanvasScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -181,6 +188,7 @@
 		07DCCB7318E46A66004A786C /* DrawingBoard */ = {
 			isa = PBXGroup;
 			children = (
+				277D70AA18FF627600B428F6 /* iPad */,
 				07DCCB7C18E46A66004A786C /* AppDelegate.h */,
 				07DCCB7D18E46A66004A786C /* AppDelegate.m */,
 				2712E44818F71E010007AB92 /* Object */,
@@ -188,6 +196,7 @@
 				079918A318EDECF100A4CC3C /* Views */,
 				27984C4518E7256700A19A43 /* ViewControllers */,
 				07DCCBA018E46A88004A786C /* MainStoryboard.storyboard */,
+				277D70AB18FF629700B428F6 /* MainiPadStoryboard.storyboard */,
 				07DCCB7F18E46A66004A786C /* DrawingBoard.xcdatamodeld */,
 				07DCCB8218E46A66004A786C /* Images.xcassets */,
 				442C153518EE04A3009D043C /* optionsIcon.png */,
@@ -245,6 +254,13 @@
 				27802A1B18F72EDE00B84189 /* FancyPoint.m */,
 			);
 			name = Object;
+			sourceTree = "<group>";
+		};
+		277D70AA18FF627600B428F6 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 		27802A2A18F7564F00B84189 /* UIAlertView+Blocks */ = {
@@ -364,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07DCCBA118E46A88004A786C /* MainStoryboard.storyboard in Resources */,
+				277D70AC18FF629700B428F6 /* MainiPadStoryboard.storyboard in Resources */,
 				07DCCB7818E46A66004A786C /* InfoPlist.strings in Resources */,
 				07DCCB8318E46A66004A786C /* Images.xcassets in Resources */,
 				442C153618EE04A3009D043C /* optionsIcon.png in Resources */,
@@ -388,6 +405,7 @@
 				27802A3118F7566300B84189 /* RIButtonItem.m in Sources */,
 				27802A3218F7566300B84189 /* UIActionSheet+Blocks.m in Sources */,
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
+				277D70A718FF588900B428F6 /* CanvasScrollView.m in Sources */,
 				07DCCBAD18E47585004A786C /* FBShimmeringView.m in Sources */,
 				2780524A18EDF84C009C1B21 /* MPCHandler.m in Sources */,
 				27802A2718F749BC00B84189 /* NSData+Godzippa.m in Sources */,
@@ -523,8 +541,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrawingBoard/DrawingBoard-Prefix.pch";
 				INFOPLIST_FILE = "DrawingBoard/DrawingBoard-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -539,8 +559,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrawingBoard/DrawingBoard-Prefix.pch";
 				INFOPLIST_FILE = "DrawingBoard/DrawingBoard-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
