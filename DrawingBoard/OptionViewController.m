@@ -24,11 +24,8 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
     // Initialize the sliders with the values passed in from the segue
     self.slider.value = self.defaultLineValue;
     self.opacSlider.value = self.defaultOpacityValue;
