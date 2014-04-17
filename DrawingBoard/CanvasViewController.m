@@ -17,6 +17,9 @@
 
 @property (nonatomic, strong) NSMutableArray *undoArray;
 
+@property (nonatomic) int currentStrokeID;
+@property (nonatomic) int lastStrokeID;
+
 @end
 
 @implementation CanvasViewController
@@ -130,7 +133,7 @@
     
     NSError *error = nil;
     //**********
-    NSLog(@"Count: %d",self.mpcHandler.session.connectedPeers.count);
+    //NSLog(@"Count: %ul",self.mpcHandler.session.connectedPeers.count);
     //**********
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
@@ -144,7 +147,7 @@
     NSDictionary *userInfo = [notification userInfo];
     NSData *recData = userInfo[@"data"];
     NSData *unCData = [recData dataByGZipDecompressingDataWithError:nil];
-    
+    NSLog(@"Size: %ul",[unCData length]);
     if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
     {
         self.mainImageView.image = [UIImage imageWithData:unCData];
@@ -154,12 +157,7 @@
         NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
         if(dataString != NULL)
         {
-            if([dataString isEqualToString:@"End"])
-            {
-                [self mergeStrokesToMainImageWithOpacity:self.lastPointReceived.opacity];
-                self.lastPointReceived = NULL;
-            }
-            else if([dataString isEqualToString:@"ClearRequest"])
+            if([dataString isEqualToString:@"ClearRequest"])
             {
                 RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
                     self.mainImageView.image = NULL;
@@ -177,16 +175,27 @@
             else
             {
                 FancyPoint *point = [[FancyPoint alloc]initFromString:dataString];
-                UIColor *color = [UIColor colorWithRed:point.rColor green:point.gColor blue:point.bColor alpha:1];
-                if(self.lastPointReceived == NULL)
+                
+                // Different stroke IDs, merge images (end line)
+                if(point.strokeID != self.lastStrokeID)
                 {
-                    [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
+                    [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
+                    self.lastPointReceived = NULL;
                 }
                 else
                 {
-                    [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:color andWidth:point.lineWidth andOpacity:point.opacity];
+                    if(self.lastPointReceived == NULL)
+                    {
+                        [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
+                    }
+                    else
+                    {
+                        [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
+                    }
+                    
+                    self.lastPointReceived = point;
                 }
-                self.lastPointReceived = point;
+                self.lastStrokeID = point.strokeID;
             }
         }
     }
@@ -229,13 +238,14 @@
     UITouch *lastTouch = [touches anyObject];
     self.lastPoint = [lastTouch locationInView:self.currentStrokeView];
     
+    // Set new stroke ID
+    self.currentStrokeID = arc4random();
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // Set to true for movement
     self.swipe = YES;
-    
     
     // Get current touch position
     UITouch *currentTouch = [touches anyObject];
@@ -245,7 +255,7 @@
     if([self.mpcHandler.session.connectedPeers count] > 0)
     {
         // Creates fancypoint from currentPoint
-        FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+        FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity andID:self.currentStrokeID];
         [self sendString:[fancyPoint toString]];
     }
     
@@ -267,19 +277,13 @@
         if([self peersConnected])
         {
             // Create fancypoint object with lastPoint
-            FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
+            FancyPoint *fancyPoint = [[FancyPoint alloc]initWithPoint:self.lastPoint andColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity andID:self.currentStrokeID];
             
             // Send fancyPoint
             [self sendString:[fancyPoint toString]];
         }
     }
-    
-    // Only sends end if peers are connected
-    if([self peersConnected])
-    {
-        [self sendString:@"End"];
-    }
-    
+
     [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
 }
 

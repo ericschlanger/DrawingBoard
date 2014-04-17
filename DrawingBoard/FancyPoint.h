@@ -10,16 +10,20 @@
 
 @interface FancyPoint : NSObject
 
-@property (nonatomic)int x;
-@property (nonatomic)int y;
-@property (nonatomic)float rColor;
-@property (nonatomic)float gColor;
-@property (nonatomic)float bColor;
-@property (nonatomic)int lineWidth;
-@property (nonatomic)float opacity;
+@property (nonatomic)short x;
+@property (nonatomic)short y;
+@property (nonatomic)short rColor;
+@property (nonatomic)short gColor;
+@property (nonatomic)short bColor;
+@property (nonatomic)short lineWidth;
+@property (nonatomic)short opacity;
+@property (nonatomic)short strokeID;
 
-- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(int)width andOpacity:(float)opacity;
+- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(short)width andOpacity:(float)opacity andID:(short)strokeID;
 - (id)initFromString:(NSString *)string;
 - (NSString *)toString;
+
+- (UIColor *)fetchColor;
+- (CGFloat)fetchOpacity;
 
 @end
