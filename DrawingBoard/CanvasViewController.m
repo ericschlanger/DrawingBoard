@@ -17,8 +17,8 @@
 
 @property (nonatomic, strong) NSMutableArray *undoArray;
 
-@property (nonatomic) int currentStrokeID;
-@property (nonatomic) int lastStrokeID;
+@property (nonatomic) short currentStrokeID;
+@property (nonatomic) short lastStrokeID;
 
 @end
 
@@ -117,9 +117,10 @@
 - (void)sendString:(NSString *)string
 {
     NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    
     NSError *error = nil;
     
-    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
     if(error != NULL)
     {
         NSLog(@"Error: %@",[error localizedDescription]);
@@ -128,9 +129,7 @@
 
 - (void)sendImage:(UIImage *)image
 {
-    NSData *data = UIImagePNGRepresentation(self.mainImageView.image);
-    NSData *cData = [data dataByGZipCompressingWithError:nil];
-    
+    NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
     NSError *error = nil;
     //**********
     //NSLog(@"Count: %ul",self.mpcHandler.session.connectedPeers.count);
@@ -145,9 +144,7 @@
 - (void)didReceiveData:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
-    NSData *recData = userInfo[@"data"];
-    NSData *unCData = [recData dataByGZipDecompressingDataWithError:nil];
-    NSLog(@"Size: %ul",[unCData length]);
+    NSData *unCData = [userInfo[@"data"] dataByGZipDecompressingDataWithError:nil];
     if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
     {
         self.mainImageView.image = [UIImage imageWithData:unCData];
@@ -161,6 +158,7 @@
             {
                 RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
                     self.mainImageView.image = NULL;
+                    self.currentStrokeView.image = NULL;
                     [self sendString:@"ClearRequestAccepted"];
                 }];
                 RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
@@ -171,6 +169,7 @@
             else if([dataString isEqualToString:@"ClearRequestAccepted"])
             {
                 self.mainImageView.image = NULL;
+                self.currentStrokeView.image = NULL;
             }
             else
             {
@@ -179,22 +178,21 @@
                 // Different stroke IDs, merge images (end line)
                 if(point.strokeID != self.lastStrokeID)
                 {
+                    
                     [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
                     self.lastPointReceived = NULL;
                 }
+                
+                if(self.lastPointReceived == NULL)
+                {
+                    [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
+                }
                 else
                 {
-                    if(self.lastPointReceived == NULL)
-                    {
-                        [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
-                    }
-                    else
-                    {
-                        [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
-                    }
-                    
-                    self.lastPointReceived = point;
+                    [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
                 }
+                
+                self.lastPointReceived = point;
                 self.lastStrokeID = point.strokeID;
             }
         }
@@ -221,6 +219,7 @@
         case 0x4D:
             return @"image/tiff";
     }
+    return nil;
     return nil;
 }
 
@@ -270,6 +269,7 @@
     // Case for single dot
     if(!self.swipe)
     {
+        self.lastPointReceived = NULL;
         // Draw single dot
         [self drawLineFromPoint:self.lastPoint toPoint:self.lastPoint withColor:self.currentColor andWidth:self.currentLineWidth andOpacity:self.currentOpacity];
         
@@ -356,6 +356,7 @@
             else
             {
                 self.mainImageView.image = NULL;
+                self.currentStrokeView.image = NULL;
             }
     }];
     

@@ -15,11 +15,11 @@
 @property (nonatomic)short rColor;
 @property (nonatomic)short gColor;
 @property (nonatomic)short bColor;
-@property (nonatomic)short lineWidth;
+@property (nonatomic)char lineWidth;
 @property (nonatomic)short opacity;
 @property (nonatomic)short strokeID;
 
-- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(short)width andOpacity:(float)opacity andID:(short)strokeID;
+- (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(char)width andOpacity:(float)opacity andID:(short)strokeID;
 - (id)initFromString:(NSString *)string;
 - (NSString *)toString;
 
