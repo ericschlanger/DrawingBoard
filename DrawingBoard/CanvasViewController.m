@@ -117,7 +117,7 @@
     [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 1024)];
     [self.panScrollView setContentSize:CGSizeMake(768, 1024)];
     
-    // Disable scrolling if ipad
+    // Disable scrolling if iPad
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         self.panScrollView.scrollEnabled = NO;

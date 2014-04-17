@@ -53,7 +53,16 @@
     // Create path from text
     CGMutablePathRef letters = CGPathCreateMutable();
     
-    CTFontRef font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 45.0f, NULL);
+    CTFontRef font;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 100.0f, NULL);
+    }
+    else
+    {
+        font = CTFontCreateWithName(CFSTR("ChalkboardSE-Bold"), 45.0f, NULL);
+    }
+    
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
                            (__bridge id)font, kCTFontAttributeName,
                            nil];
@@ -118,13 +127,29 @@
         self.eraserPathLayer = nil;
     }
     
-    CGPoint startPoint 	= CGPointMake(30,160);
-    CGPoint pointTwo	= CGPointMake(60,220);
-    CGPoint pointThree  = CGPointMake(145,160);
-    CGPoint pointFour	= CGPointMake(165,220);
-    CGPoint pointFive	= CGPointMake(220,160);
-    CGPoint pointSix	= CGPointMake(240,220);
-    CGPoint endPoint	= CGPointMake(320,160);
+    CGPoint startPoint,pointTwo,pointThree,pointFour,pointFive,pointSix,endPoint;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        startPoint 	= CGPointMake(30,160);
+        pointTwo	= CGPointMake(140,220);
+        pointThree  = CGPointMake(265,160);
+        pointFour	= CGPointMake(380,220);
+        pointFive	= CGPointMake(500,160);
+        pointSix	= CGPointMake(620,220);
+        endPoint	= CGPointMake(740,160);
+    }
+    else
+    {
+        startPoint 	= CGPointMake(30,160);
+        pointTwo	= CGPointMake(60,220);
+        pointThree  = CGPointMake(145,160);
+        pointFour	= CGPointMake(165,220);
+        pointFive	= CGPointMake(220,160);
+        pointSix	= CGPointMake(240,220);
+        endPoint	= CGPointMake(320,160);
+    }
+    
+    
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:startPoint];
@@ -137,12 +162,26 @@
     
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
     pathLayer.frame = self.eraserAnimationLayer.bounds;
-    pathLayer.bounds = CGRectMake(0, 0, 320, 480);
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        pathLayer.bounds = CGRectMake(0, 0, 768, 480);
+    }
+    else
+    {
+        pathLayer.bounds = CGRectMake(0, 0, 320, 480);
+    }
     //pathLayer.geometryFlipped = YES;
     pathLayer.path = path.CGPath;
     pathLayer.strokeColor = [[UIColor whiteColor] CGColor];
     pathLayer.fillColor = nil;
-    pathLayer.lineWidth = 70.0f;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        pathLayer.lineWidth = 110.0f;
+    }
+    else
+    {
+        pathLayer.lineWidth = 70.0f;
+    }
     pathLayer.lineJoin = kCALineJoinBevel;
     
     [self.eraserAnimationLayer addSublayer:pathLayer];
