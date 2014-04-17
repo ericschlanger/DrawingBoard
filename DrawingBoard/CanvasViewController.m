@@ -4,6 +4,7 @@
 
 @interface CanvasViewController ()
 
+// Drawing options
 @property (nonatomic, strong) UIColor *currentColor;
 @property (nonatomic) CGFloat currentLineWidth;
 @property (nonatomic) CGFloat currentOpacity;
@@ -11,15 +12,20 @@
 @property (nonatomic) CGPoint lastPoint;
 @property (nonatomic) FancyPoint *lastPointReceived;
 
+// Flag if finger is moving
 @property (nonatomic) BOOL swipe;
 
+// Multipeer Connectivity Handler
 @property (nonatomic, strong) MPCHandler *mpcHandler;
 
+// Stores previous strokes
 @property (nonatomic, strong) NSMutableArray *undoArray;
 
+// Used in case of dropped points to designate end of stroke
 @property (nonatomic) short currentStrokeID;
 @property (nonatomic) short lastStrokeID;
 
+// Popover Containers for Colorpicker, Options, and MPC
 @property (nonatomic, strong) WYPopoverController *colorPopover;
 @property (nonatomic, strong) WYPopoverController *optionsPopover;
 @property (nonatomic, strong) WYPopoverController *connectPopover;
@@ -146,10 +152,11 @@
 
 - (void)sendString:(NSString *)string
 {
+    // Encode string with NSUTF8StringEncoding
     NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
-
     NSError *error = nil;
     
+    // Send data reliably
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
     if(error != NULL)
     {
@@ -159,9 +166,11 @@
 
 - (void)sendImage:(UIImage *)image
 {
+    // Encode image as a PNG
     NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
     NSError *error = nil;
 
+    // Send data unreliable (for speed)
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
     {
@@ -171,33 +180,35 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
+    // Get data from NSNotifications
     NSDictionary *userInfo = [notification userInfo];
     NSData *unCData = userInfo[@"data"];
-    if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
+    
+    // Check if message is an image (for undo) or a point
+    if([self isImage:unCData])
     {
         self.mainImageView.image = [UIImage imageWithData:unCData];
     }
     else
     {
+        // Convert data to string using UTF8 decoding
         NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
         if(dataString != NULL)
         {
-            if([dataString isEqualToString:@"ClearRequest"])
+            if([dataString isEqualToString:@"CR"])
             {
                 RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-                    self.mainImageView.image = NULL;
-                    self.currentStrokeView.image = NULL;
-                    [self sendString:@"ClearRequestAccepted"];
+                    [self clearImageViews];
+                    [self sendString:@"CRA"];
                 }];
                 RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
                 
                 UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
                 [clearRequest show];
             }
-            else if([dataString isEqualToString:@"ClearRequestAccepted"])
+            else if([dataString isEqualToString:@"CRA"])
             {
-                self.mainImageView.image = NULL;
-                self.currentStrokeView.image = NULL;
+                [self clearImageViews];
             }
             else
             {
@@ -206,20 +217,22 @@
                 // Different stroke IDs, merge images (end line)
                 if(point.strokeID != self.lastStrokeID)
                 {
-                    
                     [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
-                    self.lastPointReceived = NULL;
+                    self.lastPointReceived = NULL; //******PROBABLY DONT NEED THIS*********
                 }
                 
                 if(self.lastPointReceived == NULL)
                 {
+                    // Draw single point
                     [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
                 }
                 else
                 {
+                    // Draw line using two most recent points
                     [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
                 }
                 
+                // Store lastPoint and lastStrokeID
                 self.lastPointReceived = point;
                 self.lastStrokeID = point.strokeID;
             }
@@ -284,6 +297,7 @@
         }
     }
 
+    // Merge currentStrokeView to mainImageView
     [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
 }
 
@@ -311,8 +325,10 @@
     // Draw image to stroke view
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     
+    // Draw image context to currentStrokeView
     [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
     
+    // Set opacity of layer
     [self.currentStrokeView setAlpha:opacity];
     
     // End graphics context
@@ -352,38 +368,50 @@
 
 - (IBAction)pickColor:(id)sender
 {
+    // Cast sender to UIBarButtonItem
     UIBarButtonItem *barButton = (UIBarButtonItem*)sender;
     
+    // Present popover
     [self.colorPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - Clear & Save
 - (IBAction)clearCanvas:(id)sender
 {
+    // Setup buttons for UIAlertView
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
     RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-    
             if([self peersConnected])
             {
-                [self sendString:@"ClearRequest"];
+                [self sendString:@"CR"];
             }
             else
             {
-                self.mainImageView.image = NULL;
-                self.currentStrokeView.image = NULL;
+                [self clearImageViews];
             }
     }];
     
+    // Setup UIAlertView & show
     UIAlertView *clearConfirm = [[UIAlertView alloc]initWithTitle:@"Clear Canvas" message:@"Are you sure?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
     [clearConfirm show];
 }
 
+- (void)clearImageViews
+{
+    // Clear both UIImageView
+    self.mainImageView.image = NULL;
+    self.currentStrokeView.image = NULL;
+}
+
 - (IBAction)saveImage:(id)sender
 {
+    // Setup buttons for UIAlertView
     RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
         UIImageWriteToSavedPhotosAlbum(self.mainImageView.image, nil, nil, nil);
     }];
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+    
+    // Setup UIAlertView & show
     UIAlertView *saveAlert = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"Save to camera roll?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
     [saveAlert show];
 }
@@ -416,20 +444,31 @@
 }
 
 #pragma mark - Line Options
-- (void) changeLineWidth:(float)newLineWidth {
+- (void) changeLineWidth:(float)newLineWidth
+{
+    // Set new line width
     self.currentLineWidth = newLineWidth;
 }
 
-- (void) changeOpacity:(float)newOpacity {
+- (void) changeOpacity:(float)newOpacity
+{
+    // Set new opacity
     self.currentOpacity = newOpacity;
 }
 
 - (IBAction)openOptions:(id)sender
 {
+    // Cast sender to UIBarButtonItem
     UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+    
+    // Get OptionViewController from optionsPopover
     OptionViewController *optVC = (OptionViewController *)self.optionsPopover.contentViewController;
+    
+    // Set default line width & opacity
     optVC.defaultLineValue = self.currentLineWidth;
     optVC.defaultOpacityValue = self.currentOpacity;
+    
+    // Present popover
     [self.optionsPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
@@ -450,25 +489,22 @@
 
 - (BOOL)peersConnected
 {
+    // Returns true if count is greater than zero, false otherwise
     return [self.mpcHandler.session.connectedPeers count];
 }
 
-- (NSString *)contentTypeForImageData:(NSData *)data {
+- (BOOL)isImage:(NSData *)data
+{
     uint8_t c;
     [data getBytes:&c length:1];
-    
-    switch (c) {
-        case 0xFF:
-            return @"image/jpeg";
-        case 0x89:
-            return @"image/png";
-        case 0x47:
-            return @"image/gif";
-        case 0x49:
-        case 0x4D:
-            return @"image/tiff";
+    if(c == 0x89 || c == 0xFF)
+    {
+        return true;
     }
-    return nil;
+    else
+    {
+        return false;
+    }
 }
 
 
