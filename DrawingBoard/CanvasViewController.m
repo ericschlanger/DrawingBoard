@@ -117,7 +117,6 @@
 - (void)sendString:(NSString *)string
 {
     NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
-    
     NSError *error = nil;
     
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
@@ -218,11 +217,6 @@
             return @"image/tiff";
     }
     return nil;
-    return nil;
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
 }
 
 #pragma mark - Touch Handling

@@ -35,21 +35,21 @@
     if(self)
     {
         NSArray *comp = [string componentsSeparatedByString:@"|"];
-        self.x = [comp[0] intValue];
-        self.y = [comp[1] intValue];
-        self.rColor = [comp[2] floatValue];
-        self.gColor = [comp[3] floatValue];
-        self.bColor = [comp[4] floatValue];
-        self.opacity = [comp[5] floatValue];
-        self.lineWidth = [comp[6] intValue];
-        self.strokeID = [comp[7] intValue];
+        self.x = (short)[comp[0] intValue];
+        self.y = (short)[comp[1] intValue];
+        self.rColor = (char)[comp[2] intValue];
+        self.gColor = (char)[comp[3] intValue];
+        self.bColor = (char)[comp[4] intValue];
+        self.opacity = (char)[comp[5] intValue];
+        self.lineWidth = (char)[comp[6] intValue];
+        self.strokeID = (short)[comp[7] intValue];
     }
     return self;
 }
 
 - (NSString *)toString
 {
-    NSString *returnString = [NSString stringWithFormat:@"%d|%d|%d|%d|%d|%d|%d|%d",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth,self.strokeID];
+    NSString *returnString = [NSString stringWithFormat:@"%hd|%hd|%d|%d|%d|%d|%d|%hd",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth,self.strokeID];
     return returnString;
 }
 
