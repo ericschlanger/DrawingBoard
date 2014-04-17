@@ -15,7 +15,7 @@
 #import <zlib.h>
 #import "UIAlertView+Blocks.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -30,7 +30,6 @@
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
 - (IBAction)saveImage:(id)sender;
-
 
 
 @end

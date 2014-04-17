@@ -39,6 +39,11 @@
     
     self.panScrollView.delegate = self;
     
+    //Temporary Load Button
+    UIButton *loadButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    loadButton.frame = CGRectMake(160, 300, 100, 100);
+    [loadButton setTitle:@"Load Image" forState:UIControlStateNormal ];
+    [loadButton addTarget:self action:@selector(loadImage:) forControlEvents:UIControlEventTouchUpInside];
     
     // Ensure that scrollview only allows two-finger scrolling
     for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
@@ -67,6 +72,7 @@
                                                object:nil];
     
     self.lastPointReceived = NULL;
+    [self.view addSubview:loadButton];
     
 }
 
@@ -286,6 +292,27 @@
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
     UIAlertView *saveAlert = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"Save to camera roll?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
     [saveAlert show];
+}
+
+- (IBAction)loadImage:(id)sender {
+    NSLog(@"called");
+    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+    
+    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    
+	[self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[picker dismissModalViewControllerAnimated:YES];
+	self.mainImageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+{
+    [self.navigationController dismissViewControllerAnimated: YES completion: nil];
 }
 
 #pragma mark - Line Options
