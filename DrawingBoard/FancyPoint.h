@@ -12,9 +12,9 @@
 
 @property (nonatomic)short x;
 @property (nonatomic)short y;
-@property (nonatomic)short rColor;
-@property (nonatomic)short gColor;
-@property (nonatomic)short bColor;
+@property (nonatomic)char rColor;
+@property (nonatomic)char gColor;
+@property (nonatomic)char bColor;
 @property (nonatomic)char lineWidth;
 @property (nonatomic)short opacity;
 @property (nonatomic)short strokeID;

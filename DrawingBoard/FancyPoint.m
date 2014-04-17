@@ -19,9 +19,9 @@
         self.y = point.y;
         CGFloat red,green,blue;
         [color getRed:&red green:&green blue:&blue alpha:nil];
-        self.rColor = (short)(red * 255.0f);
-        self.gColor = (short)(green * 255.0f);
-        self.bColor = (short)(blue * 255.0f);
+        self.rColor = (char)((red * 255.0f) - 128);
+        self.gColor = (char)((green * 255.0f) - 128);
+        self.bColor = (char)((blue * 255.0f) - 128);
         self.opacity = opacity * 1000;
         self.lineWidth = width;
         self.strokeID = strokeID;
@@ -55,7 +55,7 @@
 
 - (UIColor *)fetchColor
 {
-    return [UIColor colorWithRed:self.rColor/255.0f green:self.gColor/255.0f blue:self.bColor/255.0 alpha:1];
+    return [UIColor colorWithRed:(self.rColor+128)/255.0f green:(self.gColor+128)/255.0f blue:(self.bColor+128)/255.0 alpha:1];
 }
 
 - (CGFloat)fetchOpacity
