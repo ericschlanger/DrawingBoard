@@ -11,7 +11,6 @@
 @protocol ChangeOptionsDelegate <NSObject>
 - (void)changeLineWidth:(float) newLineWidth;
 - (void)changeOpacity:(float) newOpacity;
-- (void)closeOptionsPopover;
 @end
 
 

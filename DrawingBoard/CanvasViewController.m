@@ -21,7 +21,8 @@
 @property (nonatomic) short lastStrokeID;
 
 @property (nonatomic, strong) WYPopoverController *colorPopover;
-@property (nonatomic, strong) WYPopoverController *optionsPopver;
+@property (nonatomic, strong) WYPopoverController *optionsPopover;
+@property (nonatomic, strong) WYPopoverController *connectPopover;
 
 @end
 
@@ -87,8 +88,13 @@
     OptionViewController *optVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"optionsScene"];
     optVC.preferredContentSize = CGSizeMake(300, 400);
     optVC.delegate = self;
-    self.optionsPopver = [[WYPopoverController alloc]initWithContentViewController:optVC];
-
+    self.optionsPopover = [[WYPopoverController alloc]initWithContentViewController:optVC];
+    
+    // MPC Setup
+    [self.mpcHandler setupBrowser];
+    [self.mpcHandler.browser setDelegate:self];
+    self.mpcHandler.browser.preferredContentSize = CGSizeMake(300, 400);
+    self.connectPopover = [[WYPopoverController alloc]initWithContentViewController:self.mpcHandler.browser];
 
     
     // Handle Notifcations
@@ -121,11 +127,8 @@
 #pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
-    [self.mpcHandler setupBrowser];
-    [self.mpcHandler.browser setDelegate:self];
-    [self presentViewController:self.mpcHandler.browser
-                       animated:YES
-                     completion:nil];
+    UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+    [self.connectPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 
@@ -341,6 +344,7 @@
     [self.undoArray addObject:self.mainImageView.image];
 }
 
+#pragma mark - Change Color
 - (void)colorChangedToColor:(UIColor *)color
 {
     self.currentColor = color;
@@ -353,6 +357,7 @@
     [self.colorPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
+#pragma mark - Clear & Save
 - (IBAction)clearCanvas:(id)sender
 {
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
@@ -422,10 +427,10 @@
 - (IBAction)openOptions:(id)sender
 {
     UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
-    OptionViewController *optVC = (OptionViewController *)self.optionsPopver.contentViewController;
+    OptionViewController *optVC = (OptionViewController *)self.optionsPopover.contentViewController;
     optVC.defaultLineValue = self.currentLineWidth;
     optVC.defaultOpacityValue = self.currentOpacity;
-    [self.optionsPopver presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+    [self.optionsPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - Hide Status Bar & Lock Orientation
