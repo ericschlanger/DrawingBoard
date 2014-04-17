@@ -428,11 +428,6 @@
     [self.optionsPopver presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
-- (void)closeOptionsPopover
-{
-    [self.optionsPopver dismissPopoverAnimated:YES];
-}
-
 #pragma mark - Hide Status Bar & Lock Orientation
 // Hides status bar (if possible)
 - (BOOL)prefersStatusBarHidden
