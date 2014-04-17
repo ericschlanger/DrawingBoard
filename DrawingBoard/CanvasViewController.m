@@ -74,6 +74,20 @@
     self.undoArray = [[NSMutableArray alloc]init];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    // Set canvas size
+    [self.mainImageView setFrame:CGRectMake(0, 0, 768, 1024)];
+    [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 1024)];
+    [self.panScrollView setContentSize:CGSizeMake(768, 1024)];
+    
+    // Disable scrolling if ipad
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        self.panScrollView.scrollEnabled = NO;
+    }
+}
+
 #pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
@@ -201,6 +215,10 @@
     return nil;
 }
 
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
 #pragma mark - Touch Handling
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -210,6 +228,7 @@
     // Get touch position
     UITouch *lastTouch = [touches anyObject];
     self.lastPoint = [lastTouch locationInView:self.currentStrokeView];
+    
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

@@ -14,6 +14,7 @@
 #import "NSData+Godzippa.h"
 #import <zlib.h>
 #import "UIAlertView+Blocks.h"
+#import "CanvasScrollView.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate>
 
@@ -25,7 +26,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *currentStrokeView;
 
 
-@property (nonatomic, strong) IBOutlet UIScrollView *panScrollView;
+@property (nonatomic, strong) IBOutlet CanvasScrollView *panScrollView;
 
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;

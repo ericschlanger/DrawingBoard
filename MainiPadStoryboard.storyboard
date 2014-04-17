@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="5lS-Ux-t4r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Splash View Controller-->
+        <scene sceneID="IdU-RH-QBl">
+            <objects>
+                <viewController id="qAc-Xu-spa" customClass="SplashViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IUO-EH-o0t"/>
+                        <viewControllerLayoutGuide type="bottom" id="zFH-iw-NIC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="D62-vN-ZU4">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="5lS-Ux-t4r" kind="modal" identifier="splashDone" id="4m0-ug-YN6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qnr-Op-yxZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1227" y="-806"/>
+        </scene>
+        <!--Canvas View Controller-->
+        <scene sceneID="lEb-TG-6sh">
+            <objects>
+                <viewController id="5lS-Ux-t4r" customClass="CanvasViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wKv-kD-wjb"/>
+                        <viewControllerLayoutGuide type="bottom" id="PkU-b6-6MP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bpv-tK-mXp">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAb-fe-x8S" customClass="CanvasScrollView">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XCG-DL-Mg0" userLabel="mainImage">
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Txj-cb-HU5" userLabel="currentStrokeView">
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outlet property="imageNextResponder" destination="5lS-Ux-t4r" id="ven-sx-fSp"/>
+                                </connections>
+                            </scrollView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xBh-cg-1Hc">
+                                <rect key="frame" x="0.0" y="980" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Undo" id="HaG-1f-POS">
+                                        <connections>
+                                            <action selector="undo:" destination="5lS-Ux-t4r" id="Mzb-lN-3Co"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="3uc-Hb-ybd"/>
+                                    <barButtonItem title="Options" id="SAT-Ra-h6S"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SYy-bX-eje"/>
+                                    <barButtonItem title="Clear" id="6Zg-Oe-0jb">
+                                        <connections>
+                                            <action selector="clearCanvas:" destination="5lS-Ux-t4r" id="PLi-rN-1Mb"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Frx-lO-iCZ"/>
+                                    <barButtonItem title="Save" id="0pc-q3-NTL">
+                                        <connections>
+                                            <action selector="saveImage:" destination="5lS-Ux-t4r" id="8ai-Hp-mzn"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="jh1-bx-Vsa"/>
+                                    <barButtonItem title="Connect" id="OmF-kr-hUD">
+                                        <connections>
+                                            <action selector="connect:" destination="5lS-Ux-t4r" id="Yck-Hg-HQq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="currentStrokeView" destination="Txj-cb-HU5" id="UPL-Bv-Llg"/>
+                        <outlet property="mainImageView" destination="XCG-DL-Mg0" id="EQf-q8-Bzx"/>
+                        <outlet property="panScrollView" destination="PAb-fe-x8S" id="2yj-NU-82r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xCE-aw-eNh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-366" y="295"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="FXv-3C-6uV">
+            <objects>
+                <viewController id="Edq-wK-Scn" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6M0-qK-NK3"/>
+                        <viewControllerLayoutGuide type="bottom" id="7ha-64-tAz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="svE-em-j0N">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ptO-gM-ka5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="466" y="-817"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>
