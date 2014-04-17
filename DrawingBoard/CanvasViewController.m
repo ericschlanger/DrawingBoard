@@ -116,7 +116,15 @@
 
 - (void)sendString:(NSString *)string
 {
-    NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    //NSDate *date = [NSDate date];
+    NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
+    //NSLog(@"No Compression: %f",[[NSDate date]timeIntervalSinceDate:date]);
+    
+    /*NSDate *dateTwo = [NSDate date];
+    NSData *ccData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    NSLog(@"Compression: %f",[[NSDate date]timeIntervalSinceDate:dateTwo]);*/
+    
+    
     NSError *error = nil;
     
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
@@ -128,7 +136,8 @@
 
 - (void)sendImage:(UIImage *)image
 {
-    NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
+    //NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
+    NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
     NSError *error = nil;
 
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
@@ -141,7 +150,7 @@
 - (void)didReceiveData:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
-    NSData *unCData = [userInfo[@"data"] dataByGZipDecompressingDataWithError:nil];
+    NSData *unCData = userInfo[@"data"];
     if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
     {
         self.mainImageView.image = [UIImage imageWithData:unCData];
@@ -327,6 +336,11 @@
     // End context
     UIGraphicsEndImageContext();
     
+    // Remove object if undoArray count is greater/equal to 10
+    if(self.undoArray.count >= 10)
+    {
+        [self.undoArray removeObjectAtIndex:0];
+    }
     // Save old image state to undoArray
     [self.undoArray addObject:self.mainImageView.image];
 }
