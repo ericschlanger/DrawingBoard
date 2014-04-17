@@ -9,6 +9,7 @@
 @property (nonatomic) CGFloat currentLineWidth;
 @property (nonatomic) CGFloat currentOpacity;
 
+// Store last points (local & received)
 @property (nonatomic) CGPoint lastPoint;
 @property (nonatomic) FancyPoint *lastPointReceived;
 
