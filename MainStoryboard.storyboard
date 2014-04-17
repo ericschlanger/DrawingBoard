@@ -41,37 +41,37 @@
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="U" id="IPc-EY-Sg7">
+                                    <barButtonItem image="Reply.png" id="IPc-EY-Sg7">
                                         <connections>
                                             <action selector="undo:" destination="MRG-up-c6Y" id="qzo-7l-XwA"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Vwa-WW-l3L"/>
-                                    <barButtonItem title="O" id="txa-Ao-HO0">
+                                    <barButtonItem image="Gear.png" id="txa-Ao-HO0">
                                         <connections>
                                             <action selector="openOptions:" destination="MRG-up-c6Y" id="QyV-0F-fhA"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="4Uu-xM-LV4"/>
-                                    <barButtonItem title="Co" id="wRs-U7-E6A">
+                                    <barButtonItem image="ColorPicker.png" id="wRs-U7-E6A">
                                         <connections>
                                             <action selector="pickColor:" destination="MRG-up-c6Y" id="5L7-zT-pxb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2mM-Kp-iBQ"/>
-                                    <barButtonItem title="Cl" id="Q0Y-Zc-G0j">
+                                    <barButtonItem image="Trash.png" id="Q0Y-Zc-G0j">
                                         <connections>
                                             <action selector="clearCanvas:" destination="MRG-up-c6Y" id="XOS-fY-vmB"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EtG-z4-Ffd"/>
-                                    <barButtonItem title="S" id="yBU-KL-g2u">
+                                    <barButtonItem image="Download.png" id="yBU-KL-g2u">
                                         <connections>
                                             <action selector="saveImage:" destination="MRG-up-c6Y" id="z2m-03-oxv"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZvK-n4-z54"/>
-                                    <barButtonItem title="Cn" id="HrA-II-ode">
+                                    <barButtonItem image="Mobile_Signal.png" id="HrA-II-ode">
                                         <connections>
                                             <action selector="connect:" destination="MRG-up-c6Y" id="U2d-SK-bMm"/>
                                         </connections>
@@ -187,6 +187,14 @@
             <point key="canvasLocation" x="896" y="246"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ColorPicker.png" width="25" height="24"/>
+        <image name="Download.png" width="19" height="27"/>
+        <image name="Gear.png" width="25" height="25"/>
+        <image name="Mobile_Signal.png" width="26" height="23"/>
+        <image name="Reply.png" width="25" height="19"/>
+        <image name="Trash.png" width="19" height="25"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

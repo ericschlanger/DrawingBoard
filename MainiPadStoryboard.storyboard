@@ -58,37 +58,37 @@
                                 <rect key="frame" x="0.0" y="980" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Undo" id="HaG-1f-POS">
+                                    <barButtonItem image="Reply.png" id="HaG-1f-POS">
                                         <connections>
                                             <action selector="undo:" destination="5lS-Ux-t4r" id="Mzb-lN-3Co"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3uc-Hb-ybd"/>
-                                    <barButtonItem title="Options" id="SAT-Ra-h6S">
+                                    <barButtonItem image="Gear.png" id="SAT-Ra-h6S">
                                         <connections>
                                             <action selector="openOptions:" destination="5lS-Ux-t4r" id="hn6-zN-D8c"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="OEg-tJ-Gbs"/>
-                                    <barButtonItem title="Color" id="Gp4-MY-iIK">
+                                    <barButtonItem image="ColorPicker.png" id="Gp4-MY-iIK">
                                         <connections>
                                             <action selector="pickColor:" destination="5lS-Ux-t4r" id="uK3-fL-QU6"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SYy-bX-eje"/>
-                                    <barButtonItem title="Clear" id="6Zg-Oe-0jb">
+                                    <barButtonItem image="Trash.png" id="6Zg-Oe-0jb">
                                         <connections>
                                             <action selector="clearCanvas:" destination="5lS-Ux-t4r" id="PLi-rN-1Mb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Frx-lO-iCZ"/>
-                                    <barButtonItem title="Save" id="0pc-q3-NTL">
+                                    <barButtonItem image="Download.png" id="0pc-q3-NTL">
                                         <connections>
                                             <action selector="saveImage:" destination="5lS-Ux-t4r" id="8ai-Hp-mzn"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="jh1-bx-Vsa"/>
-                                    <barButtonItem title="Connect" id="OmF-kr-hUD">
+                                    <barButtonItem image="Mobile_Signal.png" id="OmF-kr-hUD">
                                         <connections>
                                             <action selector="connect:" destination="5lS-Ux-t4r" id="Yck-Hg-HQq"/>
                                         </connections>
@@ -109,6 +109,14 @@
             <point key="canvasLocation" x="-370" y="-806"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ColorPicker.png" width="25" height="24"/>
+        <image name="Download.png" width="19" height="27"/>
+        <image name="Gear.png" width="25" height="25"/>
+        <image name="Mobile_Signal.png" width="26" height="23"/>
+        <image name="Reply.png" width="25" height="19"/>
+        <image name="Trash.png" width="19" height="25"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
