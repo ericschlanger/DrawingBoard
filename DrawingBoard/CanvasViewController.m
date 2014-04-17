@@ -20,6 +20,9 @@
 @property (nonatomic) short currentStrokeID;
 @property (nonatomic) short lastStrokeID;
 
+@property (nonatomic, strong) WYPopoverController *colorPopover;
+@property (nonatomic, strong) WYPopoverController *optionsPopver;
+
 @end
 
 @implementation CanvasViewController
@@ -36,15 +39,13 @@
 {
     [super viewDidLoad];
     
-    // Temporary Settings
+    // Default Settings
     self.currentColor = [UIColor blackColor];
     self.currentLineWidth = 10.0f;
     self.currentOpacity = 1.0;
     self.lastPoint = CGPointMake(0, 0);
     
-    self.panScrollView.delegate = self;
-    
-    
+    // Pan ScrollView setup
     // Ensure that scrollview only allows two-finger scrolling
     for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
     {
@@ -54,6 +55,8 @@
             panRec.minimumNumberOfTouches = 2;
         }
     }
+    self.panScrollView.delegate = self;
+
     
     // Initialize MCPHandler
     self.mpcHandler = [[MPCHandler alloc]init];
@@ -61,9 +64,32 @@
     [self.mpcHandler setupSession];
     [self.mpcHandler advertiseSelf:true];
     
+    // Motion ColorPicker Setup
     PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height-125, 50, 50)];
     [self.view addSubview:colorPicker];
     colorPicker.delegate = self;
+    
+    // Traditional ColorPicker Setup
+    NKOColorPickerDidChangeColorBlock block = ^(UIColor *color)
+    {
+        self.currentColor = color;
+    };
+    NKOColorPickerView *normColorPicker = [[NKOColorPickerView alloc]initWithFrame:CGRectMake(0, 0, 300, 300) color:self.currentColor andDidChangeColorBlock:block];
+    UIViewController *colorVC = [[UIViewController alloc]init];
+    [colorVC.view addSubview:normColorPicker];
+    colorVC.preferredContentSize = normColorPicker.frame.size;
+    self.colorPopover = [[WYPopoverController alloc]initWithContentViewController:colorVC];
+    self.colorPopover.delegate = self;
+    
+    // Options Popover Setup
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
+    OptionViewController *optVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"optionsScene"];
+    optVC.preferredContentSize = CGSizeMake(300, 400);
+    optVC.delegate = self;
+    self.optionsPopver = [[WYPopoverController alloc]initWithContentViewController:optVC];
+
+
     
     // Handle Notifcations
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -71,10 +97,11 @@
                                                  name:@"DrawingBoard_ReceivedData"
                                                object:nil];
     
-    self.lastPointReceived = NULL;
-    
     // Initialize Undo Array
     self.undoArray = [[NSMutableArray alloc]init];
+    
+    // Set lastPointReceived as empty
+    self.lastPointReceived = NULL;
 }
 
 - (void)viewDidLayoutSubviews
@@ -116,15 +143,8 @@
 
 - (void)sendString:(NSString *)string
 {
-    //NSDate *date = [NSDate date];
     NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
-    //NSLog(@"No Compression: %f",[[NSDate date]timeIntervalSinceDate:date]);
-    
-    /*NSDate *dateTwo = [NSDate date];
-    NSData *ccData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
-    NSLog(@"Compression: %f",[[NSDate date]timeIntervalSinceDate:dateTwo]);*/
-    
-    
+
     NSError *error = nil;
     
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
@@ -136,7 +156,6 @@
 
 - (void)sendImage:(UIImage *)image
 {
-    //NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
     NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
     NSError *error = nil;
 
@@ -203,29 +222,6 @@
             }
         }
     }
-}
-
-- (BOOL)peersConnected
-{
-    return [self.mpcHandler.session.connectedPeers count];
-}
-
-- (NSString *)contentTypeForImageData:(NSData *)data {
-    uint8_t c;
-    [data getBytes:&c length:1];
-    
-    switch (c) {
-        case 0xFF:
-            return @"image/jpeg";
-        case 0x89:
-            return @"image/png";
-        case 0x47:
-            return @"image/gif";
-        case 0x49:
-        case 0x4D:
-            return @"image/tiff";
-    }
-    return nil;
 }
 
 #pragma mark - Touch Handling
@@ -350,6 +346,13 @@
     self.currentColor = color;
 }
 
+- (IBAction)pickColor:(id)sender
+{
+    UIBarButtonItem *barButton = (UIBarButtonItem*)sender;
+    
+    [self.colorPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+}
+
 - (IBAction)clearCanvas:(id)sender
 {
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
@@ -416,15 +419,18 @@
     self.currentOpacity = newOpacity;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (IBAction)openOptions:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"openOptions"])
-    {
-        OptionViewController *optionVC = [segue destinationViewController];
-        optionVC.delegate = self;
-        optionVC.defaultLineValue = self.currentLineWidth;      // pass in initial values for sliders
-        optionVC.defaultOpacityValue = self.currentOpacity;
-    }
+    UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+    OptionViewController *optVC = (OptionViewController *)self.optionsPopver.contentViewController;
+    optVC.defaultLineValue = self.currentLineWidth;
+    optVC.defaultOpacityValue = self.currentOpacity;
+    [self.optionsPopver presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)closeOptionsPopover
+{
+    [self.optionsPopver dismissPopoverAnimated:YES];
 }
 
 #pragma mark - Hide Status Bar & Lock Orientation
@@ -438,6 +444,31 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Helper Functions
+
+- (BOOL)peersConnected
+{
+    return [self.mpcHandler.session.connectedPeers count];
+}
+
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    
+    switch (c) {
+        case 0xFF:
+            return @"image/jpeg";
+        case 0x89:
+            return @"image/png";
+        case 0x47:
+            return @"image/gif";
+        case 0x49:
+        case 0x4D:
+            return @"image/tiff";
+    }
+    return nil;
 }
 
 

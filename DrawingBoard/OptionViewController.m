@@ -48,10 +48,6 @@
     [self.delegate changeLineWidth:self.slider.value];
 }
 
--(IBAction)closeWindow {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 -(void)updateLabels {
     self.lineLabel.text = [NSString stringWithFormat:@"%i", (int)self.slider.value];
     self.opacLabel.text = [NSString stringWithFormat:@"%.2f", self.opacSlider.value];

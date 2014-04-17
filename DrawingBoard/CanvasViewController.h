@@ -15,8 +15,10 @@
 #import <zlib.h>
 #import "UIAlertView+Blocks.h"
 #import "CanvasScrollView.h"
+#import "NKOColorPickerView.h"
+#import "WYPopoverController.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate,WYPopoverControllerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -28,11 +30,13 @@
 
 @property (nonatomic, strong) IBOutlet CanvasScrollView *panScrollView;
 
+
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
 - (IBAction)saveImage:(id)sender;
 - (IBAction)undo:(id)sender;
-
+- (IBAction)pickColor:(id)sender;
+- (IBAction)openOptions:(id)sender;
 
 
 @end
