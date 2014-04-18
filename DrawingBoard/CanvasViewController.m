@@ -141,7 +141,7 @@
 - (void)sendString:(NSString *)string
 {
     // Encode string with NSUTF8StringEncoding
-    NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
+    NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error = nil;
     
     // Send data reliably
@@ -155,7 +155,7 @@
 - (void)sendImage:(UIImage *)image
 {
     // Encode image as a PNG
-    NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
+    NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
     NSError *error = nil;
 
     // Send data unreliable (for speed)
@@ -170,7 +170,7 @@
 {
     // Get data from NSNotifications
     NSDictionary *userInfo = [notification userInfo];
-    NSData *unCData = [userInfo[@"data"] dataByGZipDecompressingDataWithError:nil];
+    NSData *unCData = userInfo[@"data"];
     
     // Check if message is an image (for undo) or a point
     if([self isImage:unCData])
