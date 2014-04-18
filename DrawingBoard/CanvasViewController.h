@@ -16,6 +16,7 @@
 #import "CanvasScrollView.h"
 #import "NKOColorPickerView.h"
 #import "WYPopoverController.h"
+#import "NSData+Godzippa.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate,WYPopoverControllerDelegate>
 

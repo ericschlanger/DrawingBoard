@@ -141,7 +141,7 @@
 - (void)sendString:(NSString *)string
 {
     // Encode string with NSUTF8StringEncoding
-    NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *cData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
     NSError *error = nil;
     
     // Send data reliably
@@ -155,11 +155,11 @@
 - (void)sendImage:(UIImage *)image
 {
     // Encode image as a PNG
-    NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
+    NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
     NSError *error = nil;
 
     // Send data unreliable (for speed)
-    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
     if(error != NULL)
     {
         NSLog(@"Error: %@",[error localizedDescription]);
@@ -170,7 +170,7 @@
 {
     // Get data from NSNotifications
     NSDictionary *userInfo = [notification userInfo];
-    NSData *unCData = userInfo[@"data"];
+    NSData *unCData = [userInfo[@"data"] dataByGZipDecompressingDataWithError:nil];
     
     // Check if message is an image (for undo) or a point
     if([self isImage:unCData])
@@ -205,7 +205,7 @@
                 // Different stroke IDs, merge images (end line)
                 if(point.strokeID != self.lastStrokeID)
                 {
-                    [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
+                    [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:[self.lastPointReceived fetchOpacity] andAddToUndoArray:NO];
                     self.lastPointReceived = NULL; //******PROBABLY DONT NEED THIS*********
                 }
                 
@@ -286,7 +286,7 @@
     }
 
     // Merge currentStrokeView to mainImageView
-    [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
+    [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:self.currentOpacity andAddToUndoArray:YES];
 }
 
 #pragma mark - Drawing
@@ -323,12 +323,13 @@
     UIGraphicsEndImageContext();
 }
 
-- (void)mergeStrokesToMainImageWithOpacity:(CGFloat)opacity
+// 1:mainimageview 2:currentStrokeView
+- (void)mergeImageView:(UIImageView *)imageView1 withImageView:(UIImageView *)imageView2 andOpacity:(CGFloat)opacity andAddToUndoArray:(BOOL)undoFlag
 {
     // Merge stroke view with main image view
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
-    [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:opacity];
+    [imageView1.image drawInRect:CGRectMake(0, 0, imageView1.frame.size.width, imageView1.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    [imageView2.image drawInRect:CGRectMake(0, 0, imageView1.frame.size.width, imageView1.frame.size.height) blendMode:kCGBlendModeNormal alpha:opacity];
     
     // Set image from context
     [self.mainImageView setImage:UIGraphicsGetImageFromCurrentImageContext()];
@@ -339,13 +340,16 @@
     // End context
     UIGraphicsEndImageContext();
     
-    // Remove object if undoArray count is greater/equal to 10
-    if(self.undoArray.count >= 10)
+    if(undoFlag)
     {
-        [self.undoArray removeObjectAtIndex:0];
+        // Remove object if undoArray count is greater/equal to 10
+        if(self.undoArray.count >= 10)
+        {
+            [self.undoArray removeObjectAtIndex:0];
+        }
+        // Save old image state to undoArray
+        [self.undoArray addObject:imageView1.image];
     }
-    // Save old image state to undoArray
-    [self.undoArray addObject:self.mainImageView.image];    
 }
 
 #pragma mark - Change Color
@@ -403,10 +407,10 @@
     if(self.undoArray.count <= 1)
     {
         // Clear image
-        self.mainImageView.image = NULL;
+        //self.mainImageView.image = NULL;
         
         // Clear array
-        self.undoArray = [NSMutableArray array];
+        self.undoArray = [[NSMutableArray alloc]init];
     }
     else
     {
@@ -415,12 +419,14 @@
         
         // Move back one stroke
         self.mainImageView.image = [self.undoArray objectAtIndex:[self.undoArray count] - 1];
+        
+        if([self peersConnected])
+        {
+            NSLog(@"send image");
+            [self sendImage:self.mainImageView.image];
+        }
     }
     
-    if([self peersConnected])
-    {
-        [self sendImage:self.mainImageView.image];
-    }
 }
 
 #pragma mark - Line Options
