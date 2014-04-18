@@ -77,25 +77,22 @@
     [self.view addSubview:colorPicker];
     colorPicker.delegate = self;
     
-    // Traditional ColorPicker Setup
-    NKOColorPickerDidChangeColorBlock block = ^(UIColor *color)
-    {
-        self.currentColor = color;
-    };
-    NKOColorPickerView *normColorPicker = [[NKOColorPickerView alloc]initWithFrame:CGRectMake(0, 0, 300, 300) color:self.currentColor andDidChangeColorBlock:block];
-    UIViewController *colorVC = [[UIViewController alloc]init];
-    [colorVC.view addSubview:normColorPicker];
-    colorVC.preferredContentSize = normColorPicker.frame.size;
-    self.colorPopover = [[WYPopoverController alloc]initWithContentViewController:colorVC];
-    self.colorPopover.delegate = self;
     
     // Options Popover Setup
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                              bundle: nil];
     OptionViewController *optVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"optionsScene"];
-    optVC.preferredContentSize = CGSizeMake(300, 400);
+    optVC.preferredContentSize = CGSizeMake(300, 500);
+    NKOColorPickerDidChangeColorBlock block = ^(UIColor *color)
+    {
+        self.currentColor = color;
+    };
+    NKOColorPickerView *colorPickerView = [[NKOColorPickerView alloc]initWithFrame:CGRectMake(0, 250, 300, 250) color:self.currentColor andDidChangeColorBlock:block];
+    [colorPickerView setTintColor:[UIColor blackColor]];
+    [optVC.view addSubview:colorPickerView];
     optVC.delegate = self;
     self.optionsPopover = [[WYPopoverController alloc]initWithContentViewController:optVC];
+    
     
     // MPC Setup
     [self.mpcHandler setupBrowser];
@@ -141,12 +138,12 @@
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
 {
-    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
 {
-    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 #pragma mark - Send/Receive FancyPoints

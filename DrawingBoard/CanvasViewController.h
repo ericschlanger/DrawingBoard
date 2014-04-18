@@ -29,7 +29,6 @@
 // CanvasScrollView, subclass of UIScrollView that sends touch events to the nextResponder (CanvasViewController)
 @property (nonatomic, strong) IBOutlet CanvasScrollView *panScrollView;
 
-
 // IBActions (Toolbar Actions)
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
