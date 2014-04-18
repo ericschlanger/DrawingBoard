@@ -345,7 +345,7 @@
         [self.undoArray removeObjectAtIndex:0];
     }
     // Save old image state to undoArray
-    [self.undoArray addObject:self.mainImageView.image];
+    [self.undoArray addObject:self.mainImageView.image];    
 }
 
 #pragma mark - Change Color
@@ -380,6 +380,7 @@
     // Clear both UIImageView
     self.mainImageView.image = NULL;
     self.currentStrokeView.image = NULL;
+    self.undoArray = [[NSMutableArray alloc]init];
 }
 
 - (IBAction)saveImage:(id)sender
@@ -409,11 +410,11 @@
     }
     else
     {
-        // Move back one stroke
-        self.mainImageView.image = self.undoArray[self.undoArray.count - 2];
-        
         // Remove stroke from array;
-        [self.undoArray removeObjectAtIndex:self.undoArray.count - 2];
+        [self.undoArray removeObjectAtIndex:self.undoArray.count - 1];
+        
+        // Move back one stroke
+        self.mainImageView.image = [self.undoArray objectAtIndex:[self.undoArray count] - 1];
     }
     
     if([self peersConnected])
