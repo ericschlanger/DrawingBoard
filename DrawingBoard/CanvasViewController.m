@@ -53,19 +53,9 @@
     self.currentOpacity = 1.0;
     self.lastPoint = CGPointMake(0, 0);
     
-    // Pan ScrollView setup
-    // Ensure that scrollview only allows two-finger scrolling
-    for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
-    {
-        if([gesture isKindOfClass:[UIPanGestureRecognizer class]])
-        {
-            UIPanGestureRecognizer *panRec = (UIPanGestureRecognizer *)gesture;
-            panRec.minimumNumberOfTouches = 2;
-        }
-    }
+    // Pan ScrollView Delegate
     self.panScrollView.delegate = self;
 
-    
     // Initialize MCPHandler
     self.mpcHandler = [[MPCHandler alloc]init];
     [self.mpcHandler setupPeerWithDisplayName:[[UIDevice currentDevice]name]];
@@ -362,15 +352,6 @@
 - (void)colorChangedToColor:(UIColor *)color
 {
     self.currentColor = color;
-}
-
-- (IBAction)pickColor:(id)sender
-{
-    // Cast sender to UIBarButtonItem
-    UIBarButtonItem *barButton = (UIBarButtonItem*)sender;
-    
-    // Present popover
-    [self.colorPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - Clear & Save

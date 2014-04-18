@@ -14,7 +14,19 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
+        
+        // Removes touch delay
         self.delaysContentTouches = NO;
+        
+        // Only respond to two finger gestures
+        for (UIGestureRecognizer *gesture in self.gestureRecognizers)
+        {
+            if([gesture isKindOfClass:[UIPanGestureRecognizer class]])
+            {
+                UIPanGestureRecognizer *panRec = (UIPanGestureRecognizer *)gesture;
+                panRec.minimumNumberOfTouches = 2;
+            }
+        }
     }
     return self;
 }

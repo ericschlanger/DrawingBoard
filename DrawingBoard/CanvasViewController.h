@@ -34,7 +34,6 @@
 - (IBAction)clearCanvas:(id)sender;
 - (IBAction)saveImage:(id)sender;
 - (IBAction)undo:(id)sender;
-- (IBAction)pickColor:(id)sender;
 - (IBAction)openOptions:(id)sender;
 
 
