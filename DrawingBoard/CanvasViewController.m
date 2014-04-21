@@ -386,25 +386,31 @@
     [saveAlert show];
 }
 
-- (IBAction)loadImage:(id)sender {
-    NSLog(@"called");
-    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
-    
-    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    
-	[self presentViewController:picker animated:YES completion:nil];
-}
+#pragma mark - Undo/Redo
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[picker dismissModalViewControllerAnimated:YES];
-	self.mainImageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-}
-
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+- (IBAction)undo:(id)sender
 {
-    [self.navigationController dismissViewControllerAnimated: YES completion: nil];
+    if(self.undoArray.count <= 1)
+    {
+        // Clear image
+        self.mainImageView.image = NULL;
+        
+        // Clear array
+        self.undoArray = [NSMutableArray array];
+    }
+    else
+    {
+        // Move back one stroke
+        self.mainImageView.image = self.undoArray[self.undoArray.count - 2];
+        
+        // Remove stroke from array;
+        [self.undoArray removeObjectAtIndex:self.undoArray.count - 2];
+    }
+    
+    if([self peersConnected])
+    {
+        [self sendImage:self.mainImageView.image];
+    }
 }
 
 #pragma mark - Line Options
