@@ -395,9 +395,6 @@
     // Initialize UIActivityViewController
     UIActivityViewController *actController = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
     
-    // Exclude AirDrop & ReadingList
-    actController.excludedActivityTypes = [[NSArray alloc]initWithObjects:UIActivityTypeAirDrop, UIActivityTypeAddToReadingList, nil];
-    
     // Present ViewController
     [self presentViewController:actController animated:YES completion:nil];
 }
