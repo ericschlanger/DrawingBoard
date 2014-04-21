@@ -17,7 +17,7 @@
 #import "NKOColorPickerView.h"
 #import "WYPopoverController.h"
 
-@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate,WYPopoverControllerDelegate>
 
 
 // UIImageView for entire image with all strokes merged
@@ -35,5 +35,6 @@
 - (IBAction)saveImage:(id)sender;
 - (IBAction)undo:(id)sender;
 - (IBAction)openOptions:(id)sender;
+
 
 @end

@@ -43,6 +43,16 @@
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,23 +65,7 @@
     
     // Pan ScrollView Delegate
     self.panScrollView.delegate = self;
-    
-    //Temporary Load Button
-    UIButton *loadButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    loadButton.frame = CGRectMake(160, 300, 100, 100);
-    [loadButton setTitle:@"Load Image" forState:UIControlStateNormal ];
-    [loadButton addTarget:self action:@selector(loadImage:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // Ensure that scrollview only allows two-finger scrolling
-    for (UIGestureRecognizer *gesture in self.panScrollView.gestureRecognizers)
-    {
-        if([gesture isKindOfClass:[UIPanGestureRecognizer class]])
-        {
-            UIPanGestureRecognizer *panRec = (UIPanGestureRecognizer *)gesture;
-            panRec.minimumNumberOfTouches = 2;
-        }
-    }
-    
+
     // Initialize MCPHandler
     self.mpcHandler = [[MPCHandler alloc]init];
     [self.mpcHandler setupPeerWithDisplayName:[[UIDevice currentDevice]name]];
@@ -114,7 +108,7 @@
                                                object:nil];
     
     self.lastPointReceived = NULL;
-    [self.view addSubview:loadButton];
+//    [self.view addSubview:loadButton];
     
     // Initialize Undo Array
     self.undoArray = [[NSMutableArray alloc]init];
@@ -487,6 +481,20 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - shake functionality
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        NSLog(@"shake");
+    }
+}
+
+-(BOOL)canBecomeFirstResponder {
+    return YES;
 }
 
 #pragma mark - Helper Functions
