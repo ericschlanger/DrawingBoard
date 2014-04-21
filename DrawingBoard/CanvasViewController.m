@@ -409,7 +409,7 @@
     if(self.undoArray.count <= 1)
     {
         // Clear image
-        //self.mainImageView.image = NULL;
+        self.mainImageView.image = NULL;
         
         // Clear array
         self.undoArray = [[NSMutableArray alloc]init];
