@@ -76,7 +76,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Frx-lO-iCZ"/>
-                                    <barButtonItem image="Download.png" id="0pc-q3-NTL">
+                                    <barButtonItem systemItem="action" id="0pc-q3-NTL">
                                         <connections>
                                             <action selector="saveImage:" destination="5lS-Ux-t4r" id="8ai-Hp-mzn"/>
                                         </connections>
@@ -105,7 +105,6 @@
     </scenes>
     <resources>
         <image name="ColorPicker.png" width="25" height="24"/>
-        <image name="Download.png" width="19" height="27"/>
         <image name="Mobile_Signal.png" width="26" height="23"/>
         <image name="Reply.png" width="25" height="19"/>
         <image name="Trash.png" width="19" height="25"/>
