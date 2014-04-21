@@ -489,7 +489,7 @@
 {
     if (motion == UIEventSubtypeMotionShake)
     {
-        NSLog(@"shake");
+        [self undo:self];
     }
 }
 
