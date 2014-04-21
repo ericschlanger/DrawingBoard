@@ -389,15 +389,17 @@
 
 - (IBAction)saveImage:(id)sender
 {
-    // Setup buttons for UIAlertView
-    RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-        UIImageWriteToSavedPhotosAlbum(self.mainImageView.image, nil, nil, nil);
-    }];
-    RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+    // Populate Array with message and image
+    NSArray *items = [[NSArray alloc]initWithObjects:@"Drawn in DrawingBoard",self.mainImageView.image, nil];
     
-    // Setup UIAlertView & show
-    UIAlertView *saveAlert = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"Save to camera roll?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
-    [saveAlert show];
+    // Initialize UIActivityViewController
+    UIActivityViewController *actController = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    
+    // Exclude AirDrop & ReadingList
+    actController.excludedActivityTypes = [[NSArray alloc]initWithObjects:UIActivityTypeAirDrop, UIActivityTypeAddToReadingList, nil];
+    
+    // Present ViewController
+    [self presentViewController:actController animated:YES completion:nil];
 }
 
 #pragma mark - Undo/Redo
