@@ -11,10 +11,11 @@
 #import "MPCHandler.h"
 #import "PRYColorPicker.h"
 #import "FancyPoint.h"
-#import "NSData+Godzippa.h"
 #import <zlib.h>
 #import "UIAlertView+Blocks.h"
 #import "CanvasScrollView.h"
+#import "NKOColorPickerView.h"
+#import "WYPopoverController.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -25,13 +26,14 @@
 // UIImageView for current stroke
 @property (nonatomic, strong) IBOutlet UIImageView *currentStrokeView;
 
-
+// CanvasScrollView, subclass of UIScrollView that sends touch events to the nextResponder (CanvasViewController)
 @property (nonatomic, strong) IBOutlet CanvasScrollView *panScrollView;
 
+// IBActions (Toolbar Actions)
 - (IBAction)connect:(id)sender;
 - (IBAction)clearCanvas:(id)sender;
 - (IBAction)saveImage:(id)sender;
 - (IBAction)undo:(id)sender;
-
+- (IBAction)openOptions:(id)sender;
 
 @end

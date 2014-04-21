@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NKOColorPickerView.h"
 
 @protocol ChangeOptionsDelegate <NSObject>
 - (void)changeLineWidth:(float) newLineWidth;
@@ -18,7 +19,6 @@
 
 - (IBAction)setLineWidth;
 - (IBAction)setOpacity;
-- (IBAction)closeWindow;
 - (void)updateLabels;
 
 @property(nonatomic, weak) id delegate;

@@ -4,21 +4,32 @@
 
 @interface CanvasViewController ()
 
+// Drawing options
 @property (nonatomic, strong) UIColor *currentColor;
 @property (nonatomic) CGFloat currentLineWidth;
 @property (nonatomic) CGFloat currentOpacity;
 
+// Store last points (local & received)
 @property (nonatomic) CGPoint lastPoint;
 @property (nonatomic) FancyPoint *lastPointReceived;
 
+// Flag if finger is moving
 @property (nonatomic) BOOL swipe;
 
+// Multipeer Connectivity Handler
 @property (nonatomic, strong) MPCHandler *mpcHandler;
 
+// Stores previous strokes
 @property (nonatomic, strong) NSMutableArray *undoArray;
 
+// Used in case of dropped points to designate end of stroke
 @property (nonatomic) short currentStrokeID;
 @property (nonatomic) short lastStrokeID;
+
+// Popover Containers for Colorpicker, Options, and MPC
+@property (nonatomic, strong) WYPopoverController *colorPopover;
+@property (nonatomic, strong) WYPopoverController *optionsPopover;
+@property (nonatomic, strong) WYPopoverController *connectPopover;
 
 @end
 
@@ -36,12 +47,13 @@
 {
     [super viewDidLoad];
     
-    // Temporary Settings
+    // Default Settings
     self.currentColor = [UIColor blackColor];
     self.currentLineWidth = 10.0f;
     self.currentOpacity = 1.0;
     self.lastPoint = CGPointMake(0, 0);
     
+    // Pan ScrollView Delegate
     self.panScrollView.delegate = self;
     
     //Temporary Load Button
@@ -66,9 +78,34 @@
     [self.mpcHandler setupSession];
     [self.mpcHandler advertiseSelf:true];
     
+    // Motion ColorPicker Setup
     PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height-125, 50, 50)];
     [self.view addSubview:colorPicker];
     colorPicker.delegate = self;
+    
+    
+    // Options Popover Setup
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
+    OptionViewController *optVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"optionsScene"];
+    optVC.preferredContentSize = CGSizeMake(300, 500);
+    NKOColorPickerDidChangeColorBlock block = ^(UIColor *color)
+    {
+        self.currentColor = color;
+    };
+    NKOColorPickerView *colorPickerView = [[NKOColorPickerView alloc]initWithFrame:CGRectMake(0, 250, 300, 250) color:self.currentColor andDidChangeColorBlock:block];
+    [colorPickerView setTintColor:[UIColor blackColor]];
+    [optVC.view addSubview:colorPickerView];
+    optVC.delegate = self;
+    self.optionsPopover = [[WYPopoverController alloc]initWithContentViewController:optVC];
+    
+    
+    // MPC Setup
+    [self.mpcHandler setupBrowser];
+    [self.mpcHandler.browser setDelegate:self];
+    self.mpcHandler.browser.preferredContentSize = CGSizeMake(300, 400);
+    self.connectPopover = [[WYPopoverController alloc]initWithContentViewController:self.mpcHandler.browser];
+
     
     // Handle Notifcations
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -81,6 +118,9 @@
     
     // Initialize Undo Array
     self.undoArray = [[NSMutableArray alloc]init];
+    
+    // Set lastPointReceived as empty
+    self.lastPointReceived = NULL;
 }
 
 - (void)viewDidLayoutSubviews
@@ -90,7 +130,7 @@
     [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 1024)];
     [self.panScrollView setContentSize:CGSizeMake(768, 1024)];
     
-    // Disable scrolling if ipad
+    // Disable scrolling if iPad
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         self.panScrollView.scrollEnabled = NO;
@@ -100,39 +140,30 @@
 #pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
-    [self.mpcHandler setupBrowser];
-    [self.mpcHandler.browser setDelegate:self];
-    [self presentViewController:self.mpcHandler.browser
-                       animated:YES
-                     completion:nil];
+    UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+    [self.connectPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
 {
-    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
 {
-    [self.mpcHandler.browser dismissViewControllerAnimated:YES completion:nil];
+    [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 #pragma mark - Send/Receive FancyPoints
 
 - (void)sendString:(NSString *)string
 {
-    //NSDate *date = [NSDate date];
+    // Encode string with NSUTF8StringEncoding
     NSData *cData = [string dataUsingEncoding:NSUTF8StringEncoding];
-    //NSLog(@"No Compression: %f",[[NSDate date]timeIntervalSinceDate:date]);
-    
-    /*NSDate *dateTwo = [NSDate date];
-    NSData *ccData = [[string dataUsingEncoding:NSUTF8StringEncoding] dataByGZipCompressingWithError:nil];
-    NSLog(@"Compression: %f",[[NSDate date]timeIntervalSinceDate:dateTwo]);*/
-    
-    
     NSError *error = nil;
     
+    // Send data reliably
     [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
     if(error != NULL)
     {
@@ -142,11 +173,12 @@
 
 - (void)sendImage:(UIImage *)image
 {
-    //NSData *cData = [UIImagePNGRepresentation(self.mainImageView.image) dataByGZipCompressingWithError:nil];
+    // Encode image as a PNG
     NSData *cData = UIImagePNGRepresentation(self.mainImageView.image);
     NSError *error = nil;
 
-    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
+    // Send data unreliable (for speed)
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
     if(error != NULL)
     {
         NSLog(@"Error: %@",[error localizedDescription]);
@@ -155,33 +187,35 @@
 
 - (void)didReceiveData:(NSNotification *)notification
 {
+    // Get data from NSNotifications
     NSDictionary *userInfo = [notification userInfo];
     NSData *unCData = userInfo[@"data"];
-    if([[self contentTypeForImageData:unCData] isEqual: @"image/png"])
+    
+    // Check if message is an image (for undo) or a point
+    if([self isImage:unCData])
     {
         self.mainImageView.image = [UIImage imageWithData:unCData];
     }
     else
     {
+        // Convert data to string using UTF8 decoding
         NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
         if(dataString != NULL)
         {
-            if([dataString isEqualToString:@"ClearRequest"])
+            if([dataString isEqualToString:@"CR"])
             {
                 RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-                    self.mainImageView.image = NULL;
-                    self.currentStrokeView.image = NULL;
-                    [self sendString:@"ClearRequestAccepted"];
+                    [self clearImageViews];
+                    [self sendString:@"CRA"];
                 }];
                 RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
                 
                 UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
                 [clearRequest show];
             }
-            else if([dataString isEqualToString:@"ClearRequestAccepted"])
+            else if([dataString isEqualToString:@"CRA"])
             {
-                self.mainImageView.image = NULL;
-                self.currentStrokeView.image = NULL;
+                [self clearImageViews];
             }
             else
             {
@@ -190,48 +224,27 @@
                 // Different stroke IDs, merge images (end line)
                 if(point.strokeID != self.lastStrokeID)
                 {
-                    
-                    [self mergeStrokesToMainImageWithOpacity:[self.lastPointReceived fetchOpacity]];
-                    self.lastPointReceived = NULL;
+                    [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:[self.lastPointReceived fetchOpacity] andAddToUndoArray:NO];
+                    self.lastPointReceived = NULL; //******PROBABLY DONT NEED THIS*********
                 }
                 
                 if(self.lastPointReceived == NULL)
                 {
+                    // Draw single point
                     [self drawLineFromPoint:CGPointMake(point.x, point.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[point fetchOpacity]];
                 }
                 else
                 {
+                    // Draw line using two most recent points
                     [self drawLineFromPoint:CGPointMake(self.lastPointReceived.x,self.lastPointReceived.y) toPoint:CGPointMake(point.x, point.y) withColor:[point fetchColor] andWidth:point.lineWidth andOpacity:[self.lastPointReceived fetchOpacity]];
                 }
                 
+                // Store lastPoint and lastStrokeID
                 self.lastPointReceived = point;
                 self.lastStrokeID = point.strokeID;
             }
         }
     }
-}
-
-- (BOOL)peersConnected
-{
-    return [self.mpcHandler.session.connectedPeers count];
-}
-
-- (NSString *)contentTypeForImageData:(NSData *)data {
-    uint8_t c;
-    [data getBytes:&c length:1];
-    
-    switch (c) {
-        case 0xFF:
-            return @"image/jpeg";
-        case 0x89:
-            return @"image/png";
-        case 0x47:
-            return @"image/gif";
-        case 0x49:
-        case 0x4D:
-            return @"image/tiff";
-    }
-    return nil;
 }
 
 #pragma mark - Touch Handling
@@ -291,7 +304,8 @@
         }
     }
 
-    [self mergeStrokesToMainImageWithOpacity:self.currentOpacity];
+    // Merge currentStrokeView to mainImageView
+    [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:self.currentOpacity andAddToUndoArray:YES];
 }
 
 #pragma mark - Drawing
@@ -318,20 +332,23 @@
     // Draw image to stroke view
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     
+    // Draw image context to currentStrokeView
     [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
     
+    // Set opacity of layer
     [self.currentStrokeView setAlpha:opacity];
     
     // End graphics context
     UIGraphicsEndImageContext();
 }
 
-- (void)mergeStrokesToMainImageWithOpacity:(CGFloat)opacity
+// 1:mainimageview 2:currentStrokeView
+- (void)mergeImageView:(UIImageView *)imageView1 withImageView:(UIImageView *)imageView2 andOpacity:(CGFloat)opacity andAddToUndoArray:(BOOL)undoFlag
 {
     // Merge stroke view with main image view
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    [self.mainImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
-    [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height) blendMode:kCGBlendModeNormal alpha:opacity];
+    [imageView1.image drawInRect:CGRectMake(0, 0, imageView1.frame.size.width, imageView1.frame.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    [imageView2.image drawInRect:CGRectMake(0, 0, imageView1.frame.size.width, imageView1.frame.size.height) blendMode:kCGBlendModeNormal alpha:opacity];
     
     // Set image from context
     [self.mainImageView setImage:UIGraphicsGetImageFromCurrentImageContext()];
@@ -342,48 +359,63 @@
     // End context
     UIGraphicsEndImageContext();
     
-    // Remove object if undoArray count is greater/equal to 10
-    if(self.undoArray.count >= 10)
+    if(undoFlag)
     {
-        [self.undoArray removeObjectAtIndex:0];
+        // Remove object if undoArray count is greater/equal to 10
+        if(self.undoArray.count >= 10)
+        {
+            [self.undoArray removeObjectAtIndex:0];
+        }
+        // Save old image state to undoArray
+        [self.undoArray addObject:imageView1.image];
     }
-    // Save old image state to undoArray
-    [self.undoArray addObject:self.mainImageView.image];
 }
 
+#pragma mark - Change Color
 - (void)colorChangedToColor:(UIColor *)color
 {
     self.currentColor = color;
 }
 
+#pragma mark - Clear & Save
 - (IBAction)clearCanvas:(id)sender
 {
+    // Setup buttons for UIAlertView
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
     RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-    
             if([self peersConnected])
             {
-                [self sendString:@"ClearRequest"];
+                [self sendString:@"CR"];
             }
             else
             {
-                self.mainImageView.image = NULL;
-                self.currentStrokeView.image = NULL;
+                [self clearImageViews];
             }
     }];
     
+    // Setup UIAlertView & show
     UIAlertView *clearConfirm = [[UIAlertView alloc]initWithTitle:@"Clear Canvas" message:@"Are you sure?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
     [clearConfirm show];
 }
 
+- (void)clearImageViews
+{
+    // Clear both UIImageView
+    self.mainImageView.image = NULL;
+    self.currentStrokeView.image = NULL;
+    self.undoArray = [[NSMutableArray alloc]init];
+}
+
 - (IBAction)saveImage:(id)sender
 {
-    RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
-        UIImageWriteToSavedPhotosAlbum(self.mainImageView.image, nil, nil, nil);
-    }];
-    RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
-    UIAlertView *saveAlert = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"Save to camera roll?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
-    [saveAlert show];
+    // Populate Array with message and image
+    NSArray *items = [[NSArray alloc]initWithObjects:@"Drawn in DrawingBoard",self.mainImageView.image, nil];
+    
+    // Initialize UIActivityViewController
+    UIActivityViewController *actController = [[UIActivityViewController alloc]initWithActivityItems:items applicationActivities:nil];
+    
+    // Present ViewController
+    [self presentViewController:actController animated:YES completion:nil];
 }
 
 #pragma mark - Undo/Redo
@@ -396,41 +428,52 @@
         self.mainImageView.image = NULL;
         
         // Clear array
-        self.undoArray = [NSMutableArray array];
+        self.undoArray = [[NSMutableArray alloc]init];
     }
     else
     {
-        // Move back one stroke
-        self.mainImageView.image = self.undoArray[self.undoArray.count - 2];
-        
         // Remove stroke from array;
-        [self.undoArray removeObjectAtIndex:self.undoArray.count - 2];
+        [self.undoArray removeObjectAtIndex:self.undoArray.count - 1];
+        
+        // Move back one stroke
+        self.mainImageView.image = [self.undoArray objectAtIndex:[self.undoArray count] - 1];
+        
+        if([self peersConnected])
+        {
+            NSLog(@"send image");
+            [self sendImage:self.mainImageView.image];
+        }
     }
     
-    if([self peersConnected])
-    {
-        [self sendImage:self.mainImageView.image];
-    }
 }
 
 #pragma mark - Line Options
-- (void) changeLineWidth:(float)newLineWidth {
+- (void) changeLineWidth:(float)newLineWidth
+{
+    // Set new line width
     self.currentLineWidth = newLineWidth;
 }
 
-- (void) changeOpacity:(float)newOpacity {
+- (void) changeOpacity:(float)newOpacity
+{
+    // Set new opacity
     self.currentOpacity = newOpacity;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (IBAction)openOptions:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"openOptions"])
-    {
-        OptionViewController *optionVC = [segue destinationViewController];
-        optionVC.delegate = self;
-        optionVC.defaultLineValue = self.currentLineWidth;      // pass in initial values for sliders
-        optionVC.defaultOpacityValue = self.currentOpacity;
-    }
+    // Cast sender to UIBarButtonItem
+    UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+    
+    // Get OptionViewController from optionsPopover
+    OptionViewController *optVC = (OptionViewController *)self.optionsPopover.contentViewController;
+    
+    // Set default line width & opacity
+    optVC.defaultLineValue = self.currentLineWidth;
+    optVC.defaultOpacityValue = self.currentOpacity;
+    
+    // Present popover
+    [self.optionsPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - Hide Status Bar & Lock Orientation
@@ -444,6 +487,28 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Helper Functions
+
+- (BOOL)peersConnected
+{
+    // Returns true if count is greater than zero, false otherwise
+    return [self.mpcHandler.session.connectedPeers count];
+}
+
+- (BOOL)isImage:(NSData *)data
+{
+    uint8_t c;
+    [data getBytes:&c length:1];
+    if(c == 0x89 || c == 0xFF)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 

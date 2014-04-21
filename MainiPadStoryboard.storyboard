@@ -58,33 +58,31 @@
                                 <rect key="frame" x="0.0" y="980" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Undo" id="HaG-1f-POS">
+                                    <barButtonItem image="Reply.png" id="HaG-1f-POS">
                                         <connections>
                                             <action selector="undo:" destination="5lS-Ux-t4r" id="Mzb-lN-3Co"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3uc-Hb-ybd"/>
-                                    <barButtonItem title="Options" id="SAT-Ra-h6S">
+                                    <barButtonItem image="ColorPicker.png" id="SAT-Ra-h6S">
                                         <connections>
-                                            <segue destination="Edq-wK-Scn" kind="popover" identifier="openOptions" popoverAnchorBarButtonItem="SAT-Ra-h6S" id="EWj-AG-lbv">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <action selector="openOptions:" destination="5lS-Ux-t4r" id="hn6-zN-D8c"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SYy-bX-eje"/>
-                                    <barButtonItem title="Clear" id="6Zg-Oe-0jb">
+                                    <barButtonItem image="Trash.png" id="6Zg-Oe-0jb">
                                         <connections>
                                             <action selector="clearCanvas:" destination="5lS-Ux-t4r" id="PLi-rN-1Mb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Frx-lO-iCZ"/>
-                                    <barButtonItem title="Save" id="0pc-q3-NTL">
+                                    <barButtonItem image="Download.png" id="0pc-q3-NTL">
                                         <connections>
                                             <action selector="saveImage:" destination="5lS-Ux-t4r" id="8ai-Hp-mzn"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="jh1-bx-Vsa"/>
-                                    <barButtonItem title="Connect" id="OmF-kr-hUD">
+                                    <barButtonItem image="Mobile_Signal.png" id="OmF-kr-hUD">
                                         <connections>
                                             <action selector="connect:" destination="5lS-Ux-t4r" id="Yck-Hg-HQq"/>
                                         </connections>
@@ -104,90 +102,14 @@
             </objects>
             <point key="canvasLocation" x="-370" y="-806"/>
         </scene>
-        <!--Option View Controller-->
-        <scene sceneID="FXv-3C-6uV">
-            <objects>
-                <viewController id="Edq-wK-Scn" customClass="OptionViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6M0-qK-NK3"/>
-                        <viewControllerLayoutGuide type="bottom" id="7ha-64-tAz"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="svE-em-j0N">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Options" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xL3-1n-YAl">
-                                <rect key="frame" x="120" y="20" width="61" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIv-8A-Ze5">
-                                <rect key="frame" x="127" y="350" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Return">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="closeWindow" destination="Edq-wK-Scn" eventType="touchUpInside" id="e97-sG-dKK"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Line Width" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fc8-SI-L3D">
-                                <rect key="frame" x="109" y="67" width="82" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Opacity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xFh-38-0u5">
-                                <rect key="frame" x="120" y="212" width="60" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lx2-aq-hYx">
-                                <rect key="frame" x="132" y="279" width="36" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sfd-oa-3uf">
-                                <rect key="frame" x="140" y="159" width="21" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="bA1-eK-8du">
-                                <rect key="frame" x="51" y="105" width="199" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="setLineWidth" destination="Edq-wK-Scn" eventType="valueChanged" id="iTF-3N-Osn"/>
-                                </connections>
-                            </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.050000000000000003" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="26d-9B-jRd">
-                                <rect key="frame" x="51" y="241" width="199" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="setOpacity" destination="Edq-wK-Scn" eventType="valueChanged" id="oLw-Rf-yte"/>
-                                </connections>
-                            </slider>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="400"/>
-                    <connections>
-                        <outlet property="lineLabel" destination="Sfd-oa-3uf" id="VDZ-h3-bhv"/>
-                        <outlet property="opacLabel" destination="lx2-aq-hYx" id="J6r-bl-IYO"/>
-                        <outlet property="opacSlider" destination="26d-9B-jRd" id="LZ8-cM-Xue"/>
-                        <outlet property="slider" destination="bA1-eK-8du" id="fBP-4B-neI"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ptO-gM-ka5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="466" y="-817"/>
-        </scene>
     </scenes>
+    <resources>
+        <image name="ColorPicker.png" width="25" height="24"/>
+        <image name="Download.png" width="19" height="27"/>
+        <image name="Mobile_Signal.png" width="26" height="23"/>
+        <image name="Reply.png" width="25" height="19"/>
+        <image name="Trash.png" width="19" height="25"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
