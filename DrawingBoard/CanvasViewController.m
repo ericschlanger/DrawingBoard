@@ -525,6 +525,22 @@
     [super didReceiveMemoryWarning];
 }
 
-
-
+//  This function will push the current mainImageView to all connected peers
+//  user should only be allowed to do this IF they are connected to other peers
+-(IBAction)pushCurrentView:(id)sender {
+    // Setup buttons for UIAlertView
+    RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+    RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+        if([self peersConnected])
+        {
+            //  send the current mainImageView
+            NSLog(@"send image");
+            [self sendImage:self.mainImageView.image];
+        }
+    }];
+    
+    // Setup UIAlertView & show
+    UIAlertView *pushConfirm = [[UIAlertView alloc]initWithTitle:@"Push Your View?" message:@"This will synchronize all connected devices with your current canvas. Are you sure?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+    [pushConfirm show];
+}
 @end
