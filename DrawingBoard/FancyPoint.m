@@ -19,9 +19,9 @@
         self.y = point.y;
         CGFloat red,green,blue;
         [color getRed:&red green:&green blue:&blue alpha:nil];
-        self.rColor = (char)((red * 255.0f) - 128);
-        self.gColor = (char)((green * 255.0f) - 128);
-        self.bColor = (char)((blue * 255.0f) - 128);
+        self.rColor = red * 255.0f;
+        self.gColor = green * 255.0f;
+        self.bColor = blue * 255.0f;
         self.opacity = opacity * 100;
         self.lineWidth = width;
         self.strokeID = strokeID;
@@ -35,27 +35,27 @@
     if(self)
     {
         NSArray *comp = [string componentsSeparatedByString:@"|"];
-        self.x = (short)[comp[0] intValue];
-        self.y = (short)[comp[1] intValue];
-        self.rColor = (char)[comp[2] intValue];
-        self.gColor = (char)[comp[3] intValue];
-        self.bColor = (char)[comp[4] intValue];
-        self.opacity = (char)[comp[5] intValue];
-        self.lineWidth = (char)[comp[6] intValue];
-        self.strokeID = (short)[comp[7] intValue];
+        self.x = [comp[0] intValue];
+        self.y = [comp[1] intValue];
+        self.rColor = [comp[2] intValue];
+        self.gColor = [comp[3] intValue];
+        self.bColor = [comp[4] intValue];
+        self.opacity = [comp[5] intValue];
+        self.lineWidth = [comp[6] intValue];
+        self.strokeID = [comp[7] intValue];
     }
     return self;
 }
 
 - (NSString *)toString
 {
-    NSString *returnString = [NSString stringWithFormat:@"%hd|%hd|%d|%d|%d|%d|%d|%hd",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth,self.strokeID];
+    NSString *returnString = [NSString stringWithFormat:@"%hd|%hd|%hd|%hd|%hd|%hd|%hd|%hd",self.x,self.y,self.rColor,self.gColor,self.bColor,self.opacity,self.lineWidth,self.strokeID];
     return returnString;
 }
 
 - (UIColor *)fetchColor
 {
-    return [UIColor colorWithRed:(self.rColor+128)/255.0f green:(self.gColor+128)/255.0f blue:(self.bColor+128)/255.0 alpha:1];
+    return [UIColor colorWithRed:(self.rColor/255.0f) green:(self.gColor/255.0f) blue:(self.bColor/255.0f) alpha:1];
 }
 
 - (CGFloat)fetchOpacity

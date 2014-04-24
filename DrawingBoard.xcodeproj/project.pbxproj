@@ -49,6 +49,7 @@
 		27B046A319004C9B0062C302 /* Mobile_Signal.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B046A219004C9B0062C302 /* Mobile_Signal.png */; };
 		27B046A519004CA20062C302 /* Reply.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B046A419004CA20062C302 /* Reply.png */; };
 		27B046A919004CAF0062C302 /* Trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B046A819004CAF0062C302 /* Trash.png */; };
+		27B3341F1909C33400921732 /* DMRNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B3341E1909C33400921732 /* DMRNotificationView.m */; };
 		442C153418EDE990009D043C /* OptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C153318EDE990009D043C /* OptionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,8 @@
 		27B046A219004C9B0062C302 /* Mobile_Signal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mobile_Signal.png; sourceTree = "<group>"; };
 		27B046A419004CA20062C302 /* Reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Reply.png; sourceTree = "<group>"; };
 		27B046A819004CAF0062C302 /* Trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Trash.png; sourceTree = "<group>"; };
+		27B3341D1909C33400921732 /* DMRNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMRNotificationView.h; sourceTree = "<group>"; };
+		27B3341E1909C33400921732 /* DMRNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMRNotificationView.m; sourceTree = "<group>"; };
 		442C153218EDE990009D043C /* OptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionViewController.h; sourceTree = "<group>"; };
 		442C153318EDE990009D043C /* OptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -294,6 +297,7 @@
 		27B0267318F08716007E374E /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				27B3341C1909C33400921732 /* DMRNotificationView */,
 				27B0469019002E560062C302 /* WYPopoverController */,
 				27B04689190026280062C302 /* ColorPicker */,
 				27802A2A18F7564F00B84189 /* UIAlertView+Blocks */,
@@ -347,6 +351,15 @@
 				27B0469819004C090062C302 /* Trash@2x.png */,
 			);
 			name = Icons;
+			sourceTree = "<group>";
+		};
+		27B3341C1909C33400921732 /* DMRNotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				27B3341D1909C33400921732 /* DMRNotificationView.h */,
+				27B3341E1909C33400921732 /* DMRNotificationView.m */,
+			);
+			path = DMRNotificationView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -463,6 +476,7 @@
 				27802A3118F7566300B84189 /* RIButtonItem.m in Sources */,
 				27B0468F19002E530062C302 /* WYStoryboardPopoverSegue.m in Sources */,
 				27B046811900261D0062C302 /* NKOColorPickerView.m in Sources */,
+				27B3341F1909C33400921732 /* DMRNotificationView.m in Sources */,
 				27802A3218F7566300B84189 /* UIActionSheet+Blocks.m in Sources */,
 				07DCCB7E18E46A66004A786C /* AppDelegate.m in Sources */,
 				277D70A718FF588900B428F6 /* CanvasScrollView.m in Sources */,

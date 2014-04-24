@@ -12,11 +12,11 @@
 
 @property (nonatomic)short x;
 @property (nonatomic)short y;
-@property (nonatomic)char rColor;
-@property (nonatomic)char gColor;
-@property (nonatomic)char bColor;
-@property (nonatomic)char lineWidth;
-@property (nonatomic)char opacity;
+@property (nonatomic)short rColor;
+@property (nonatomic)short gColor;
+@property (nonatomic)short bColor;
+@property (nonatomic)short lineWidth;
+@property (nonatomic)short opacity;
 @property (nonatomic)short strokeID;
 
 - (id)initWithPoint:(CGPoint)point andColor:(UIColor *)color andWidth:(char)width andOpacity:(float)opacity andID:(short)strokeID;

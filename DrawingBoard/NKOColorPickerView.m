@@ -41,6 +41,8 @@ CGFloat const NKOPickerViewCrossHairshWidthAndHeight    = 38.f;
 @property (nonatomic, strong) UIImageView *brightnessIndicator;
 @property (nonatomic, strong) UIImageView *hueSatImage;
 @property (nonatomic, strong) UIView *crossHairs;
+@property (nonatomic) BOOL brightnessFlag;
+
 
 @end
 
@@ -75,6 +77,8 @@ CGFloat const NKOPickerViewCrossHairshWidthAndHeight    = 38.f;
     [self _updateBrightnessPosition];
     [self _updateGradientColor];
     [self _updateCrosshairPosition];
+    
+    self.brightnessFlag = false;
 }
 
 - (void)layoutSubviews
@@ -193,6 +197,15 @@ CGFloat const NKOPickerViewCrossHairshWidthAndHeight    = 38.f;
     [self _updateGradientColor];
     
     [self _setColor:_tcolor];
+    
+    // ***To avoid confusion****
+    
+    if(self.brightnessFlag == false)
+    {
+        [self _updateBrightnessWithMovement:CGPointMake(0, 0)];
+        [self _updateBrightnessPosition];
+        self.brightnessFlag = true;
+    }
 }
 
 - (void)_updateBrightnessWithMovement:(CGPoint)position

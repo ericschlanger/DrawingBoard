@@ -165,6 +165,20 @@
 
 - (void)didChangeState:(NSNotification *)notification
 {
+    NSDictionary *dict = [notification userInfo];
+    if([dict[@"state"] isEqualToNumber:[NSNumber numberWithInt:2]])
+    {
+        MCPeerID *peerid = dict[@"peerID"];
+        NSString *titleMsg = [NSString stringWithFormat:@"%@ has connected",peerid.displayName];
+        [DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
+    }
+    if([dict[@"state"] isEqualToNumber:[NSNumber numberWithInt:0]])
+    {
+        MCPeerID *peerid = dict[@"peerID"];
+        NSString *titleMsg = [NSString stringWithFormat:@"%@ has disconnected",peerid.displayName];
+        [DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
+    }
+    
     if([self peersConnected])
     {
         self.undoButton.enabled = NO;
@@ -200,7 +214,7 @@
     NSError *error = nil;
 
     // Send data unreliable (for speed)
-    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataReliable error:&error];
+    [self.mpcHandler.session sendData:cData toPeers:self.mpcHandler.session.connectedPeers withMode:MCSessionSendDataUnreliable error:&error];
     if(error != NULL)
     {
         NSLog(@"Error: %@",[error localizedDescription]);
@@ -211,8 +225,7 @@
 {
     // Get data from NSNotifications
     NSDictionary *userInfo = [notification userInfo];
-    NSData *unCData = userInfo[@"data"];
-    
+    NSData *unCData = userInfo[@"data"];    
     // Check if message is an image (for undo) or a point
     if([self isImage:unCData])
     {
@@ -435,6 +448,7 @@
 
 - (IBAction)saveImage:(id)sender
 {
+    
     // Populate Array with message and image
     NSArray *items = [[NSArray alloc]initWithObjects:@"Drawn in DrawingBoard",self.mainImageView.image, nil];
     
