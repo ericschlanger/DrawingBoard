@@ -31,6 +31,8 @@
 @property (nonatomic, strong) WYPopoverController *optionsPopover;
 @property (nonatomic, strong) WYPopoverController *connectPopover;
 
+@property (nonatomic, strong) UIButton *syncButton;
+
 @end
 
 @implementation CanvasViewController
@@ -98,6 +100,12 @@
     [self.mpcHandler setupBrowser];
     [self.mpcHandler.browser setDelegate:self];
     self.mpcHandler.browser.preferredContentSize = CGSizeMake(300, 400);
+    self.syncButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.syncButton setFrame:CGRectMake(300/2-35/2, 360, 35, 30)];
+    [self.syncButton setTitle:@"Sync" forState:UIControlStateNormal];
+    [self.syncButton addTarget:self action:@selector(pushCurrentView:) forControlEvents:UIControlEventTouchUpInside];
+    [self.mpcHandler.browser.view addSubview:self.syncButton];
+    
     self.connectPopover = [[WYPopoverController alloc]initWithContentViewController:self.mpcHandler.browser];
 
     
@@ -119,16 +127,16 @@
     // Set lastPointReceived as empty
     self.lastPointReceived = NULL;
     
-    // Enable/Disable undo button
+    // Enable/Disable undo/sync button
     [self didChangeState:nil];
 }
 
 - (void)viewDidLayoutSubviews
 {
     // Set canvas size
-    [self.mainImageView setFrame:CGRectMake(0, 0, 768, 1024)];
-    [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 1024)];
-    [self.panScrollView setContentSize:CGSizeMake(768, 1024)];
+    [self.mainImageView setFrame:CGRectMake(0, 0, 768, 980)];
+    [self.currentStrokeView setFrame:CGRectMake(0, 0, 768, 980)];
+    [self.panScrollView setContentSize:CGSizeMake(768, 980)];
     
     // Disable scrolling if iPad
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -160,10 +168,12 @@
     if([self peersConnected])
     {
         self.undoButton.enabled = NO;
+        self.syncButton.enabled = YES;
     }
     else
     {
         self.undoButton.enabled = YES;
+        self.syncButton.enabled = NO;
     }
 }
 
@@ -206,7 +216,12 @@
     // Check if message is an image (for undo) or a point
     if([self isImage:unCData])
     {
-        self.mainImageView.image = [UIImage imageWithData:unCData];
+        RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
+            self.mainImageView.image = [UIImage imageWithData:unCData];
+        }];
+        RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
+        UIAlertView *syncRequest = [[UIAlertView alloc]initWithTitle:@"Would you like to sync?" message:@"Your drawing will be lost" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
+        [syncRequest show];
     }
     else
     {
@@ -449,14 +464,7 @@
         
         // Move back one stroke
         self.mainImageView.image = [self.undoArray objectAtIndex:[self.undoArray count] - 1];
-        
-        if([self peersConnected])
-        {
-            NSLog(@"send image");
-            [self sendImage:self.mainImageView.image];
-        }
     }
-    
 }
 
 #pragma mark - Line Options
@@ -550,15 +558,15 @@
 
 //  This function will push the current mainImageView to all connected peers
 //  user should only be allowed to do this IF they are connected to other peers
--(IBAction)pushCurrentView:(id)sender {
+-(void)pushCurrentView:(id)sender {
     // Setup buttons for UIAlertView
     RIButtonItem *noButton = [RIButtonItem itemWithLabel:@"No"];
     RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
         if([self peersConnected])
         {
             //  send the current mainImageView
-            NSLog(@"send image");
             [self sendImage:self.mainImageView.image];
+            [self.connectPopover dismissPopoverAnimated:YES];
         }
     }];
     

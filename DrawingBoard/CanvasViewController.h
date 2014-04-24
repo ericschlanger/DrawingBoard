@@ -37,7 +37,6 @@
 - (IBAction)saveImage:(id)sender;
 - (IBAction)undo:(id)sender;
 - (IBAction)openOptions:(id)sender;
-- (IBAction)pushCurrentView:(id)sender;
 
 
 @end
