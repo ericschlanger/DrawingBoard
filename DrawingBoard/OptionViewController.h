@@ -12,6 +12,7 @@
 @protocol ChangeOptionsDelegate <NSObject>
 - (void)changeLineWidth:(float) newLineWidth;
 - (void)changeOpacity:(float) newOpacity;
+- (void)closeOptions;
 @end
 
 
@@ -19,6 +20,7 @@
 
 - (IBAction)setLineWidth;
 - (IBAction)setOpacity;
+- (IBAction)close:(id)sender;
 - (void)updateLabels;
 
 @property(nonatomic, weak) id delegate;

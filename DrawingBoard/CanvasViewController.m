@@ -74,7 +74,7 @@
     
     // Motion ColorPicker Setup
     PRYColorPicker *colorPicker = [[PRYColorPicker alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-25, self.view.frame.size.height-125, 50, 50)];
-    [self.view addSubview:colorPicker];
+    //[self.view addSubview:colorPicker];
     colorPicker.delegate = self;
     
     
@@ -106,15 +106,21 @@
                                              selector:@selector(didReceiveData:)
                                                  name:@"DrawingBoard_ReceivedData"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangeState:)
+                                                 name:@"DrawingBoard_ChangedState"
+                                               object:nil];
     
     self.lastPointReceived = NULL;
-//    [self.view addSubview:loadButton];
     
     // Initialize Undo Array
     self.undoArray = [[NSMutableArray alloc]init];
     
     // Set lastPointReceived as empty
     self.lastPointReceived = NULL;
+    
+    // Enable/Disable undo button
+    [self didChangeState:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -147,6 +153,18 @@
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
 {
     [self.connectPopover dismissPopoverAnimated:YES];
+}
+
+- (void)didChangeState:(NSNotification *)notification
+{
+    if([self peersConnected])
+    {
+        self.undoButton.enabled = NO;
+    }
+    else
+    {
+        self.undoButton.enabled = YES;
+    }
 }
 
 #pragma mark - Send/Receive FancyPoints
@@ -468,6 +486,11 @@
     
     // Present popover
     [self.optionsPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)closeOptions
+{
+    [self.optionsPopover dismissPopoverAnimated:YES];
 }
 
 #pragma mark - Hide Status Bar & Lock Orientation

@@ -50,6 +50,11 @@
     self.opacLabel.text = [NSString stringWithFormat:@"%.2f", self.opacSlider.value];
 }
 
+- (IBAction)close:(id)sender
+{
+    [self.delegate closeOptions];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

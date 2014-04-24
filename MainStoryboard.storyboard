@@ -102,6 +102,7 @@
                         <outlet property="currentStrokeView" destination="mDf-RV-96j" id="fyL-qk-RXH"/>
                         <outlet property="mainImageView" destination="5V8-bI-puF" id="8fZ-pg-BNI"/>
                         <outlet property="panScrollView" destination="rZb-95-59X" id="wS5-aJ-mVi"/>
+                        <outlet property="undoButton" destination="IPc-EY-Sg7" id="3Dq-H5-kTn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KPF-Ul-f3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -162,7 +163,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Options" id="bHh-dD-Rgt"/>
+                                    <navigationItem title="Options" id="bHh-dD-Rgt">
+                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="1j3-3h-VVJ">
+                                            <connections>
+                                                <action selector="close:" destination="6pH-Df-tDe" id="x2a-Fi-O0m"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>

@@ -64,15 +64,15 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3uc-Hb-ybd"/>
-                                    <barButtonItem image="ColorPicker.png" id="SAT-Ra-h6S">
-                                        <connections>
-                                            <action selector="openOptions:" destination="5lS-Ux-t4r" id="hn6-zN-D8c"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SYy-bX-eje"/>
                                     <barButtonItem image="Trash.png" id="6Zg-Oe-0jb">
                                         <connections>
                                             <action selector="clearCanvas:" destination="5lS-Ux-t4r" id="PLi-rN-1Mb"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SYy-bX-eje"/>
+                                    <barButtonItem image="ColorPicker.png" id="SAT-Ra-h6S">
+                                        <connections>
+                                            <action selector="openOptions:" destination="5lS-Ux-t4r" id="hn6-zN-D8c"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Frx-lO-iCZ"/>
@@ -96,6 +96,7 @@
                         <outlet property="currentStrokeView" destination="Txj-cb-HU5" id="UPL-Bv-Llg"/>
                         <outlet property="mainImageView" destination="XCG-DL-Mg0" id="EQf-q8-Bzx"/>
                         <outlet property="panScrollView" destination="PAb-fe-x8S" id="2yj-NU-82r"/>
+                        <outlet property="undoButton" destination="HaG-1f-POS" id="H9D-Sg-0d0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xCE-aw-eNh" userLabel="First Responder" sceneMemberID="firstResponder"/>
