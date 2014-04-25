@@ -108,10 +108,10 @@ static CGFloat kNotificationViewShadowOffset = 5.0;                     // Shado
         if (textIncludesShadow)
             CGContextSetShadowWithColor(ref, CGSizeMake(0.0, -1.0), 0.0, [UIColor colorWithWhite:0.0 alpha:0.3].CGColor);
         
-        [_title drawInRect:CGRectMake(10.0, labelVerticalPosition, _targetView.bounds.size.width-20.0, titleSize.height)
-                  withFont:[self titleFont]
-             lineBreakMode:NSLineBreakByWordWrapping
-                 alignment:NSTextAlignmentCenter];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        [_title drawInRect:CGRectMake(10.0, labelVerticalPosition, _targetView.bounds.size.width-20.0, titleSize.height) withAttributes:@{NSFontAttributeName: [self titleFont],NSParagraphStyleAttributeName:paragraphStyle,NSForegroundColorAttributeName: [self textColor]}];
         
         labelVerticalPosition += titleSize.height+kNotificationViewLabelVerticalPadding;
     }
@@ -124,20 +124,15 @@ static CGFloat kNotificationViewShadowOffset = 5.0;                     // Shado
         
         if (textIncludesShadow)
             CGContextSetShadowWithColor(ref, CGSizeMake(0.0, -1.0), 0.0, [UIColor colorWithWhite:0.0 alpha:0.3].CGColor);
-        
-        [_subTitle drawInRect:CGRectMake((_targetView.bounds.size.width-subTitleSize.width)/2, labelVerticalPosition, _targetView.bounds.size.width-20.0, subTitleSize.height)
-                  withFont:[self subTitleFont]
-             lineBreakMode:NSLineBreakByWordWrapping];
+
+        NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc]init];
+        para.lineBreakMode = NSLineBreakByWordWrapping;
+        [_subTitle drawInRect:CGRectMake((_targetView.bounds.size.width-subTitleSize.width)/2, labelVerticalPosition, _targetView.bounds.size.width-20.0, subTitleSize.height) withAttributes:@{NSFontAttributeName: [self subTitleFont],NSParagraphStyleAttributeName: para,NSForegroundColorAttributeName:[UIColor colorWithWhite:0.0 alpha:0.3]}];
     }
     
     // Lines
     CGContextSetAllowsAntialiasing(ref, false);
     CGContextSetLineWidth(ref, 1.0);
-
-//    CGContextMoveToPoint(ref, CGRectGetMinX(rect), CGRectGetMaxY(rect)-(kNotificationViewShadowOffset+0.5));
-//    CGContextAddLineToPoint(ref, CGRectGetMaxX(rect), CGRectGetMaxY(rect)-(kNotificationViewShadowOffset+0.5));
-//    CGContextSetStrokeColorWithColor(ref, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
-//    CGContextStrokePath(ref);
 }
 
 
@@ -297,10 +292,10 @@ static CGFloat kNotificationViewShadowOffset = 5.0;                     // Shado
 {
     if (_title.length == 0)
         return CGSizeZero;
-    
-    return [_title sizeWithFont:[self titleFont]
-              constrainedToSize:CGSizeMake(_targetView.bounds.size.width-20.0, 999.0)
-                  lineBreakMode:NSLineBreakByWordWrapping];
+
+    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc]init];
+    para.lineBreakMode = NSLineBreakByWordWrapping;
+    return [_title boundingRectWithSize:CGSizeMake(_targetView.bounds.size.width-20.0, 999.0) options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:[self titleFont],NSParagraphStyleAttributeName:para} context:nil].size;
 }
 
 -(CGSize)expectedSubTitleSize
@@ -308,9 +303,9 @@ static CGFloat kNotificationViewShadowOffset = 5.0;                     // Shado
     if (_subTitle.length == 0)
         return CGSizeZero;
     
-    return [_subTitle sizeWithFont:[self subTitleFont]
-                 constrainedToSize:CGSizeMake(_targetView.bounds.size.width-20.0, 999.0)
-                     lineBreakMode:NSLineBreakByWordWrapping];
+    NSMutableParagraphStyle *para = [[NSMutableParagraphStyle alloc]init];
+    para.lineBreakMode = NSLineBreakByWordWrapping;
+    return [_subTitle boundingRectWithSize:CGSizeMake(_targetView.bounds.size.width-20.0, 999.0) options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:[self subTitleFont],NSParagraphStyleAttributeName:para} context:nil].size;
 }
 
 -(UIFont *)titleFont

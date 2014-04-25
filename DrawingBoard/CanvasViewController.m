@@ -128,7 +128,7 @@
     self.lastPointReceived = NULL;
     
     // Enable/Disable undo/sync button
-    [self didChangeState:nil];
+    [self didChangeState:nil];    
 }
 
 - (void)viewDidLayoutSubviews
@@ -346,40 +346,48 @@
 
     // Merge currentStrokeView to mainImageView
     [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:self.currentOpacity andAddToUndoArray:YES];
+    
+    
+    
 }
 
 #pragma mark - Drawing
 - (void)drawLineFromPoint:(CGPoint)point1 toPoint:(CGPoint)point2 withColor:(UIColor *)color andWidth:(int)width andOpacity:(CGFloat)opacity
 {
-    // Start graphics context with size of frame
-    UIGraphicsBeginImageContext(self.currentStrokeView.frame.size);
-    
-    // Draw from and to points
-    [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.currentStrokeView.frame.size.width,self.currentStrokeView.frame.size.height)];
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), point1.x, point1.y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), point2.x, point2.y);
-    
-    // Set line parameters
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), width);
-    
-    // Get & set color components from UIColor
-    CGFloat red = 0, green = 0, blue = 0;
-    [color getRed:&red green:&green blue:&blue alpha:nil];
-    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
-    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-    
-    // Draw image to stroke view
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
-    
-    // Draw image context to currentStrokeView
-    [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
-    
-    // Set opacity of layer
-    [self.currentStrokeView setAlpha:opacity];
-    
-    // End graphics context
-    UIGraphicsEndImageContext();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Start graphics context with size of frame
+        UIGraphicsBeginImageContext(self.currentStrokeView.frame.size);
+        // Draw from and to points
+        [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.currentStrokeView.frame.size.width,self.currentStrokeView.frame.size.height)];
+            
+            
+        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), point1.x, point1.y);
+        CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), point2.x, point2.y);
+        
+        // Set line parameters
+        CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+        CGContextSetLineWidth(UIGraphicsGetCurrentContext(), width);
+        
+        // Get & set color components from UIColor
+        CGFloat red = 0, green = 0, blue = 0;
+        [color getRed:&red green:&green blue:&blue alpha:nil];
+        CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+        
+        // Draw image to stroke view
+        CGContextStrokePath(UIGraphicsGetCurrentContext());
+        
+        
+        // Draw image context to currentStrokeView
+        [self.currentStrokeView setImage:UIGraphicsGetImageFromCurrentImageContext()];
+
+        
+        // Set opacity of layer
+        [self.currentStrokeView setAlpha:opacity];
+        
+        // End graphics context
+        UIGraphicsEndImageContext();
+    });
 }
 
 // 1:mainimageview 2:currentStrokeView
@@ -520,12 +528,6 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
-}
-
-// Lock Orientation
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - shake functionality

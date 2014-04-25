@@ -54,7 +54,7 @@
                                     <outlet property="imageNextResponder" destination="5lS-Ux-t4r" id="ven-sx-fSp"/>
                                 </connections>
                             </scrollView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xBh-cg-1Hc">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xBh-cg-1Hc">
                                 <rect key="frame" x="0.0" y="980" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
@@ -91,6 +91,11 @@
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xBh-cg-1Hc" firstAttribute="leading" secondItem="bpv-tK-mXp" secondAttribute="leading" id="1Jx-U9-oGj"/>
+                            <constraint firstAttribute="trailing" secondItem="xBh-cg-1Hc" secondAttribute="trailing" id="BDR-yo-cFF"/>
+                            <constraint firstItem="PkU-b6-6MP" firstAttribute="top" secondItem="xBh-cg-1Hc" secondAttribute="bottom" id="Igg-rY-yea"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="currentStrokeView" destination="Txj-cb-HU5" id="UPL-Bv-Llg"/>

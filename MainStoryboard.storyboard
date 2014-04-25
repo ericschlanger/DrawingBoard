@@ -92,8 +92,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IAk-RM-tKp" secondAttribute="trailing" id="EJ6-f1-UDi"/>
                             <constraint firstAttribute="trailing" secondItem="IAk-RM-tKp" secondAttribute="trailing" id="GFa-KL-TD2"/>
+                            <constraint firstItem="vHD-iq-T9v" firstAttribute="top" secondItem="IAk-RM-tKp" secondAttribute="bottom" id="HwK-hr-1Zw"/>
                             <constraint firstItem="IAk-RM-tKp" firstAttribute="leading" secondItem="OeE-Hk-h8o" secondAttribute="leading" id="Oqo-YE-8p2"/>
+                            <constraint firstItem="IAk-RM-tKp" firstAttribute="leading" secondItem="OeE-Hk-h8o" secondAttribute="leading" id="bWO-pA-rUo"/>
                             <constraint firstItem="vHD-iq-T9v" firstAttribute="top" secondItem="IAk-RM-tKp" secondAttribute="bottom" id="jZE-fk-Qpu"/>
                         </constraints>
                     </view>
