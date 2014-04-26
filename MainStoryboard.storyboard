@@ -18,7 +18,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="MRG-up-c6Y" kind="modal" identifier="splashDone" modalTransitionStyle="flipHorizontal" id="Swp-Fm-F1l"/>
+                        <segue destination="MRG-up-c6Y" kind="modal" identifier="splashDone" id="Swp-Fm-F1l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7fB-sc-uAJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
