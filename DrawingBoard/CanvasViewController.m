@@ -128,7 +128,15 @@
     self.lastPointReceived = NULL;
     
     // Enable/Disable undo/sync button
-    [self didChangeState:nil];    
+    [self didChangeState:nil];
+    
+    
+    // Help popup
+    RNGridMenuItem *oneFinger = [[RNGridMenuItem alloc]initWithImage:[UIImage imageNamed:@"oneFinger.png"] title:@"Draw"];
+    RNGridMenuItem *twoFingers = [[RNGridMenuItem alloc]initWithImage:[UIImage imageNamed:@"twoFingers.png"] title:@"Pan"];
+    RNGridMenu *gridPopup = [[RNGridMenu alloc]initWithItems:@[oneFinger,twoFingers]];
+    gridPopup.highlightColor = [UIColor clearColor];
+    [gridPopup showInViewController:self center:self.view.center];
 }
 
 - (void)viewDidLayoutSubviews

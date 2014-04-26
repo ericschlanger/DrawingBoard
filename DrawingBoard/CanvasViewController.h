@@ -17,6 +17,7 @@
 #import "NKOColorPickerView.h"
 #import "WYPopoverController.h"
 #import "DMRNotificationView.h"
+#import "RNGridMenu.h"
 
 @interface CanvasViewController : UIViewController <UIScrollViewDelegate, ChangeOptionsDelegate,MCBrowserViewControllerDelegate,PRYColorPickerDelegate,WYPopoverControllerDelegate>
 

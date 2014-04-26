@@ -126,7 +126,7 @@
         [self.eraserPathLayer removeFromSuperlayer];
         self.eraserPathLayer = nil;
     }
-    
+        
     CGPoint startPoint,pointTwo,pointThree,pointFour,pointFive,pointSix,endPoint;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
