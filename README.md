@@ -15,20 +15,20 @@ Features
 
 Models
 ---
-FancyPoint - Wrapper class for drawn point (contains point, color, opacity, strokeID)
+1. FancyPoint - Wrapper class for drawn point (contains point, color, opacity, strokeID)
 
 Views
 ---
-CanvasScrollView - Custom UIScrollView that supports UIGestureRecognizers in its content
-RNGridMenu - Grid-style popup used for intro help menu
-DMRNotificationView - Unintrusive popup used for notifying upon connect/disconnect
-NKOColorPickerView - Traditional photoshop-esque color picker
+1. CanvasScrollView - Custom UIScrollView that supports UIGestureRecognizers in its content
+2. RNGridMenu - Grid-style popup used for intro help menu
+3. DMRNotificationView - Unintrusive popup used for notifying upon connect/disconnect
+4. NKOColorPickerView - Traditional photoshop-esque color picker
 
 Controllers
 ---
-MPCHandler - Controls multipeer connectivity framework
-SplashViewController - View controller for splash animations
-CanvasViewController - View controller for drawing (main screen)
-OptionViewController - View controller for options popover
-WYPopoverController - Allows popovers on iPhone & iPad
-UIAlertView+Blocks - Category that adds block support to UIAlertView
+1. MPCHandler - Controls multipeer connectivity framework
+2. SplashViewController - View controller for splash animations
+3. CanvasViewController - View controller for drawing (main screen)
+4. OptionViewController - View controller for options popover
+5. WYPopoverController - Allows popovers on iPhone & iPad
+6. UIAlertView+Blocks - Category that adds block support to UIAlertView
