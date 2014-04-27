@@ -17,9 +17,16 @@
 @property (nonatomic, strong) MCAdvertiserAssistant *advertiser;
 @property (nonatomic, strong) MCBrowserViewController *browser;
 
+// Setup Peer
 - (void)setupPeerWithDisplayName:(NSString *)displayName;
+
+// Setup Session
 - (void)setupSession;
+
+// Advertise
 - (void)advertiseSelf:(BOOL)advertise;
+
+// Setup connection browser
 - (void)setupBrowser;
 
 

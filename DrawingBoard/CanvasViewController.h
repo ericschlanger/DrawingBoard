@@ -5,6 +5,7 @@
 //  Created by Michael MacDougall on 3/29/14.
 //  Copyright (c) 2014 Eric Schlanger. All rights reserved.
 //
+// Michael MacDougall, Eric Schlanger, Joe Canero, Lindsey Nice
 
 #import <UIKit/UIKit.h>
 #import "OptionViewController.h"
@@ -28,9 +29,10 @@
 // UIImageView for current stroke
 @property (nonatomic, strong) IBOutlet UIImageView *currentStrokeView;
 
-// CanvasScrollView, subclass of UIScrollView that sends touch events to the nextResponder (CanvasViewController)
+// CanvasScrollView, subclass of UIScrollView that sends touch events to the nextResponder
 @property (nonatomic, strong) IBOutlet CanvasScrollView *panScrollView;
 
+// Outlet for undo button to disable when peers are connected
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *undoButton;
 
 // IBActions (Toolbar Actions)

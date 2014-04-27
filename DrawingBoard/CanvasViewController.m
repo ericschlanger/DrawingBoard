@@ -31,26 +31,21 @@
 @property (nonatomic, strong) WYPopoverController *optionsPopover;
 @property (nonatomic, strong) WYPopoverController *connectPopover;
 
+// Sync button in MPCBrowser
 @property (nonatomic, strong) UIButton *syncButton;
 
 @end
 
 @implementation CanvasViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)viewDidAppear:(BOOL)animated
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
-}
-
-- (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [self resignFirstResponder];
     [super viewWillDisappear:animated];
 }
@@ -118,7 +113,7 @@
                                              selector:@selector(didChangeState:)
                                                  name:@"DrawingBoard_ChangedState"
                                                object:nil];
-    
+    // Set lastPointReceived to null
     self.lastPointReceived = NULL;
     
     // Initialize Undo Array
@@ -165,6 +160,7 @@
 #pragma mark - Multipeer Connectivity
 - (IBAction)connect:(id)sender
 {
+    // Present connectPopover
     UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
     [self.connectPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
 }
@@ -172,16 +168,19 @@
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
 {
+    // Dismiss popover
     [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
 {
+    // Dismiss popover
     [self.connectPopover dismissPopoverAnimated:YES];
 }
 
 - (void)didChangeState:(NSNotification *)notification
 {
+    // Get state & peer ID from notification and present popup
     NSDictionary *dict = [notification userInfo];
     if([dict[@"state"] isEqualToNumber:[NSNumber numberWithInt:2]])
     {
@@ -196,6 +195,7 @@
         [DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
     }
     
+    // Enable/Disable buttons if peers are connected
     if([self peersConnected])
     {
         self.undoButton.enabled = NO;
@@ -259,6 +259,7 @@
         NSString *dataString = [NSString stringWithUTF8String:[unCData bytes]];
         if(dataString != NULL)
         {
+            // Clear Request
             if([dataString isEqualToString:@"CR"])
             {
                 RIButtonItem *yesButton = [RIButtonItem itemWithLabel:@"Yes" action:^{
@@ -270,6 +271,7 @@
                 UIAlertView *clearRequest = [[UIAlertView alloc]initWithTitle:@"Clear Request" message:@"Do you wish to clear the canvas?" cancelButtonItem:noButton otherButtonItems:yesButton, nil];
                 [clearRequest show];
             }
+            // Clear Request Accepted
             else if([dataString isEqualToString:@"CRA"])
             {
                 [self clearImageViews];
@@ -282,7 +284,7 @@
                 if(point.strokeID != self.lastStrokeID)
                 {
                     [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:[self.lastPointReceived fetchOpacity] andAddToUndoArray:NO];
-                    self.lastPointReceived = NULL; //******PROBABLY DONT NEED THIS*********
+                    self.lastPointReceived = NULL;
                 }
                 
                 if(self.lastPointReceived == NULL)
@@ -374,10 +376,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         // Start graphics context with size of frame
         UIGraphicsBeginImageContext(self.currentStrokeView.frame.size);
+        
         // Draw from and to points
         [self.currentStrokeView.image drawInRect:CGRectMake(0, 0, self.currentStrokeView.frame.size.width,self.currentStrokeView.frame.size.height)];
-            
-            
         CGContextMoveToPoint(UIGraphicsGetCurrentContext(), point1.x, point1.y);
         CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), point2.x, point2.y);
         
@@ -407,7 +408,6 @@
     });
 }
 
-// 1:mainimageview 2:currentStrokeView
 - (void)mergeImageView:(UIImageView *)imageView1 withImageView:(UIImageView *)imageView2 andOpacity:(CGFloat)opacity andAddToUndoArray:(BOOL)undoFlag
 {
     // Merge stroke view with main image view
@@ -571,6 +571,7 @@
 
 - (BOOL)isImage:(NSData *)data
 {
+    // Check first byte to determine if .png/.jpg or not
     uint8_t c;
     [data getBytes:&c length:1];
     if(c == 0x89 || c == 0xFF)

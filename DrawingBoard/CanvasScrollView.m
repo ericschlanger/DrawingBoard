@@ -32,6 +32,7 @@
 }
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // Remove any delay
     self.delaysContentTouches = NO;
     if([event.allTouches count] == 1)
     {

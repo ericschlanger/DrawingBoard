@@ -1,3 +1,5 @@
+// Michael MacDougall, Eric Schlanger, Joe Canero, Lindsey Nice
+
 #import <UIKit/UIKit.h>
 
 @protocol PRYColorPickerDelegate <NSObject>

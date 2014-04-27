@@ -24,6 +24,7 @@
 
 - (void)viewDidLoad
 {
+    // Setup layers for animation
     [super viewDidLoad];
     self.textAnimationLayer = [CALayer layer];
     self.textAnimationLayer.frame = CGRectMake(20.0f, 20.0f,
@@ -37,6 +38,7 @@
                                                  CGRectGetHeight(self.view.layer.bounds) - 84.0f);
     [self.view.layer addSublayer:self.eraserAnimationLayer];
     
+    // Start animations
     [self startTextAnimation];
     
 }
@@ -236,6 +238,7 @@
         });
     }
     else if ([[anim valueForKey:@"id"] isEqualToString:@"eraser"]){
+        // Progress to next view controller
         [self performSegueWithIdentifier:@"splashDone" sender:self];
     }
 }
