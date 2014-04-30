@@ -186,13 +186,19 @@
     {
         MCPeerID *peerid = dict[@"peerID"];
         NSString *titleMsg = [NSString stringWithFormat:@"%@ has connected",peerid.displayName];
-        [DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
+        DMRNotificationView *not = [[DMRNotificationView alloc]initWithTitle:titleMsg subTitle:@"" targetView:self.view];
+        not.tintColor = [UIColor colorWithRed:0/255.0f green:230/255.0f blue:0/255.0f alpha:1];
+        [not showAnimated:YES];
+        //[DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
     }
     if([dict[@"state"] isEqualToNumber:[NSNumber numberWithInt:0]])
     {
         MCPeerID *peerid = dict[@"peerID"];
         NSString *titleMsg = [NSString stringWithFormat:@"%@ has disconnected",peerid.displayName];
-        [DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
+        DMRNotificationView *not = [[DMRNotificationView alloc]initWithTitle:titleMsg subTitle:@"" targetView:self.view];
+        not.tintColor = [UIColor colorWithRed:230/255.0f green:0/255.0f blue:0/255.0f alpha:1];
+        [not showAnimated:YES];
+        //[DMRNotificationView showInView:self.view title:titleMsg subTitle:@""];
     }
     
     // Enable/Disable buttons if peers are connected
@@ -365,9 +371,6 @@
 
     // Merge currentStrokeView to mainImageView
     [self mergeImageView:self.mainImageView withImageView:self.currentStrokeView andOpacity:self.currentOpacity andAddToUndoArray:YES];
-    
-    
-    
 }
 
 #pragma mark - Drawing
@@ -551,7 +554,7 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    if (motion == UIEventSubtypeMotionShake)
+    if (motion == UIEventSubtypeMotionShake && ![self peersConnected])
     {
         [self undo:self];
     }
